@@ -1,4 +1,4 @@
-// NeuroSuite — constellation hero canvas
+// NeuroSuite Ã¢â‚¬â€ constellation hero canvas
 // Quiet, premium nodes-and-edges field
 
 (function () {

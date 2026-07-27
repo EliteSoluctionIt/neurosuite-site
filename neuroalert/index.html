@@ -1,0 +1,136 @@
+<!doctype html>
+<html lang="it">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+  <link rel="canonical" href="https://neurosuite.dev/neuroalert/">
+  <meta name="robots" content="index,follow,max-image-preview:large,max-snippet:-1">
+  <meta name="theme-color" content="#071513">
+  <meta name="description" content="NeuroAlert integra segnali da smartphone, dispositivi indossabili e sensori connessi in una vista operativa in tempo reale, con analisi longitudinale e supervisione umana.">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="Human Lines">
+  <meta property="og:title" content="NeuroAlert — Segnali in tempo reale e allerta operativa">
+  <meta property="og:description" content="Una vista operativa continua per rendere leggibili variazioni, contesto e priorità.">
+  <meta property="og:url" content="https://neurosuite.dev/neuroalert/">
+  <title>NeuroAlert — Human Lines</title>
+  <style>
+    *{box-sizing:border-box}
+    :root{--bg:#071513;--panel:#0d201d;--line:rgba(235,245,238,.14);--fg:#f1f5f2;--muted:#aabbb5;--accent:#d9aa58;--green:#8ee0b2}
+    html{scroll-behavior:smooth;background:var(--bg)}
+    body{margin:0;background:var(--bg);color:var(--fg);font-family:Inter,ui-sans-serif,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif;line-height:1.6}
+    a{color:inherit}
+    .shell{width:min(1160px,calc(100% - 40px));margin:auto}
+    .nav{position:sticky;top:0;z-index:10;border-bottom:1px solid var(--line);background:rgba(7,21,19,.88);backdrop-filter:blur(18px)}
+    .nav__in{min-height:70px;display:flex;align-items:center;justify-content:space-between;gap:24px}
+    .brand{text-decoration:none;font-family:Georgia,serif;font-size:20px;font-weight:700;letter-spacing:.02em}
+    .brand span{color:var(--accent)}
+    .back{text-decoration:none;color:var(--muted);font-size:14px}
+    .back:hover{color:var(--fg)}
+    .hero{position:relative;overflow:hidden;padding:clamp(86px,13vw,170px) 0 90px;border-bottom:1px solid var(--line)}
+    .hero:after{content:"";position:absolute;width:520px;height:520px;border:1px solid rgba(142,224,178,.16);border-radius:50%;right:-170px;top:-130px;box-shadow:0 0 120px rgba(142,224,178,.07),inset 0 0 120px rgba(142,224,178,.04)}
+    .eyebrow,.index{color:var(--accent);font-size:12px;font-weight:750;letter-spacing:.17em;text-transform:uppercase}
+    h1,h2,h3{font-family:Georgia,"Times New Roman",serif;margin:0;line-height:1.05}
+    h1{max-width:900px;margin-top:22px;font-size:clamp(50px,8.3vw,112px);font-weight:500;letter-spacing:-.045em}
+    h1 em,h2 em{color:var(--green);font-weight:400}
+    .lead{max-width:760px;margin:32px 0 0;color:#d5dfdb;font-size:clamp(18px,2vw,25px);line-height:1.55}
+    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:38px}
+    .btn{display:inline-flex;align-items:center;min-height:48px;padding:0 22px;border:1px solid var(--line);border-radius:999px;text-decoration:none;font-weight:700;font-size:14px}
+    .btn--primary{background:var(--accent);border-color:var(--accent);color:#172018}
+    section{padding:clamp(72px,10vw,130px) 0;border-bottom:1px solid var(--line)}
+    h2{max-width:800px;margin-top:18px;font-size:clamp(38px,6vw,76px);font-weight:500;letter-spacing:-.035em}
+    .intro{max-width:820px;margin:26px 0 0;color:var(--muted);font-size:18px}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin-top:52px}
+    .card{min-height:260px;padding:30px;border:1px solid var(--line);border-radius:22px;background:linear-gradient(145deg,rgba(255,255,255,.045),rgba(255,255,255,.015))}
+    .card__num{color:var(--accent);font:700 12px ui-monospace,monospace;letter-spacing:.12em}
+    .card h3{margin-top:44px;font-size:28px;font-weight:500}
+    .card p{margin:16px 0 0;color:var(--muted)}
+    .status{display:grid;grid-template-columns:1.15fr .85fr;gap:18px;margin-top:50px}
+    .status__main,.status__side{padding:clamp(28px,4vw,48px);border:1px solid var(--line);border-radius:24px;background:var(--panel)}
+    .pill{display:inline-flex;align-items:center;gap:9px;padding:7px 12px;border:1px solid rgba(142,224,178,.3);border-radius:999px;color:var(--green);font-size:12px;font-weight:750;text-transform:uppercase;letter-spacing:.1em}
+    .pill:before{content:"";width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 15px var(--green)}
+    .status h3{margin-top:26px;font-size:clamp(31px,4vw,50px);font-weight:500}
+    .status p{color:var(--muted);font-size:17px}
+    .facts{display:grid;gap:18px}
+    .fact{padding-bottom:18px;border-bottom:1px solid var(--line)}
+    .fact:last-child{border:0;padding-bottom:0}
+    .fact span{display:block;color:var(--muted);font-size:12px;text-transform:uppercase;letter-spacing:.11em}
+    .fact strong{display:block;margin-top:5px;font-size:18px}
+    .final{text-align:center}
+    .final h2{margin-inline:auto}
+    .final p{margin:25px auto 0;max-width:700px;color:var(--muted);font-size:18px}
+    footer{padding:34px 0;color:var(--muted);font-size:13px}
+    .foot{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+    @media(max-width:820px){.grid,.status{grid-template-columns:1fr}.card{min-height:0}.hero:after{opacity:.45}.nav__in{min-height:62px}.back{font-size:12px}}
+  </style>
+</head>
+<body>
+  <nav class="nav">
+    <div class="shell nav__in">
+      <a class="brand" href="../it.html">Human Lines <span>·</span> NeuroAlert</a>
+      <a class="back" href="../it.html">Torna a NeuroSuite</a>
+    </div>
+  </nav>
+
+  <main>
+    <header class="hero">
+      <div class="shell">
+        <div class="eyebrow">Sistema operativo · osservazione continua</div>
+        <h1>Segnali leggibili.<br><em>Priorità tempestive.</em></h1>
+        <p class="lead">NeuroAlert porta dati autorizzati da smartphone, dispositivi indossabili e sensori connessi in una vista operativa in tempo reale. Non si limita a mostrare valori: osserva variazioni, contesto e continuità nel tempo.</p>
+        <div class="actions">
+          <a class="btn btn--primary" href="#sistema">Scopri il sistema</a>
+          <a class="btn" href="mailto:info@neurosuite.dev?subject=Informazioni%20NeuroAlert">Contatto diretto</a>
+        </div>
+      </div>
+    </header>
+
+    <section id="sistema">
+      <div class="shell">
+        <div class="index">01 · Architettura operativa</div>
+        <h2>Dal singolo dato alla <em>traiettoria.</em></h2>
+        <p class="intro">NeuroAlert è il livello operativo dell’ecosistema NeuroSuite: acquisisce segnali disponibili, li organizza in tempo reale e li confronta nel tempo per rendere visibili cambiamenti che, isolatamente, potrebbero sembrare irrilevanti.</p>
+        <div class="grid">
+          <article class="card"><div class="card__num">01 · ACQUISIZIONE</div><h3>Segnali reali</h3><p>Movimento, orientamento, luce, audio ambientale, frequenza cardiaca, saturazione, attività, riposo e altri dati autorizzati provenienti dai dispositivi connessi.</p></article>
+          <article class="card"><div class="card__num">02 · CONTESTO</div><h3>Lettura longitudinale</h3><p>Ogni informazione acquista valore quando viene letta rispetto alla storia individuale, alle routine e agli altri segnali disponibili nello stesso intervallo temporale.</p></article>
+          <article class="card"><div class="card__num">03 · AZIONE</div><h3>Allerta verificabile</h3><p>Le variazioni rilevanti vengono rese leggibili attraverso indicatori, grafici e segnalazioni contestualizzate, lasciando verifica e decisione alle persone responsabili.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <div class="shell">
+        <div class="index">02 · Stato attuale</div>
+        <h2>Una piattaforma <em>già operativa.</em></h2>
+        <div class="status">
+          <div class="status__main">
+            <div class="pill">Operativo</div>
+            <h3>Acquisizione, visualizzazione e integrazione dei segnali.</h3>
+            <p>Il cockpit Android acquisisce in tempo reale i sensori disponibili sullo smartphone e integra dati provenienti dai dispositivi indossabili. Le visualizzazioni longitudinali e gli indicatori istantanei consentono di osservare l’evoluzione dei segnali, non soltanto il valore del momento.</p>
+          </div>
+          <div class="status__side">
+            <div class="facts">
+              <div class="fact"><span>Dispositivi</span><strong>Smartphone · dispositivi indossabili · sensori</strong></div>
+              <div class="fact"><span>Metodo</span><strong>Baseline individuale · contesto · variazioni</strong></div>
+              <div class="fact"><span>Output</span><strong>Grafici · indicatori · segnalazioni operative</strong></div>
+              <div class="fact"><span>Governance</span><strong>Supervisione umana · dati autorizzati</strong></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="final">
+      <div class="shell">
+        <div class="index">03 · Principio</div>
+        <h2>Non più dati.<br><em>Più significato.</em></h2>
+        <p>Il valore di NeuroAlert non è accumulare misurazioni, ma trasformare segnali distribuiti in una lettura continua, comprensibile e utile al lavoro reale.</p>
+        <div class="actions" style="justify-content:center"><a class="btn btn--primary" href="mailto:info@neurosuite.dev?subject=Informazioni%20NeuroAlert">Parliamo di NeuroAlert</a></div>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="shell foot"><span>© 2026 Human Lines</span><span>Powered by NeuroSuite · human-in-the-loop · privacy by design</span></div>
+  </footer>
+</body>
+</html>

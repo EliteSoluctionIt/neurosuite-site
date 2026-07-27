@@ -1,0 +1,800 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <link rel="canonical" href="https://neurosuite.dev/neuroalert/questionario/">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="NeuroSuite">
+    <meta property="og:title" content="NeuroAlert">
+    <meta property="og:description" content="NeuroSuite collega segnali, contesto e priorità operative in sanità, assistenza e ambienti intelligenti.">
+    <meta property="og:url" content="https://neurosuite.dev/neuroalert/questionario/">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NeuroAlert">
+    <meta name="twitter:description" content="NeuroSuite collega segnali, contesto e priorità operative in sanità, assistenza e ambienti intelligenti.">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NeuroAlert</title>
+<!-- Google Fonts rimossi: funziona offline con system fonts -->
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --dark:#1A3A2A;--mid:#2D6A4F;--light:#95D5B2;--accent:#D4A843;
+  --bg:#F4F1EB;--white:#FFFFFF;--gray:#6B7280;--lgray:#E2EDE6;
+  --text:#1F2937;--red:#B91C1C;--blue:#065A82;--violet:#5B3A8C;
+  --nav-h:56px;
+}
+html,body{width:100%;height:100%;overflow:hidden;background:var(--dark);font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;color:var(--text)}
+nav{position:fixed;top:0;left:0;right:0;height:var(--nav-h);background:rgba(26,58,42,0.97);backdrop-filter:blur(12px);display:flex;align-items:center;padding:0 40px;gap:6px;z-index:100;border-bottom:1px solid rgba(149,213,178,0.12)}
+.nav-logo{font-family:'Cormorant Garamond',Georgia,serif;font-size:18px;font-weight:700;color:var(--white);letter-spacing:0.04em;margin-right:22px;white-space:nowrap;flex-shrink:0}
+.nav-logo span{color:var(--accent)}
+.nav-pills{display:flex;gap:4px;flex-wrap:nowrap;overflow-x:auto;overflow-y:hidden;scrollbar-width:none;-ms-overflow-style:none;flex:1;min-width:0}
+.nav-pill{padding:5px 12px;border-radius:3px;font-size:10px;font-weight:500;color:rgba(255,255,255,0.5);cursor:pointer;transition:all 0.2s;white-space:nowrap;border:1px solid transparent;text-transform:uppercase;letter-spacing:0.03em}
+.nav-pill:hover{color:var(--light);border-color:rgba(149,213,178,0.2)}
+.nav-pill.active{background:var(--mid);color:var(--white);border-color:rgba(149,213,178,0.3)}
+.nav-arrows{margin-left:8px;display:flex;gap:8px;align-items:center;flex-shrink:0}
+.nav-arrow{width:32px;height:32px;border:1px solid rgba(149,213,178,0.25);border-radius:3px;background:none;color:rgba(255,255,255,0.6);cursor:pointer;font-size:15px;display:flex;align-items:center;justify-content:center;transition:all 0.18s}
+.nav-arrow:hover{background:var(--mid);color:var(--white)}
+.nav-arrow:disabled{opacity:0.2;cursor:default}
+.nav-pills::-webkit-scrollbar{display:none}
+.nav-counter{font-family:'Courier New',Courier,monospace;font-size:11px;color:rgba(255,255,255,0.35);padding:0 8px}
+#stage{position:fixed;top:var(--nav-h);left:0;right:0;bottom:0;overflow:hidden}
+.slide{position:absolute;inset:0;display:flex;padding:46px 62px 34px;opacity:0;pointer-events:none;transition:opacity 0.35s ease,transform 0.35s ease;transform:translateX(40px);will-change:opacity,transform}
+.slide.active{opacity:1!important;pointer-events:all;transform:translateX(0)}
+.slide.prev{opacity:0;transform:translateX(-40px)}
+.slide-dark{background:var(--dark)}
+.slide-dark::after{content:'';position:absolute;right:0;top:0;bottom:0;width:150px;background:linear-gradient(to right,transparent,rgba(45,106,79,0.28) 40%,rgba(149,213,178,0.13));pointer-events:none}
+.slide-light{background:var(--bg)}
+h1{font-family:Georgia,'Times New Roman',serif;font-size:clamp(34px,4.8vw,60px);font-weight:700;line-height:1.05}
+h2{font-family:Georgia,'Times New Roman',serif;font-size:clamp(22px,2.8vw,38px);font-weight:600;line-height:1.1}
+h3{font-family:Georgia,'Times New Roman',serif;font-size:clamp(14px,1.6vw,20px);font-weight:600;line-height:1.2}
+.accent-line{width:52px;height:3px;background:var(--accent);margin:11px 0 20px;border-radius:2px}
+#progress{position:fixed;bottom:0;left:0;right:0;height:2px;background:rgba(149,213,178,0.12);z-index:100}
+#progress-bar{height:100%;background:var(--accent);transition:width 0.35s ease}
+
+.slide.active>*{opacity:1}
+
+/* S1 */
+#s1{flex-direction:column;justify-content:center}
+#s1 .sub{font-family:Georgia,'Times New Roman',serif;font-size:clamp(14px,1.7vw,21px);font-style:italic;color:var(--light);margin-top:16px;margin-bottom:26px;max-width:560px;line-height:1.45}
+#s1 .desc{font-size:clamp(12px,1.05vw,14px);color:rgba(194,213,200,0.82);max-width:520px;line-height:1.78}
+#s1 .year{position:absolute;bottom:30px;left:62px;font-family:'Courier New',Courier,monospace;font-size:11px;color:rgba(255,255,255,0.2);letter-spacing:0.1em}
+
+/* S2 */
+#s2{flex-direction:column}
+#s2 .cards-row{display:grid;grid-template-columns:repeat(3,1fr);gap:15px;flex:1;margin-top:16px;min-height:0}
+#s2 .stat-card{background:var(--white);border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:24px 20px 18px;display:flex;flex-direction:column;position:relative;overflow:hidden}
+#s2 .stat-card::before{content:'';display:block;height:4px;position:absolute;top:0;left:0;right:0}
+#s2 .stat-card:nth-child(1)::before,#s2 .stat-card:nth-child(2)::before{background:var(--mid)}
+#s2 .stat-card:nth-child(3)::before{background:var(--accent)}
+#s2 .stat-val{font-family:Georgia,'Times New Roman',serif;font-size:clamp(28px,3.8vw,48px);font-weight:700;color:var(--dark);line-height:1;margin-top:6px}
+#s2 .stat-lbl{font-size:11px;font-weight:500;color:var(--mid);text-transform:uppercase;letter-spacing:0.07em;margin-top:8px;margin-bottom:10px}
+#s2 .stat-body{font-size:12px;color:var(--gray);line-height:1.65;flex:1}
+#s2 .footer-note{background:#EAF4EE;border-left:3px solid var(--mid);padding:11px 16px;border-radius:2px;font-size:12px;color:var(--text);margin-top:14px;flex:0 0 auto}
+
+/* S3 */
+#s3{flex-direction:column}
+#s3 .timeline{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;flex:1;margin-top:20px;min-height:0}
+#s3 .tl-card{border-radius:4px;overflow:hidden;display:flex;flex-direction:column;background:rgba(255,255,255,0.06)}
+#s3 .tl-top{height:4px;flex:0 0 auto}
+#s3 .tl-day{font-family:'Courier New',Courier,monospace;font-size:10px;font-weight:500;letter-spacing:0.07em;padding:13px 16px 5px;text-transform:uppercase}
+#s3 .tl-label{font-family:Georgia,'Times New Roman',serif;font-size:clamp(14px,1.7vw,20px);font-weight:700;padding:5px 16px 9px;line-height:1.2}
+#s3 .tl-detail{font-size:12px;padding:0 16px 16px;line-height:1.7;flex:1;opacity:0.82}
+#s3 .tagline{margin-top:16px;font-family:Georgia,'Times New Roman',serif;font-size:clamp(13px,1.3vw,16px);font-style:italic;color:var(--accent);text-align:center;flex:0 0 auto}
+
+/* S4 */
+#s4{flex-direction:column}
+#s4 .sensors-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;flex:1;margin-top:16px;min-height:0}
+#s4 .sensor-card{background:var(--white);border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.06);overflow:hidden;display:flex;flex-direction:column;padding:0 0 12px}
+#s4 .sensor-bar{height:4px}
+#s4 .sensor-label{font-size:10px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;padding:12px 14px 4px}
+#s4 .sensor-items{padding:7px 14px 9px;flex:1}
+#s4 .sensor-items li{font-size:11px;color:var(--text);padding:3px 0;list-style:none;display:flex;gap:6px;align-items:flex-start;line-height:1.5}
+#s4 .sensor-items li::before{content:'—';color:var(--mid);flex-shrink:0}
+#s4 .sensor-proof{font-size:9.5px;color:var(--gray);font-style:italic;padding:9px 14px 0;line-height:1.5;border-top:1px solid var(--lgray);margin:0 14px}
+
+/* S5 */
+#s5{flex-direction:column}
+#s5 .pipeline{display:flex;gap:3px;margin-top:20px;margin-bottom:14px;flex:0 0 auto}
+#s5 .pipe-step{flex:1;padding:10px 4px;text-align:center;font-size:9.5px;font-weight:500;letter-spacing:0.08em;text-transform:uppercase;color:var(--white);border-radius:2px;line-height:1.3}
+#s5 .cols{display:grid;grid-template-columns:1fr 1fr;gap:15px;flex:1;min-height:0}
+#s5 .col-card{background:var(--white);border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.06);overflow:hidden;padding:18px 20px;display:flex;flex-direction:column}
+#s5 .col-card h3{color:var(--dark);margin-bottom:13px}
+#s5 .rule{display:flex;gap:9px;align-items:flex-start;padding:7px 0;border-bottom:1px solid var(--lgray)}
+#s5 .rule:last-child{border:none}
+#s5 .rule-num{width:20px;height:20px;background:var(--mid);color:var(--white);border-radius:2px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;flex-shrink:0}
+#s5 .rule-txt{font-size:12px;color:var(--text);line-height:1.55}
+#s5 .ex-row{display:flex;justify-content:space-between;align-items:center;padding:7px 0;border-bottom:1px solid var(--lgray)}
+#s5 .ex-row:last-child{border:none}
+#s5 .ex-param{font-size:11px;font-weight:500;color:var(--mid)}
+#s5 .ex-val{font-size:11px;color:var(--text);font-family:'Courier New',Courier,monospace}
+
+/* S6 */
+#s6{flex-direction:column}
+#s6 .diseases{flex:1;display:flex;flex-direction:column;gap:7px;margin-top:16px;min-height:0}
+#s6 .disease-row{display:grid;grid-template-columns:2.1fr 0.9fr 3fr;background:var(--white);border-radius:4px;box-shadow:0 1px 8px rgba(0,0,0,0.05);overflow:hidden;flex:1;align-items:center}
+#s6 .disease-row:nth-child(even){background:var(--bg)}
+#s6 .d-left{display:flex;align-items:stretch}
+#s6 .d-bar{width:4px;flex-shrink:0}
+#s6 .d-name{font-size:12px;font-weight:500;color:var(--dark);padding:0 16px}
+#s6 .d-badge{font-size:10.5px;font-weight:700;color:var(--white);padding:5px 12px;border-radius:2px;text-align:center;white-space:nowrap;font-family:'Courier New',Courier,monospace}
+#s6 .d-signals{font-size:11px;color:var(--gray);padding:0 18px;line-height:1.5}
+
+/* S7 */
+#s7{flex-direction:column}
+#s7 .papers{display:grid;grid-template-columns:1fr 1fr;gap:13px;flex:1;margin-top:16px;min-height:0}
+#s7 .paper{background:var(--white);border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.06);overflow:hidden;display:flex}
+#s7 .paper-bar{width:4px;flex-shrink:0}
+#s7 .paper-body{padding:17px 19px;display:flex;flex-direction:column}
+#s7 .paper-ref{font-family:Georgia,'Times New Roman',serif;font-size:14px;font-weight:700;color:var(--dark);margin-bottom:8px}
+#s7 .paper-finding{font-size:12px;color:var(--text);line-height:1.65;flex:1}
+#s7 .paper-so{font-size:11px;color:var(--mid);font-style:italic;margin-top:9px;padding-top:9px;border-top:1px solid var(--lgray)}
+
+/* S8 */
+#s8{flex-direction:column}
+#s8 .content{display:grid;grid-template-columns:1fr 1fr;gap:18px;flex:1;margin-top:16px;min-height:0}
+#s8 .chart-area{background:var(--white);border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.06);padding:20px;display:flex;flex-direction:column}
+#s8 .chart-title{font-size:10.5px;font-weight:500;text-transform:uppercase;letter-spacing:0.07em;color:var(--gray);margin-bottom:12px}
+#s8 svg{flex:1}
+#s8 .stats-col{display:flex;flex-direction:column;gap:11px}
+#s8 .mstat{background:var(--white);border-radius:4px;box-shadow:0 1px 8px rgba(0,0,0,0.05);overflow:hidden;display:flex;align-items:center;flex:1}
+#s8 .mstat-bar{width:4px;align-self:stretch}
+#s8 .mstat-val{font-family:Georgia,'Times New Roman',serif;font-size:clamp(18px,2vw,28px);font-weight:700;color:var(--dark);padding:9px 13px;white-space:nowrap}
+#s8 .mstat-desc{font-size:11px;color:var(--gray);line-height:1.4;padding-right:10px}
+
+/* S9 */
+#s9{flex-direction:column}
+#s9 .intro{font-size:13px;color:var(--gray);font-style:italic;margin-top:5px;margin-bottom:13px}
+#s9 .modules{display:flex;flex-direction:column;gap:7px;flex:1;min-height:0;justify-content:center}
+#s9 .mod-row{display:grid;grid-template-columns:2.1fr 0.7fr 3fr;align-items:center;background:var(--white);border-radius:4px;box-shadow:0 1px 8px rgba(0,0,0,0.05);overflow:hidden;padding:12px 0}
+
+#s9 .mod-left{display:flex;align-items:stretch}
+#s9 .mod-bar{width:4px;margin-right:14px;align-self:stretch}
+#s9 .mod-name{font-size:11px;font-weight:500;color:var(--dark)}
+#s9 .mod-badge{font-size:10px;font-weight:700;padding:4px 11px;border-radius:2px;text-align:center;color:var(--white);white-space:nowrap}
+#s9 .mod-desc{font-size:11px;color:var(--gray);padding:0 18px;line-height:1.5}
+
+/* S10 */
+#s10{flex-direction:column}
+#s10 .phases{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;flex:1;margin-top:16px;min-height:0}
+#s10 .phase-card{background:var(--white);border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.06);overflow:hidden;display:flex;flex-direction:column;padding:16px 15px 14px}
+#s10 .phase-num{width:32px;height:32px;border-radius:3px;display:flex;align-items:center;justify-content:center;font-family:Georgia,'Times New Roman',serif;font-size:19px;font-weight:700;color:var(--white);margin-bottom:9px}
+#s10 .phase-meta{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.09em;color:var(--gray);margin-bottom:3px}
+#s10 .phase-label{font-family:Georgia,'Times New Roman',serif;font-size:16px;font-weight:700;color:var(--dark);margin-bottom:11px;line-height:1.2}
+#s10 .phase-items{flex:1}
+#s10 .phase-items li{font-size:11px;color:var(--text);padding:4px 0;list-style:none;display:flex;gap:7px;border-bottom:1px solid var(--lgray);line-height:1.45}
+#s10 .phase-items li:last-child{border:none}
+#s10 .phase-items li::before{content:'→';color:var(--mid);font-weight:500;flex-shrink:0}
+
+/* S11 */
+#s11{flex-direction:column;justify-content:center}
+#s11 .points{display:flex;flex-direction:column;gap:14px;margin-top:26px;max-width:660px}
+#s11 .point{display:flex;gap:15px;align-items:flex-start}
+#s11 .point-num{width:26px;height:26px;background:var(--accent);border-radius:2px;display:flex;align-items:center;justify-content:center;font-size:11px;font-weight:700;color:var(--dark);flex-shrink:0;margin-top:2px}
+#s11 .point-txt{font-size:clamp(12px,1.15vw,14px);color:rgba(255,255,255,0.85);line-height:1.6}
+#s11 .tagline{position:absolute;bottom:36px;left:62px;right:180px;font-family:Georgia,'Times New Roman',serif;font-size:clamp(13px,1.3vw,16px);font-style:italic;color:var(--accent)}
+
+/* S12 */
+#s12{flex-direction:column;justify-content:center}
+#s12 h1{color:var(--white);max-width:620px}
+#s12 .lead{font-size:clamp(14px,1.45vw,18px);color:var(--light);font-family:Georgia,'Times New Roman',serif;font-weight:600;margin-top:16px;max-width:580px;line-height:1.45}
+#s12 .body{font-size:clamp(12px,1.05vw,14px);color:rgba(194,213,200,0.82);margin-top:13px;max-width:540px;line-height:1.78}
+#s12 .pills{display:flex;gap:10px;margin-top:30px}
+#s12 .pill{padding:7px 18px;background:var(--mid);border-radius:3px;font-size:11px;font-weight:500;color:var(--white);letter-spacing:0.06em;text-transform:uppercase}
+#s12 .note{position:absolute;bottom:36px;left:62px;font-family:Georgia,'Times New Roman',serif;font-size:clamp(13px,1.25vw,16px);font-style:italic;color:var(--accent);max-width:560px;line-height:1.55}
+
+/* S13 */
+#s13{flex-direction:column}
+#s13 .sectors{display:grid;grid-template-columns:repeat(4,1fr);gap:13px;flex:1;margin-top:16px;min-height:0}
+#s13 .sector{background:var(--white);border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.06);overflow:hidden;display:flex;flex-direction:column}
+#s13 .sector-head{padding:13px 15px 9px;border-bottom:1px solid var(--lgray)}
+#s13 .sector-tag{font-size:9px;font-weight:500;text-transform:uppercase;letter-spacing:0.1em;margin-bottom:4px}
+#s13 .sector-title{font-family:Georgia,'Times New Roman',serif;font-size:16px;font-weight:700;color:var(--dark);line-height:1.2}
+#s13 .sector-items{padding:11px 15px;flex:1}
+#s13 .sector-items li{font-size:11.5px;color:var(--text);padding:5px 0;list-style:none;border-bottom:1px solid var(--lgray);display:flex;gap:7px;line-height:1.45}
+#s13 .sector-items li:last-child{border:none}
+#s13 .sector-items li::before{content:'·';font-size:16px;color:var(--mid);flex-shrink:0;line-height:1.3}
+#s13 .sector-note{padding:9px 15px 12px;font-size:10px;color:var(--gray);font-style:italic;line-height:1.5;border-top:1px solid var(--lgray)}
+#s13 .footer-bar{background:#EAF4EE;border-left:3px solid var(--mid);padding:10px 16px;font-size:12px;color:var(--text);margin-top:12px;border-radius:2px;flex-shrink:0}
+
+/* S14 */
+#s14{flex-direction:column}
+#s14 .cols{display:grid;grid-template-columns:1fr 1fr;gap:15px;flex:1;margin-top:16px;min-height:0}
+#s14 .col-card{background:var(--white);border-radius:4px;box-shadow:0 2px 12px rgba(0,0,0,0.06);overflow:hidden;display:flex;flex-direction:column}
+#s14 .col-head{padding:13px 19px 9px;border-bottom:1px solid var(--lgray)}
+#s14 .col-head h3{color:var(--dark)}
+#s14 .signals{padding:7px 19px;flex:1}
+#s14 .sig-row{display:flex;align-items:baseline;gap:11px;padding:6px 0;border-bottom:1px solid var(--lgray)}
+#s14 .sig-row:last-child{border:none}
+#s14 .sig-param{font-size:11px;font-weight:500;color:var(--mid);width:100px;flex-shrink:0}
+#s14 .sig-desc{font-size:11px;color:var(--gray);line-height:1.45}
+#s14 .animals{flex:1}
+#s14 .anim-row{display:grid;grid-template-columns:1.35fr 2fr;padding:8px 19px;border-bottom:1px solid var(--lgray);align-items:center}
+#s14 .anim-row:last-child{border:none}
+#s14 .anim-row:nth-child(even){background:var(--bg)}
+#s14 .anim-type{font-size:11px;font-weight:500;color:var(--dark)}
+#s14 .anim-why{font-size:11px;color:var(--gray);line-height:1.45}
+#s14 .footer-bar{background:#FEF9EC;border-left:3px solid var(--accent);padding:10px 16px;font-size:12px;color:var(--text);margin-top:11px;border-radius:2px;flex-shrink:0}
+</style>
+
+<style id="NEUROALERT_ANDROID_SLIDE_FIX_V2">
+@media (max-width:768px){
+ html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important}
+ body{padding:0!important}
+ main,.slide,.slide-inner,.content,.container,.wrap{width:100%!important;max-width:100%!important;min-width:0!important;overflow:visible!important}
+ .slide{height:auto!important;min-height:calc(100vh - 96px)!important;padding:38px 18px 90px!important}
+ h1{font-size:34px!important;line-height:1.08!important;max-width:100%!important;word-break:normal!important;overflow-wrap:break-word!important}
+ h2{font-size:28px!important;line-height:1.12!important}
+ p,li,div,span{white-space:normal!important;word-break:normal!important;overflow-wrap:break-word!important}
+ .grid,.cards,.columns,.timeline,.features,.steps,[class*="grid"],[class*="card-grid"]{display:block!important;width:100%!important;max-width:100%!important}
+ .card,[class*="card"],.panel,.box,.step,.column,.timeline-item,[class*="col"]{display:block!important;width:100%!important;max-width:100%!important;min-width:0!important;margin:0 0 16px 0!important;padding:22px!important;overflow:visible!important}
+ .card *,.panel *,.box *,.step *,.column *{max-width:100%!important;white-space:normal!important;word-break:normal!important;overflow-wrap:break-word!important}
+ .nav,.topbar,header{position:sticky!important;top:0!important;width:100%!important;max-width:100%!important}
+}
+</style>
+
+</head>
+<body>
+<nav>
+  <div class="nav-logo">Neuro<span>Alert</span></div>
+  <div class="nav-pills" id="navPills"></div>
+  <div class="nav-arrows">
+    <button class="nav-arrow" id="btnPrev" onclick="go(-1)">&#8592;</button>
+    <span class="nav-counter" id="counter">1 / 14</span>
+    <button class="nav-arrow" id="btnNext" onclick="go(1)">&#8594;</button>
+  </div>
+</nav>
+<div id="stage">
+
+<!-- S1 COVER -->
+<div class="slide slide-dark" id="s1">
+  <h1 style="color:var(--white);max-width:640px">NeuroAlert</h1>
+  <div class="sub">Sapere prima che l'animale stia male.<br>Intervenire quando c'è ancora tempo.</div>
+  <div class="accent-line"></div>
+  <div class="desc">Un sistema che guarda i vostri animali giorno e notte, rileva i primi segnali di qualcosa che non va e ve lo dice in anticipo — prima che il problema diventi visibile a occhio nudo.</div>
+  <div class="year">2026</div>
+</div>
+
+<!-- S2 IL PROBLEMA -->
+<div class="slide slide-light" id="s2">
+  <div style="flex:0 0 auto"><h2>Il problema che conosce bene chi alleva</h2><div class="accent-line"></div></div>
+  <div class="cards-row">
+    <div class="stat-card">
+      <div class="stat-val">&gt; 2 miliardi</div>
+      <div class="stat-lbl">di dollari persi ogni anno nel mondo</div>
+      <div class="stat-body">Solo per le malattie respiratorie dei bovini. Capi morti, animali che crescono meno, medicine, scarti al macello. Soldi che escono dalla stalla ogni anno.</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">7 su 10</div>
+      <div class="stat-lbl">animali malati nei grandi allevamenti hanno la polmonite bovina</div>
+      <div class="stat-body">Nei grandi allevamenti americani è la malattia più diffusa. Un problema enorme, ovunque nel mondo.</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-val">3–7 giorni</div>
+      <div class="stat-lbl">di anticipo possibile, prima che si veda qualcosa</div>
+      <div class="stat-body">Prima che l'animale mostri i sintomi evidenti ci sono già segnali che cambiano. Il sistema li vede. L'occhio umano su cento capi no.</div>
+    </div>
+  </div>
+  <div class="footer-note">Curare un capo al primo segnale costa circa 38 dollari di perdita netta. Aspettare e curarlo tre volte: 230 dollari. <em style="color:var(--gray);font-size:11px">(Wilson et al. 2017)</em></div>
+</div>
+
+<!-- S3 COME VEDE -->
+<div class="slide slide-dark" id="s3">
+  <div style="flex:0 0 auto"><h2 style="color:var(--light)">Come il sistema rileva segnali precoci prima che il problema diventi visibile</h2><div class="accent-line"></div></div>
+  <div class="timeline">
+    <div class="tl-card">
+      <div class="tl-top" style="background:var(--light)"></div>
+      <div class="tl-day" style="color:var(--light)">Da 7 a 5 giorni prima</div>
+      <div class="tl-label" style="color:var(--light)">L'animale cambia abitudini</div>
+      <div class="tl-detail" style="color:rgba(194,213,200,0.8)">Si muove un po' meno del solito<br>Si allontana dagli altri<br>Va meno alla mangiatoia<br><em>— cose quasi invisibili a occhio nudo</em></div>
+    </div>
+    <div class="tl-card">
+      <div class="tl-top" style="background:var(--accent)"></div>
+      <div class="tl-day" style="color:var(--accent)">Da 3 a 2 giorni prima</div>
+      <div class="tl-label" style="color:var(--accent)">Segnali fisici precoci</div>
+      <div class="tl-detail" style="color:rgba(194,213,200,0.8)">Temperatura intorno all'occhio leggermente alta<br>Testa un po' più bassa del solito<br>Qualcosa che non torna nella postura<br><em>— ancora niente di evidente</em></div>
+    </div>
+    <div class="tl-card">
+      <div class="tl-top" style="background:#E05252"></div>
+      <div class="tl-day" style="color:#E05252">Il giorno zero</div>
+      <div class="tl-label" style="color:#E05252">Il problema diventa visibile</div>
+      <div class="tl-detail" style="color:rgba(194,213,200,0.8)">Febbre alta<br>Tosse evidente<br>L'animale non mangia più<br><em>— qui lo vede anche l'occhio</em></div>
+    </div>
+    <div class="tl-card">
+      <div class="tl-top" style="background:var(--red)"></div>
+      <div class="tl-day" style="color:var(--red)">Diagnosi in ritardo</div>
+      <div class="tl-label" style="color:var(--red)">Il danno è già fatto</div>
+      <div class="tl-detail" style="color:rgba(194,213,200,0.8)">Medicine più costose<br>Animale già indebolito<br>Nei casi peggiori: abbattimento<br><em>— la finestra si è chiusa</em></div>
+    </div>
+  </div>
+  <div class="tagline">La forza del sistema non è identificare l'animale malato. È rilevare le variazioni nel momento in cui stanno cominciando a comparire.</div>
+</div>
+
+<!-- S4 COME FUNZIONA -->
+<div class="slide slide-light" id="s4">
+  <div style="flex:0 0 auto"><h2>Come funziona: quattro occhi diversi sulla stalla</h2><div class="accent-line"></div></div>
+  <div class="sensors-grid">
+    <div class="sensor-card">
+      <div class="sensor-bar" style="background:var(--mid)"></div>
+      <div class="sensor-label" style="color:var(--mid)">Telecamere con analisi automatica del video</div>
+      <ul class="sensor-items">
+        <li>Riconosce ogni animale e lo segue</li>
+        <li>Misura quanto si muove ogni giorno</li>
+        <li>Vede se si allontana dal gruppo</li>
+        <li>Controlla come tiene la testa</li>
+        <li>Conta gli accessi alla mangiatoia</li>
+        <li>Rileva se il movimento cala nel tempo</li>
+      </ul>
+      <div class="sensor-proof">Diversi studi scientifici documentano che sistemi di analisi automatica del video rilevano variazioni di movimento in anticipo rispetto alla comparsa dei sintomi clinici evidenti.</div>
+    </div>
+    <div class="sensor-card">
+      <div class="sensor-bar" style="background:var(--accent)"></div>
+      <div class="sensor-label" style="color:var(--accent)">Termocamera (misura il calore senza toccare l'animale)</div>
+      <ul class="sensor-items">
+        <li>Misura la temperatura intorno all'occhio</li>
+        <li>Vede asimmetrie di calore negli arti</li>
+        <li>Rileva calore anomalo alla mammella</li>
+        <li>Individua stress da caldo nella mandria</li>
+      </ul>
+      <div class="sensor-proof">Diversi studi riportano sensibilità elevate nell'uso della termografia come supporto osservazionale per il rilevamento di anomalie termiche associate a mastite subclinica.</div>
+    </div>
+    <div class="sensor-card">
+      <div class="sensor-bar" style="background:var(--blue)"></div>
+      <div class="sensor-label" style="color:var(--blue)">Sensori ai varchi: chi passa, quando e quante volte</div>
+      <ul class="sensor-items">
+        <li>Identifica ogni animale con certezza</li>
+        <li>Conta i passaggi ai punti chiave della stalla</li>
+        <li>Rileva se un capo va meno all'abbeveratoio</li>
+        <li>Vede le variazioni di ritmo quotidiano</li>
+      </ul>
+      <div class="sensor-proof">Senza nulla addosso all'animale. Nessun collare, nessun tag invasivo. Il sistema legge chi passa e registra tutto in automatico.</div>
+    </div>
+    <div class="sensor-card">
+      <div class="sensor-bar" style="background:var(--violet)"></div>
+      <div class="sensor-label" style="color:var(--violet)">Microfono e sensori d'aria: ascolta e respira con la stalla</div>
+      <ul class="sensor-items">
+        <li>Riconosce la tosse bovina in automatico</li>
+        <li>Misura anidride carbonica e ammoniaca nell'aria</li>
+        <li>Rileva vocalizzazioni anomale</li>
+        <li>Controlla temperatura e umidità dell'ambiente</li>
+      </ul>
+      <div class="sensor-proof">Aria con troppa ammoniaca favorisce le malattie respiratorie. Il sistema lo misura in continuo e lo correla con i pattern osservazionali dei singoli capi.</div>
+    </div>
+  </div>
+</div>
+
+<!-- S5 LA LOGICA -->
+<div class="slide slide-light" id="s5">
+  <div style="flex:0 0 auto"><h2>La logica: ogni animale confrontato con sé stesso</h2><div class="accent-line"></div></div>
+  <div class="pipeline">
+    <div class="pipe-step" style="background:#1A3A2A">Guarda</div>
+    <div class="pipe-step" style="background:#224F38">Segue</div>
+    <div class="pipe-step" style="background:#2A6045">Misura</div>
+    <div class="pipe-step" style="background:#2D6A4F">Mette assieme</div>
+    <div class="pipe-step" style="background:#357A5C">Interpreta</div>
+    <div class="pipe-step" style="background:var(--mid)">Avvisa</div>
+  </div>
+  <div class="cols">
+    <div class="col-card">
+      <h3 style="border-left:3px solid var(--mid);padding-left:11px">Non confronta l'animale con gli altri — lo confronta con se stesso</h3>
+      <div style="margin-top:13px;display:flex;flex-direction:column;flex:1">
+        <div class="rule"><div class="rule-num">1</div><div class="rule-txt">Nelle prime 48 ore il sistema impara come si comporta normalmente quell'animale specifico</div></div>
+        <div class="rule"><div class="rule-num">2</div><div class="rule-txt">Scatta l'allarme solo se almeno due segnali diversi si scostano significativamente dalla normalità di quell'animale, nello stesso momento</div></div>
+        <div class="rule"><div class="rule-num">3</div><div class="rule-txt">Filtra gli eventi che riguardano tutta la mandria (troppo caldo, movimentazione) per non fare falsi allarmi</div></div>
+        <div class="rule"><div class="rule-num">4</div><div class="rule-txt">La media della mandria è troppo rumorosa. Serve la storia di quell'animale, non quella degli altri</div></div>
+      </div>
+      <div style="margin-top:14px;background:#EAF4EE;border-left:3px solid var(--mid);padding:10px 14px;border-radius:2px;font-size:11px;color:var(--text);line-height:1.6"><strong>Importante:</strong> il sistema non formula diagnosi veterinarie autonome. Genera segnalazioni e indicatori osservazionali che devono essere valutati dal veterinario o dagli operatori competenti.</div>
+    </div>
+    <div class="col-card">
+      <h3 style="border-left:3px solid var(--accent);padding-left:11px">Esempio: una vacca che sta per ammalarsi di polmonite</h3>
+      <div style="margin-top:13px;flex:1">
+        <div class="ex-row"><div class="ex-param">Movimento</div><div class="ex-val">−22% rispetto al suo normale</div></div>
+        <div class="ex-row"><div class="ex-param">Mangiatoia</div><div class="ex-val">−18% di accessi rispetto al suo normale</div></div>
+        <div class="ex-row"><div class="ex-param">Postura testa</div><div class="ex-val">Abbassata per oltre il 35% del tempo</div></div>
+        <div class="ex-row"><div class="ex-param">Calore occhio</div><div class="ex-val">+0,4°C rispetto al suo normale</div></div>
+        <div class="ex-row"><div class="ex-param">Passaggi varchi</div><div class="ex-val">−31% nelle ultime 12 ore</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S6 COSA TROVA -->
+<div class="slide slide-light" id="s6">
+  <div style="flex:0 0 auto"><h2>Cosa trova il sistema — e con quanto anticipo</h2><div class="accent-line"></div></div>
+  <div class="diseases">
+    <div class="disease-row">
+      <div class="d-left"><div class="d-bar" style="background:var(--mid)"></div><div class="d-name">Polmonite bovina (malattia respiratoria)</div></div>
+      <div class="d-badge" style="background:var(--mid)">4–7 giorni prima*</div>
+      <div class="d-signals">Variazioni osservabili: calo di movimento · meno accessi alla mangiatoia · isolamento · calore oculare in salita · tosse appena accennata</div>
+    </div>
+    <div class="disease-row">
+      <div class="d-left"><div class="d-bar" style="background:var(--accent)"></div><div class="d-name">Mastite che non si vede ancora</div></div>
+      <div class="d-badge" style="background:var(--accent)">3 giorni prima*</div>
+      <div class="d-signals">Variazioni osservabili: meno rumia · modifiche nel passo · anomalie termiche nella mammella rilevabili con termocamera senza contatto</div>
+    </div>
+    <div class="disease-row">
+      <div class="d-left"><div class="d-bar" style="background:var(--blue)"></div><div class="d-name">Chetosi (problema metabolico dopo il parto)</div></div>
+      <div class="d-badge" style="background:var(--blue)">3–5 giorni prima*</div>
+      <div class="d-signals">Variazioni osservabili: meno rumia · riduzione attività · calo alimentare. In molti casi non si osserva nulla a occhio nudo: solo il monitoraggio strumentale rileva le variazioni</div>
+    </div>
+    <div class="disease-row">
+      <div class="d-left"><div class="d-bar" style="background:var(--violet)"></div><div class="d-name">Zoppia (problema alle zampe)</div></div>
+      <div class="d-badge" style="background:var(--violet)">48–72 ore prima*</div>
+      <div class="d-signals">Variazioni osservabili: asimmetrie nel passo · riduzione movimento · isolamento · anomalie termiche al piede rilevabili con termocamera</div>
+    </div>
+    <div class="disease-row">
+      <div class="d-left"><div class="d-bar" style="background:var(--red)"></div><div class="d-name">Febbre da parto e carenza di calcio</div></div>
+      <div class="d-badge" style="background:var(--red)">12–24 ore prima*</div>
+      <div class="d-signals">Variazioni osservabili: temperatura subnormale paradossale · decubito prolungato · calo alimentare</div>
+    </div>
+    <div style="font-size:10px;color:var(--gray);font-style:italic;margin-top:8px;padding:0 2px">* I range temporali sono indicativi e derivano dalla letteratura scientifica su sistemi di monitoraggio animale. Non rappresentano performance validate di NeuroAlert, che è in fase di sviluppo e validazione osservazionale.</div>
+  </div>
+</div>
+
+<!-- S7 LA RICERCA -->
+<div class="slide slide-light" id="s7">
+  <div style="flex:0 0 auto"><h2>Cosa dice la ricerca scientifica</h2><div class="accent-line"></div></div>
+  <div class="papers">
+    <div class="paper">
+      <div class="paper-bar" style="background:var(--mid)"></div>
+      <div class="paper-body">
+        <div class="paper-ref">Studio scientifico internazionale — 2017</div>
+        <div class="paper-finding">Nei maiali infettati sperimentalmente, un sistema con le telecamere ha visto il calo di movimento 4 giorni prima che comparissero i sintomi. La riduzione era già misurabile con il 95% di certezza statistica.</div>
+        <div class="paper-so">Dimostra che il rilevamento precoce da video funziona in stalla, nella realtà — non solo in laboratorio.</div>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-bar" style="background:var(--accent)"></div>
+      <div class="paper-body">
+        <div class="paper-ref">Russello e colleghi — rivista specializzata in tecnologie agricole, 2024</div>
+        <div class="paper-finding">Un sistema automatico riesce a rilevare la zoppia nelle vacche da latte analizzando il modo in cui camminano, senza bisogno che il veterinario le guardi una per una ogni giorno.</div>
+        <div class="paper-so">Validato in allevamenti reali, non in laboratorio. La tecnologia funziona nel fango e nella routine quotidiana di stalla.</div>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-bar" style="background:var(--blue)"></div>
+      <div class="paper-body">
+        <div class="paper-ref">Ricerca su analisi automatica delle immagini termiche — rivista internazionale</div>
+        <div class="paper-finding">Diversi studi riportano risultati promettenti nell'analisi automatica delle immagini termiche per il rilevamento di variazioni associate alla mastite subclinica, con sensibilità elevate in condizioni sperimentali controllate.</div>
+        <div class="paper-so">La termografia integrata con analisi automatica può fornire al veterinario e agli operatori segnalazioni continue che l'ispezione manuale discontinua non permette.</div>
+      </div>
+    </div>
+    <div class="paper">
+      <div class="paper-bar" style="background:var(--violet)"></div>
+      <div class="paper-body">
+        <div class="paper-ref">Progetto europeo Digi4Live — finanziato dalla Commissione Europea, 2024–2028</div>
+        <div class="paper-finding">16 istituti di ricerca, 9 paesi europei, finanziati con fondi pubblici per sviluppare oltre 50 soluzioni di monitoraggio automatico dei bovini tramite telecamere e sensori senza contatto con l'animale.</div>
+        <div class="paper-so">L'Europa sta investendo pubblicamente esattamente in questo tipo di approccio. Non è fantascienza: è il presente della ricerca zootecnica.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- S8 IL MERCATO -->
+<div class="slide slide-light" id="s8">
+  <div style="flex:0 0 auto"><h2>Un settore in forte crescita</h2><div class="accent-line"></div></div>
+  <div class="content">
+    <div class="chart-area">
+      <div class="chart-title">Valore globale — monitoraggio intelligente degli animali (miliardi di dollari)</div>
+      <svg viewBox="0 0 420 200" xmlns="http://www.w3.org/2000/svg">
+        <defs><linearGradient id="lg2" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#2D6A4F" stop-opacity="0.15"/><stop offset="100%" stop-color="#2D6A4F" stop-opacity="0"/></linearGradient></defs>
+        <line x1="40" y1="10" x2="40" y2="165" stroke="#E2EDE6" stroke-width="1"/>
+        <line x1="40" y1="165" x2="410" y2="165" stroke="#E2EDE6" stroke-width="1"/>
+        <line x1="40" y1="120" x2="410" y2="120" stroke="#E2EDE6" stroke-width="0.5"/>
+        <line x1="40" y1="75" x2="410" y2="75" stroke="#E2EDE6" stroke-width="0.5"/>
+        <line x1="40" y1="30" x2="410" y2="30" stroke="#E2EDE6" stroke-width="0.5"/>
+        <text x="34" y="168" font-size="9" fill="#9CA3AF" text-anchor="end">0</text>
+        <text x="34" y="123" font-size="9" fill="#9CA3AF" text-anchor="end">4</text>
+        <text x="34" y="78" font-size="9" fill="#9CA3AF" text-anchor="end">8</text>
+        <text x="34" y="33" font-size="9" fill="#9CA3AF" text-anchor="end">12</text>
+        <polygon points="40,112 100,101 165,90 225,82 320,66 410,57 410,165 40,165" fill="url(#lg2)"/>
+        <polyline points="40,112 100,101 165,90 225,82 320,66 410,57" fill="none" stroke="#2D6A4F" stroke-width="2.5" stroke-linejoin="round" stroke-linecap="round"/>
+        <circle cx="40" cy="112" r="4" fill="#2D6A4F"/><circle cx="100" cy="101" r="4" fill="#2D6A4F"/>
+        <circle cx="165" cy="90" r="4" fill="#2D6A4F"/><circle cx="225" cy="82" r="4" fill="#2D6A4F"/>
+        <circle cx="320" cy="66" r="4" fill="#2D6A4F"/><circle cx="410" cy="57" r="5" fill="#D4A843"/>
+        <text x="40" y="178" font-size="9" fill="#9CA3AF" text-anchor="middle">2023</text>
+        <text x="100" y="178" font-size="9" fill="#9CA3AF" text-anchor="middle">2024</text>
+        <text x="165" y="178" font-size="9" fill="#9CA3AF" text-anchor="middle">2025</text>
+        <text x="225" y="178" font-size="9" fill="#9CA3AF" text-anchor="middle">2026</text>
+        <text x="320" y="178" font-size="9" fill="#9CA3AF" text-anchor="middle">2028</text>
+        <text x="410" y="178" font-size="9" fill="#D4A843" text-anchor="middle" font-weight="600">2030</text>
+        <text x="410" y="50" font-size="10" fill="#D4A843" text-anchor="middle" font-weight="700">8–12 miliardi</text>
+      </svg>
+    </div>
+    <div class="stats-col">
+      <div class="mstat"><div class="mstat-bar" style="background:var(--mid)"></div><div class="mstat-val">4,9 Mld $</div><div class="mstat-desc">valore globale del settore oggi (2024)</div></div>
+      <div class="mstat"><div class="mstat-bar" style="background:var(--mid)"></div><div class="mstat-val">8–12 Mld $</div><div class="mstat-desc">previsione entro il 2030 — cresce del 8–11% ogni anno</div></div>
+      <div class="mstat"><div class="mstat-bar" style="background:var(--blue)"></div><div class="mstat-val">1,2 Mld $</div><div class="mstat-desc">farmaci per la polmonite bovina venduti nel 2024</div></div>
+      <div class="mstat"><div class="mstat-bar" style="background:var(--accent)"></div><div class="mstat-val">&gt; 2 Mld $</div><div class="mstat-desc">perdite annue da polmonite che si potrebbero ridurre</div></div>
+    </div>
+  </div>
+</div>
+
+<!-- S9 DOVE SIAMO -->
+<div class="slide slide-light" id="s9">
+  <div style="flex:0 0 auto"><h2>Dove siamo arrivati: la pipeline software e il motore osservazionale sono operativi in ambiente simulato</h2><div class="accent-line"></div>
+  <div class="intro">Il simulatore software è operativo e genera eventi strutturati per tutti e tre i canali osservazionali. La pipeline è in fase di preparazione per le successive validazioni sul campo.</div></div>
+  <div class="modules">
+    <div class="mod-row"><div class="mod-left"><div class="mod-bar" style="background:var(--mid)"></div><div class="mod-name">Modulo telecamere (video)</div></div><div class="mod-badge" style="background:var(--mid)">Attivo</div><div class="mod-desc">Traccia gli animali · rileva calo di movimento · misura gli accessi alla mangiatoia · vede l'isolamento · analizza la postura della testa</div></div>
+    <div class="mod-row"><div class="mod-left"><div class="mod-bar" style="background:var(--mid)"></div><div class="mod-name">Modulo termocamera</div></div><div class="mod-badge" style="background:var(--mid)">Attivo</div><div class="mod-desc">Misura la temperatura oculare · rileva asimmetrie di calore agli arti · controlla la mammella · calcola le variazioni termiche nel tempo</div></div>
+    <div class="mod-row"><div class="mod-left"><div class="mod-bar" style="background:var(--mid)"></div><div class="mod-name">Modulo sensori ai varchi</div></div><div class="mod-badge" style="background:var(--mid)">Attivo</div><div class="mod-desc">Conta i passaggi per ogni animale · registra orari e direzione · calcola le variazioni di ritmo quotidiano</div></div>
+    <div class="mod-row"><div class="mod-left"><div class="mod-bar" style="background:var(--mid)"></div><div class="mod-name">Coordinatore centrale</div></div><div class="mod-badge" style="background:var(--mid)">Attivo</div><div class="mod-desc">Mette assieme i dati dei tre moduli e li salva in continuo per l'analisi e gli allarmi</div></div>
+    <div class="mod-row"><div class="mod-left"><div class="mod-bar" style="background:var(--mid)"></div><div class="mod-name">Motore degli allarmi</div></div><div class="mod-badge" style="background:var(--mid)">Attivo</div><div class="mod-desc">Costruisce la linea di base di ogni animale · filtra gli eventi di mandria · calcola indicatori osservazionali individuali · genera segnalazioni da valutare con il veterinario o gli operatori competenti</div></div>
+  </div>
+</div>
+
+<!-- S10 LE FASI -->
+<div class="slide slide-light" id="s10">
+  <div style="flex:0 0 auto"><h2>Le fasi del progetto: dalla simulazione alla stalla</h2><div class="accent-line"></div></div>
+  <div class="phases">
+    <div class="phase-card">
+      <div class="phase-num" style="background:var(--mid)">1</div>
+      <div class="phase-meta">In corso</div>
+      <div class="phase-label">Simulatore sensoriale</div>
+      <ul class="phase-items">
+        <li>I tre moduli girano e producono dati reali</li>
+        <li>I dati vengono salvati e analizzati</li>
+        <li>Si costruisce il motore degli allarmi</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num" style="background:var(--accent)">2</div>
+      <div class="phase-meta">Estate 2026</div>
+      <div class="phase-label">Video su riprese reali</div>
+      <ul class="phase-items">
+        <li>Il sistema analizza video veri di stalla</li>
+        <li>Le telecamere tracciano animali reali</li>
+        <li>Si verifica che i dati funzionino sul campo</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num" style="background:var(--blue)">3</div>
+      <div class="phase-meta">Autunno 2026</div>
+      <div class="phase-label">Prova in stalla</div>
+      <ul class="phase-items">
+        <li>50–100 capi, 60–90 giorni di osservazione</li>
+        <li>Sensori reali in condizioni vere</li>
+        <li>Gli allarmi vengono confrontati con le diagnosi del veterinario</li>
+      </ul>
+    </div>
+    <div class="phase-card">
+      <div class="phase-num" style="background:var(--violet)">4</div>
+      <div class="phase-meta">2027</div>
+      <div class="phase-label">Validazione e partner</div>
+      <ul class="phase-items">
+        <li>Raccolta di dati veterinari veri per migliorare il sistema</li>
+        <li>Partnership con aziende e istituti del settore</li>
+        <li>Primo utilizzo commerciale su scala pilota</li>
+      </ul>
+    </div>
+  </div>
+</div>
+
+<!-- S11 SINTESI -->
+<div class="slide slide-dark" id="s11">
+  <h2 style="color:var(--white)">NeuroAlert</h2>
+  <div class="accent-line"></div>
+  <div class="points">
+    <div class="point"><div class="point-num">1</div><div class="point-txt">Il problema è reale e misurabile: più di 2 miliardi di dollari persi ogni anno solo per le malattie respiratorie dei bovini</div></div>
+    <div class="point"><div class="point-num">2</div><div class="point-txt">La scienza lo conferma: i segnali precoci esistono e si misurano, anche 7 giorni prima che l'animale mostri qualcosa di visibile</div></div>
+    <div class="point"><div class="point-num">3</div><div class="point-txt">La tecnologia funziona: telecamere con analisi automatica, termocamere e sensori ai varchi hanno già risultati scientifici pubblicati</div></div>
+    <div class="point"><div class="point-num">4</div><div class="point-txt">Il mercato cresce: il settore vale già quasi 5 miliardi di dollari e raddoppierà entro il 2030</div></div>
+    <div class="point"><div class="point-num">5</div><div class="point-txt">La pipeline software e il motore osservazionale sono operativi in ambiente simulato: il motore degli allarmi è in sviluppo, la prova in stalla è il passo successivo</div></div>
+  </div>
+  <div class="tagline">La vera forza non è identificare l'animale malato. È rilevare le variazioni nel momento in cui stanno cominciando a comparire.</div>
+</div>
+
+<!-- S12 NON SOLO BOVINI -->
+<div class="slide slide-dark" id="s12">
+  <h1 style="color:var(--white);max-width:620px">Non solo bovini</h1>
+  <div class="accent-line"></div>
+  <div class="lead">La stessa logica funziona con qualsiasi animale che ha valore — economico, biologico o affettivo.</div>
+  <div class="body">Il sistema non è costruito per una sola specie. È costruito per vedere la deriva prima che diventi malattia.<br><br>Questo vale per qualsiasi animale dove intervenire in anticipo fa la differenza tra perdita e recupero.</div>
+  <div class="pills">
+    <div class="pill">Più specie</div>
+    <div class="pill">Un animale alla volta</div>
+    <div class="pill">Lo stesso valore ovunque</div>
+  </div>
+  <div class="note">Partiamo dai bovini perché il problema è enorme, misurabile e concreto.<br>Ma la logica si porta ovunque ci siano animali che contano.</div>
+</div>
+
+<!-- S13 DOVE ARRIVA -->
+<div class="slide slide-light" id="s13">
+  <div style="flex:0 0 auto"><h2>Dove può arrivare il sistema</h2><div class="accent-line"></div></div>
+  <div class="sectors">
+    <div class="sector">
+      <div class="sector-head" style="border-top:4px solid var(--mid)">
+        <div class="sector-tag" style="color:var(--mid)">Punto di partenza</div>
+        <div class="sector-title">Allevamento bovino</div>
+      </div>
+      <ul class="sector-items"><li>Vacche da latte e da carne</li><li>Allevamenti intensivi e specializzati</li><li>Centri veterinari con grandi numeri di capi</li></ul>
+      <div class="sector-note">Il ritorno economico è misurabile. È il punto di ingresso naturale per il sistema.</div>
+    </div>
+    <div class="sector">
+      <div class="sector-head" style="border-top:4px solid var(--accent)">
+        <div class="sector-tag" style="color:var(--accent)">Alto valore individuale</div>
+        <div class="sector-title">Cavalli e animali da gara</div>
+      </div>
+      <ul class="sector-items"><li>Cavalli sportivi e da corsa</li><li>Animali da competizione</li><li>Riproduttori di grande valore</li></ul>
+      <div class="sector-note">Un cavallo da corsa può valere da 100.000 a un milione di euro. Una zoppia vista tardi è una carriera finita.</div>
+    </div>
+    <div class="sector">
+      <div class="sector-head" style="border-top:4px solid var(--blue)">
+        <div class="sector-tag" style="color:var(--blue)">Esemplari unici</div>
+        <div class="sector-title">Zoo e specie rare</div>
+      </div>
+      <ul class="sector-items"><li>Animali da zoo e parchi naturali</li><li>Specie rare o in via di estinzione</li><li>Programmi di conservazione</li></ul>
+      <div class="sector-note">Certi animali non si possono sostituire. Tenerli sotto controllo non è gestione: è conservazione.</div>
+    </div>
+    <div class="sector">
+      <div class="sector-head" style="border-top:4px solid var(--violet)">
+        <div class="sector-tag" style="color:var(--violet)">Cura e ricerca</div>
+        <div class="sector-title">Strutture veterinarie</div>
+      </div>
+      <ul class="sector-items"><li>Animali in ricovero o osservazione</li><li>Grandi strutture di cura veterinaria</li><li>Animali anziani o con fragilità</li></ul>
+      <div class="sector-note">Monitoraggio continuo senza bisogno di controllare ogni ora. Il sistema guarda mentre il personale fa altro.</div>
+    </div>
+  </div>
+  <div class="footer-bar">Il principio non cambia: ogni animale viene osservato rispetto a sé stesso nel tempo, non rispetto agli altri.</div>
+</div>
+
+<!-- S14 OGNI ANIMALE -->
+<div class="slide slide-light" id="s14">
+  <div style="flex:0 0 auto"><h2>Quando ogni singolo animale conta</h2><div class="accent-line"></div></div>
+  <div class="cols">
+    <div class="col-card">
+      <div class="col-head" style="border-top:4px solid var(--mid)"><h3>Cosa guarda il sistema — su ogni animale, ogni giorno</h3></div>
+      <div class="signals">
+        <div class="sig-row"><div class="sig-param">Movimento</div><div class="sig-desc">quanto si muove, come si muove, se sta calando rispetto al suo normale</div></div>
+        <div class="sig-row"><div class="sig-param">Postura</div><div class="sig-desc">come tiene il corpo, se è asimmetrico, se la testa è più bassa del solito</div></div>
+        <div class="sig-row"><div class="sig-param">Isolamento</div><div class="sig-desc">quanto si avvicina agli altri, se si allontana dal gruppo</div></div>
+        <div class="sig-row"><div class="sig-param">Routine</div><div class="sig-desc">se i ritmi quotidiani cambiano: orari, abitudini, sequenze</div></div>
+        <div class="sig-row"><div class="sig-param">Mangiatoia</div><div class="sig-desc">quante volte ci va, per quanto tempo, se cala rispetto al suo normale</div></div>
+        <div class="sig-row"><div class="sig-param">Passaggi</div><div class="sig-desc">quante volte passa ai punti chiave della stalla e a che orario</div></div>
+        <div class="sig-row"><div class="sig-param">Calore</div><div class="sig-desc">intorno all'occhio, agli arti, alla mammella — senza toccare l'animale</div></div>
+        <div class="sig-row"><div class="sig-param">Ritmo</div><div class="sig-desc">se i comportamenti cambiano nel corso della giornata e della settimana</div></div>
+      </div>
+    </div>
+    <div class="col-card">
+      <div class="col-head" style="border-top:4px solid var(--accent)"><h3>Animali dove un singolo capo ha valore alto</h3></div>
+      <div class="animals">
+        <div class="anim-row"><div class="anim-type">Cavallo sportivo o da corsa</div><div class="anim-why">Da 100.000 a 1 milione di euro. Una zoppia diagnosticata tardi è una carriera finita.</div></div>
+        <div class="anim-row"><div class="anim-type">Riproduttore</div><div class="anim-why">Le sue caratteristiche genetiche non si replicano. La perdita è irreversibile.</div></div>
+        <div class="anim-row"><div class="anim-type">Animale raro o protetto</div><div class="anim-why">Non si sostituisce con un altro. Monitorarlo è un atto di conservazione.</div></div>
+        <div class="anim-row"><div class="anim-type">Animale anziano o fragile</div><div class="anim-why">Regge meno degli altri. I segnali precoci sono spesso l'unica finestra in cui si può ancora intervenire.</div></div>
+        <div class="anim-row"><div class="anim-type">Animale da zoo o parco</div><div class="anim-why">Non puoi andare a controllarlo ogni ora. Il sistema guarda mentre tu non puoi.</div></div>
+        <div class="anim-row"><div class="anim-type">Animale in cura o ricovero</div><div class="anim-why">Ogni variazione dal suo normale è un'informazione preziosa per chi lo segue.</div></div>
+      </div>
+    </div>
+  </div>
+  <div class="footer-bar">In tutti i casi il principio è lo stesso: ogni animale viene confrontato prima di tutto con la propria storia — non con quella degli altri.</div>
+</div>
+
+</div>
+<div id="progress"><div id="progress-bar"></div></div>
+<script>
+const SLIDES=[
+  {id:'s1',label:'Intro'},{id:'s2',label:'Il problema'},{id:'s3',label:'Come vede'},
+  {id:'s4',label:'Come funziona'},{id:'s5',label:'La logica'},{id:'s6',label:'Cosa trova'},
+  {id:'s7',label:'La ricerca'},{id:'s8',label:'Il mercato'},{id:'s9',label:'Dove siamo'},
+  {id:'s10',label:'Le fasi'},{id:'s11',label:'Sintesi'},{id:'s12',label:'Non solo bovini'},
+  {id:'s13',label:'Dove arriva'},{id:'s14',label:'Ogni animale'},
+];
+let cur=0;
+const pills=document.getElementById('navPills');
+SLIDES.forEach((sl,i)=>{
+  const b=document.createElement('button');
+  b.className='nav-pill';b.textContent=`${i+1}. ${sl.label}`;
+  b.onclick=()=>goTo(i);pills.appendChild(b);
+});
+function goTo(idx){
+  if(idx<0||idx>=SLIDES.length)return;
+  // reset tutte le slide
+  document.querySelectorAll('.slide').forEach(function(s){
+    s.classList.remove('active','prev');
+    s.style.opacity='0';
+    s.style.pointerEvents='none';
+    s.style.transform='translateX(40px)';
+  });
+  document.querySelectorAll('.nav-pill').forEach(function(p){p.classList.remove('active');});
+  cur=idx;
+  var activeSlide = document.getElementById(SLIDES[cur].id);
+  activeSlide.classList.add('active');
+  // forza visibilità inline — sovrascrive qualsiasi CSS
+  activeSlide.style.opacity='1';
+  activeSlide.style.pointerEvents='all';
+  activeSlide.style.transform='translateX(0)';
+  // figli visibili: gestito dal CSS .slide.active>*{opacity:1}
+  document.querySelectorAll('.nav-pill')[cur].classList.add('active');
+  document.getElementById('counter').textContent=(cur+1)+' / '+SLIDES.length;
+  document.getElementById('btnPrev').disabled=cur===0;
+  document.getElementById('btnNext').disabled=cur===SLIDES.length-1;
+  document.getElementById('progress-bar').style.width=(cur/(SLIDES.length-1)*100)+'%';
+  try{document.querySelectorAll('.nav-pill')[cur].scrollIntoView({behavior:'smooth',inline:'nearest',block:'nearest'});}catch(e){}
+}
+function go(d){goTo(cur+d);}
+document.addEventListener('keydown',e=>{
+  if(e.key==='ArrowRight'||e.key==='ArrowDown'||e.key===' '){e.preventDefault();go(1);}
+  if(e.key==='ArrowLeft'||e.key==='ArrowUp'){e.preventDefault();go(-1);}
+  if(e.key==='Home')goTo(0);if(e.key==='End')goTo(SLIDES.length-1);
+});
+let tx=0;
+document.addEventListener('touchstart',e=>{tx=e.touches[0].clientX;},{passive:true});
+document.addEventListener('touchend',e=>{const dx=tx-e.changedTouches[0].clientX;if(Math.abs(dx)>50)go(dx>0?1:-1);},{passive:true});
+// Init robusto: aspetta che DOM e CSS siano pronti
+function initDeck() {
+  // Forza tutti i figli di slide.active a essere visibili immediatamente
+  document.querySelectorAll('.slide').forEach(function(s) {
+    s.style.opacity = '0';
+    s.style.pointerEvents = 'none';
+    s.style.transform = 'translateX(40px)';
+  });
+  goTo(0);
+  // Secondo passaggio dopo reflow per sicurezza
+  requestAnimationFrame(function() {
+    requestAnimationFrame(function() {
+      var active = document.querySelector('.slide.active');
+      if (active) {
+        active.style.opacity = '1';
+        active.style.transform = 'translateX(0)';
+      }
+    });
+  });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', initDeck);
+} else {
+  initDeck();
+}
+</script>
+</body>
+</html><style id="mobile-fix-neuroalert-v2">
+@media (max-width: 760px){
+  html,body{width:100%!important;max-width:100%!important;overflow-x:hidden!important}
+  *{box-sizing:border-box!important}
+  .slide,.section,.container,.wrap,.content{width:100%!important;max-width:100%!important}
+  h1{font-size:clamp(34px,10vw,52px)!important;line-height:1.08!important;word-break:normal!important}
+  h2,h3{line-height:1.15!important;word-break:normal!important}
+  p,li{font-size:18px!important;line-height:1.55!important}
+  .grid,.cards,.columns,.stats,.timeline,.pipeline,.research-grid{
+    display:block!important;
+    grid-template-columns:1fr!important;
+    columns:1!important;
+  }
+  .card,.stat,.box,.phase,.module,.research-card{
+    width:100%!important;
+    max-width:100%!important;
+    min-width:0!important;
+    height:auto!important;
+    min-height:auto!important;
+    margin:18px 0!important;
+    overflow:visible!important;
+  }
+  table,thead,tbody,tr,td,th{display:block!important;width:100%!important}
+  td,th{white-space:normal!important}
+  .row,.item,.metric{
+    display:block!important;
+    width:100%!important;
+    height:auto!important;
+    overflow:visible!important;
+  }
+}
+</style>
+<style id="NEUROALERT_QUESTIONARIO_FORCE_SCROLL_V4">
+@media (max-width: 900px){
+  html, body{
+    height:auto!important;
+    min-height:100%!important;
+    overflow-y:auto!important;
+    overflow-x:hidden!important;
+    position:static!important;
+    -webkit-overflow-scrolling:touch!important;
+    touch-action:pan-y!important;
+  }
+  .wrap, form, .section, .qblock{
+    height:auto!important;
+    max-height:none!important;
+    overflow:visible!important;
+  }
+}
+</style>
