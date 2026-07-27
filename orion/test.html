@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<title>Orion · Test Scientific Foundations</title>
+<title>Orion · Test Fondamenti Scientifici</title>
 <style>
 :root{color-scheme:dark;--bg:#070b12;--panel:#0f1622;--line:#243044;--text:#eef3fa;--muted:#9aabbf;--accent:#5aa7ff;--ok:#2ecf7a}
 *{box-sizing:border-box}
@@ -22,7 +22,7 @@ button.ghost{background:#172233;border:1px solid #33475f}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
 .chip{border:1px solid #33475f;background:#121b29;color:var(--muted);border-radius:999px;padding:7px 12px;font-size:12px;cursor:pointer}
 .chip:hover{color:var(--text);border-color:var(--accent)}
-.msg{white-space:pre-wrap;line-height:1.6}
+.msg{white-space:pre-wrap;line-height:1.65}
 .meta{color:var(--muted);font-size:12px}
 .status{color:var(--ok);font-size:12px;margin-top:8px}
 .err{color:#ff6b78}
@@ -30,8 +30,8 @@ button.ghost{background:#172233;border:1px solid #33475f}
 </head>
 <body>
 <header>
-  <strong>Orion · Test Scientific Foundations</strong>
-  <span>Knowledge base v2.0 · solo uso interno</span>
+  <strong>Orion · Test Fondamenti Scientifici</strong>
+  <span>Knowledge base v2.0 · uso interno</span>
 </header>
 <main>
   <section class="panel">
@@ -44,7 +44,7 @@ button.ghost{background:#172233;border:1px solid #33475f}
     <div class="status" id="status">Caricamento knowledge base…</div>
   </section>
   <section class="panel">
-    <div id="out" class="msg meta">Fai una domanda. Orion risponderà solo con riferimenti dal corpus scientifico installato.</div>
+    <div id="out" class="msg meta">Fai una domanda. Orion risponde in italiano con i riferimenti del corpus scientifico.</div>
   </section>
 </main>
 <script>
@@ -54,12 +54,12 @@ const SUGGESTIONS = [
   "Dammi i riferimenti sul linguaggio come segnale osservativo",
   "Cosa dice la letteratura su QEEG e spettro cognitivo nel Parkinson?",
   "Quali paper supportano i sensori wearable e ambientali nelle residenze?",
-  "Quali evidenze ci sono su resting-state EEG e traiettorie cognitive?"
+  "Quali evidenze ci sono su EEG a riposo e traiettorie cognitive?"
 ];
 let KB = null;
 const $ = id => document.getElementById(id);
 function renderChips(){
-  $("chips").innerHTML = SUGGESTIONS.map(s => `<button class=\"chip\" type=\"button\">${s}</button>`).join("");
+  $("chips").innerHTML = SUGGESTIONS.map(s => `<button class="chip" type="button">${s}</button>`).join("");
   $("chips").querySelectorAll(".chip").forEach(btn => {
     btn.onclick = () => { $("q").value = btn.textContent; ask(); };
   });
@@ -73,21 +73,21 @@ async function loadKB(){
     const n = (KB.areas||[]).reduce((a,x)=>a+(x.references?x.references.length:0),0);
     $("status").textContent = `KB attiva · v${KB.version} · ${KB.areas.length} aree · ${n} riferimenti`;
   } catch(e){
-    $("status").innerHTML = `<span class=\"err\">Errore caricamento KB: ${e.message}</span>`;
+    $("status").innerHTML = `<span class="err">Errore caricamento KB: ${e.message}</span>`;
   }
 }
 function score(text, area){
   const t = text.toLowerCase();
   let s = 0;
-  const bag = (area.id + " " + area.name + " " + (area.core_claim||"") + " " + (area.references||[]).map(r=>r.citation+" "+r.finding+" "+r.relevance).join(" ")).toLowerCase();
+  const bag = (area.id + " " + (area.name_it||area.name) + " " + (area.core_claim_it||area.core_claim||"") + " " + (area.references||[]).map(r=>r.citation+" "+r.finding+" "+r.relevance).join(" ")).toLowerCase();
   const keys = t.split(/[^a-zàèéìòóù0-9]+/i).filter(w=>w.length>3);
   keys.forEach(k => { if(bag.includes(k)) s += 2; });
-  if(/eeg|elettrod|dry|portatil/.test(t) && area.id==="EEG") s += 8;
-  if(/resting|alzheimer|mci|alpha|theta|cognitive traject/.test(t) && area.id==="RS") s += 8;
+  if(/eeg|elettrod|dry|portatil|a secco/.test(t) && area.id==="EEG") s += 8;
+  if(/resting|riposo|alzheimer|mci|alpha|theta|traiettor/.test(t) && area.id==="RS") s += 8;
   if(/parkinson|qeeg|spettro cognit/.test(t) && area.id==="PD") s += 8;
-  if(/linguagg|speech|voce|vocal/.test(t) && area.id==="SP") s += 8;
+  if(/linguagg|speech|voce|vocal|parlat/.test(t) && area.id==="SP") s += 8;
   if(/cammino|gait|andatur/.test(t) && area.id==="GT") s += 8;
-  if(/sensor|wearable|ambient|cadut|fall|residenz/.test(t) && area.id==="SN") s += 8;
+  if(/sensor|wearable|ambient|cadut|fall|residenz|indossabil/.test(t) && area.id==="SN") s += 8;
   if(/multimodal|baseline|architettur/.test(t) && area.id==="MM") s += 6;
   return s;
 }
@@ -100,15 +100,17 @@ function answer(question){
   }
   let out = "";
   top.forEach(({a}, idx) => {
-    out += (idx? "\n\n" : "") + `Area: ${a.name}\n${a.core_claim||""}\n\nRiferimenti rilevanti:`;
+    const nome = a.name_it || a.name;
+    const claim = a.core_claim_it || a.core_claim || "";
+    out += (idx ? "\n\n" : "") + "Area: " + nome + "\n" + claim + "\n\nRiferimenti rilevanti:";
     (a.references||[]).slice(0,6).forEach(r => {
-      out += `\n\n• ${r.citation} (${r.year})\n  ${r.finding}\n  → ${r.relevance}`;
+      out += "\n\n• " + r.citation + " (" + r.year + ")\n  " + r.finding + "\n  → " + r.relevance;
     });
     if(a.supporting_clusters){
       out += "\n\nCluster di supporto:\n- " + a.supporting_clusters.join("\n- ");
     }
   });
-  out += "\n\nNota operativa: questi riferimenti costituiscono contesto scientifico della linea osservativa. Non equivalgono a validazione clinica di NeuroSuite.";
+  out += "\n\nNota operativa: questi riferimenti costituiscono il contesto scientifico della linea osservativa. Non equivalgono a una validazione clinica di NeuroSuite.";
   return out;
 }
 function ask(){
