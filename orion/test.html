@@ -186,16 +186,16 @@ function answer(question){
   let output="";
   top.forEach((item,index)=>{
     const localArea=areaText(item.area);
-    output+=(index?"\\n\\n":"")+t().area+": "+localArea.name+"\\n"+localArea.claim+"\\n\\n"+t().references+":";
+    output+=(index?"\n\n":"")+t().area+": "+localArea.name+"\n"+localArea.claim+"\n\n"+t().references+":";
     (item.area.references||[]).slice(0,6).forEach(ref=>{
       const localRef=refText(ref);
-      output+="\\n\\n• "+localRef.citation+" ("+ref.year+")\\n  "+localRef.finding+"\\n  → "+localRef.relevance;
+      output+="\n\n• "+localRef.citation+" ("+ref.year+")\n  "+localRef.finding+"\n  → "+localRef.relevance;
     });
     if(localArea.clusters?.length){
-      output+="\\n\\n"+t().clusters+":\\n- "+localArea.clusters.join("\\n- ");
+      output+="\n\n"+t().clusters+":\n- "+localArea.clusters.join("\n- ");
     }
   });
-  return output+"\\n\\n"+t().note;
+  return output+"\n\n"+t().note;
 }
 function ask(){
   const question=$("q").value.trim();
