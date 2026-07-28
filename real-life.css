@@ -1,0 +1,203 @@
+/* =========================================================
+   Real-life observation cards — high-impact section
+   ========================================================= */
+
+.real-life {
+  padding-bottom: var(--section-y);
+}
+
+.real-life__formula {
+  margin: 0 auto clamp(48px, 6vw, 80px);
+  max-width: 52ch;
+  padding: clamp(28px, 4vw, 40px) clamp(24px, 3vw, 36px);
+  border-left: 3px solid var(--accent);
+  background: color-mix(in oklab, var(--surface) 70%, transparent);
+  border-radius: 0 18px 18px 0;
+  font-family: var(--serif);
+  font-size: clamp(20px, 2.2vw, 28px);
+  font-weight: 300;
+  line-height: 1.35;
+  color: var(--fg);
+}
+
+.real-life__formula strong {
+  color: var(--accent);
+  font-weight: 400;
+}
+
+.real-life__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: clamp(18px, 2vw, 28px);
+}
+
+@media (max-width: 900px) {
+  .real-life__grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rl-card {
+  display: grid;
+  gap: 18px;
+  padding: clamp(24px, 2.5vw, 32px);
+  border: 1px solid var(--line);
+  border-radius: 20px;
+  background:
+    radial-gradient(circle at 92% 6%, var(--accent-glow), transparent 42%),
+    color-mix(in oklab, var(--surface) 82%, transparent);
+  transition: transform 0.4s var(--ease), border-color 0.35s var(--ease);
+}
+
+.rl-card:hover {
+  transform: translateY(-3px);
+  border-color: var(--accent-line);
+}
+
+.rl-card--alert {
+  --accent: oklch(0.78 0.10 160);
+  --accent-glow: oklch(0.78 0.10 160 / 0.14);
+  --accent-line: oklch(0.78 0.10 160 / 0.45);
+  grid-column: 1 / -1;
+}
+
+@media (min-width: 901px) {
+  .rl-card--alert {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px 32px;
+  }
+  .rl-card--alert .rl-card__head,
+  .rl-card--alert .rl-case {
+    grid-column: 1 / -1;
+  }
+}
+
+.rl-card__head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  margin-bottom: 4px;
+}
+
+.rl-card__num {
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.14em;
+  color: var(--accent);
+  opacity: 0.9;
+}
+
+.rl-card__head h3 {
+  font-family: var(--serif);
+  font-size: clamp(22px, 2.1vw, 28px);
+  font-weight: 400;
+  line-height: 1.15;
+  margin: 0;
+  color: var(--fg);
+}
+
+.rl-block {
+  display: grid;
+  gap: 6px;
+}
+
+.rl-label {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+}
+
+.rl-block p {
+  margin: 0;
+  color: var(--fg-2);
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+}
+
+.rl-case {
+  margin-top: 8px;
+  border-top: 1px solid var(--line);
+  padding-top: 14px;
+}
+
+.rl-case summary {
+  cursor: pointer;
+  list-style: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  font-family: var(--mono);
+  font-size: var(--fs-xs);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--fg);
+  padding: 10px 16px;
+  border: 1px solid var(--line-2);
+  border-radius: 999px;
+  transition: border-color 0.3s var(--ease), background 0.3s var(--ease), color 0.3s var(--ease);
+  user-select: none;
+}
+
+.rl-case summary::-webkit-details-marker {
+  display: none;
+}
+
+.rl-case summary::after {
+  content: '\2192';
+  transition: transform 0.3s var(--ease);
+}
+
+.rl-case[open] summary {
+  border-color: var(--accent-line);
+  background: var(--accent-glow);
+  color: var(--accent);
+}
+
+.rl-case[open] summary::after {
+  transform: rotate(90deg);
+}
+
+.rl-case summary:hover {
+  border-color: var(--accent-line);
+  background: var(--accent-glow);
+}
+
+.rl-sequence {
+  margin: 18px 0 0;
+  padding: 0;
+  list-style: none;
+  display: grid;
+  gap: 12px;
+  counter-reset: step;
+}
+
+.rl-sequence li {
+  position: relative;
+  padding: 12px 14px 12px 48px;
+  border-radius: 12px;
+  background: color-mix(in oklab, var(--bg-2) 70%, transparent);
+  border: 1px solid var(--line);
+  color: var(--fg-2);
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  counter-increment: step;
+}
+
+.rl-sequence li::before {
+  content: counter(step, decimal-leading-zero);
+  position: absolute;
+  left: 14px;
+  top: 12px;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.08em;
+  color: var(--accent);
+}
+
+.rl-sequence li strong {
+  color: var(--fg);
+  font-weight: 500;
+}
