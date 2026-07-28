@@ -1,225 +1,109 @@
-/* =========================================================
-   Segnali che arrivano prima — single high-impact section
-   Varied layout, prodromal focus, non-repetitive
-   ========================================================= */
+/* Segnali prodromici — fatti, spacing fisso, zero pastone */
 
 .real-life {
   padding-bottom: var(--section-y);
 }
 
-/* Opening statement */
-.real-life__lead {
-  max-width: 38rem;
-  margin: 0 auto clamp(56px, 7vw, 88px);
-  text-align: center;
+.real-life .s-head {
+  margin-bottom: clamp(28px, 4vw, 40px);
 }
 
-.real-life__lead p {
-  margin: 0;
-  font-family: var(--serif);
-  font-size: clamp(22px, 2.4vw, 30px);
-  font-weight: 300;
-  line-height: 1.4;
-  color: var(--fg);
-}
-
-.real-life__lead strong {
-  color: var(--accent);
-  font-weight: 400;
-}
-
-.real-life__lead .note {
-  display: block;
-  margin-top: 18px;
-  font-family: var(--sans, system-ui);
-  font-size: var(--fs-sm);
-  color: var(--fg-3);
-  font-weight: 400;
-  line-height: 1.5;
-}
-
-/* Stories container — vertical flow, different weights */
-.prodromal {
+.fact-grid {
   display: grid;
-  gap: clamp(28px, 4vw, 48px);
+  gap: 16px;
 }
 
-/* Shared story shell */
-.prod {
-  position: relative;
-  border: 1px solid var(--line);
-  border-radius: 22px;
-  background: color-mix(in oklab, var(--surface) 88%, transparent);
-  overflow: hidden;
-  transition: border-color 0.35s var(--ease);
-}
-
-.prod:hover {
-  border-color: var(--accent-line);
-}
-
-.prod__inner {
-  padding: clamp(28px, 3.2vw, 40px);
-  display: grid;
-  gap: 20px;
-}
-
-@media (min-width: 820px) {
-  .prod--split .prod__inner {
-    grid-template-columns: 1.1fr 0.9fr;
-    gap: 36px;
-    align-items: start;
+@media (min-width: 900px) {
+  .fact-grid {
+    grid-template-columns: 1fr 1fr;
+  }
+  .fact-card--wide {
+    grid-column: 1 / -1;
   }
 }
 
-/* Eyebrow + title */
-.prod__tag {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-  margin: 0 0 6px;
-}
-
-.prod__title {
-  font-family: var(--serif);
-  font-size: clamp(24px, 2.4vw, 32px);
-  font-weight: 400;
-  line-height: 1.15;
-  margin: 0;
-  color: var(--fg);
-}
-
-.prod__body {
-  margin: 0;
-  color: var(--fg-2);
-  font-size: var(--fs-sm);
-  line-height: 1.6;
-}
-
-.prod__body + .prod__body {
-  margin-top: 10px;
-}
-
-/* Literature chip */
-.prod__ref {
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-  margin-top: 4px;
-  padding: 7px 12px;
-  border-radius: 999px;
-  background: color-mix(in oklab, var(--bg-2) 75%, transparent);
+.fact-card {
   border: 1px solid var(--line);
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.04em;
-  color: var(--fg-3);
-}
-
-/* Right column / insight box */
-.prod__insight {
-  padding: 20px 22px;
   border-radius: 16px;
-  background: color-mix(in oklab, var(--bg-2) 65%, transparent);
-  border: 1px solid var(--line);
-  display: grid;
-  gap: 12px;
+  background: color-mix(in oklab, var(--surface) 90%, transparent);
+  padding: 22px 24px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
 }
 
-.prod__insight h4 {
+.fact-card__tag {
   margin: 0;
   font-family: var(--mono);
   font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
+  line-height: 1.3;
 }
 
-.prod__insight p {
+.fact-card__title {
   margin: 0;
-  font-size: var(--fs-sm);
-  line-height: 1.55;
-  color: var(--fg-2);
-}
-
-.prod__insight strong {
+  font-family: var(--serif);
+  font-size: clamp(20px, 2vw, 24px);
+  font-weight: 400;
+  line-height: 1.25;
   color: var(--fg);
-  font-weight: 500;
 }
 
-/* Special treatment for the cardiovascular block */
-.prod--heart {
-  --accent: oklch(0.72 0.12 25);
-  --accent-glow: oklch(0.72 0.12 25 / 0.12);
-  --accent-line: oklch(0.72 0.12 25 / 0.4);
-}
-
-.prod--heart .prod__tag,
-.prod--heart .prod__insight h4 {
-  color: oklch(0.72 0.12 25);
-}
-
-/* Convergence / NeuroAlert style — full weight */
-.prod--converge {
-  --accent: oklch(0.78 0.10 160);
-  --accent-glow: oklch(0.78 0.10 160 / 0.14);
-  --accent-line: oklch(0.78 0.10 160 / 0.45);
-  background:
-    radial-gradient(circle at 96% 0%, var(--accent-glow), transparent 45%),
-    color-mix(in oklab, var(--surface) 88%, transparent);
-}
-
-.prod--converge .prod__tag,
-.prod--converge .prod__insight h4 {
-  color: oklch(0.78 0.10 160);
-}
-
-/* Sequence inside convergence */
-.prod__seq {
+.fact-list {
   margin: 0;
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 10px;
-  counter-reset: step;
+  gap: 8px;
 }
 
-.prod__seq li {
-  position: relative;
-  padding: 11px 12px 11px 42px;
-  border-radius: 12px;
-  background: color-mix(in oklab, var(--bg-2) 70%, transparent);
-  border: 1px solid var(--line);
+.fact-list li {
+  margin: 0;
+  padding: 0;
+  font-size: 14px;
+  line-height: 1.45;
   color: var(--fg-2);
-  font-size: var(--fs-sm);
-  line-height: 1.5;
-  counter-increment: step;
 }
 
-.prod__seq li::before {
-  content: counter(step, decimal-leading-zero);
-  position: absolute;
-  left: 12px;
-  top: 11px;
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.06em;
-  color: var(--accent);
-}
-
-.prod__seq li strong {
+.fact-list li strong {
   color: var(--fg);
   font-weight: 500;
 }
 
-/* Closing line */
-.real-life__close {
-  margin: clamp(40px, 5vw, 64px) auto 0;
-  max-width: 36rem;
-  text-align: center;
-  font-size: var(--fs-sm);
+.fact-ref {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.04em;
   color: var(--fg-3);
-  line-height: 1.55;
+  line-height: 1.4;
+}
+
+.fact-card--heart {
+  --accent: oklch(0.72 0.12 25);
+}
+
+.fact-card--heart .fact-card__tag {
+  color: oklch(0.72 0.12 25);
+}
+
+.fact-card--alert {
+  --accent: oklch(0.78 0.10 160);
+  background:
+    radial-gradient(circle at 100% 0%, oklch(0.78 0.10 160 / 0.1), transparent 50%),
+    color-mix(in oklab, var(--surface) 90%, transparent);
+}
+
+.fact-card--alert .fact-card__tag {
+  color: oklch(0.78 0.10 160);
+}
+
+.fact-note {
+  margin: 20px 0 0;
+  font-size: 13px;
+  line-height: 1.45;
+  color: var(--fg-3);
+  text-align: center;
 }
