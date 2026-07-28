@@ -1,182 +1,194 @@
 /* =========================================================
-   Real-life observation cards — high-impact section
+   Segnali che arrivano prima — single high-impact section
+   Varied layout, prodromal focus, non-repetitive
    ========================================================= */
 
 .real-life {
   padding-bottom: var(--section-y);
 }
 
-.real-life__formula {
-  margin: 0 auto clamp(48px, 6vw, 80px);
-  max-width: 52ch;
-  padding: clamp(28px, 4vw, 40px) clamp(24px, 3vw, 36px);
-  border-left: 3px solid var(--accent);
-  background: color-mix(in oklab, var(--surface) 70%, transparent);
-  border-radius: 0 18px 18px 0;
+/* Opening statement */
+.real-life__lead {
+  max-width: 38rem;
+  margin: 0 auto clamp(56px, 7vw, 88px);
+  text-align: center;
+}
+
+.real-life__lead p {
+  margin: 0;
   font-family: var(--serif);
-  font-size: clamp(20px, 2.2vw, 28px);
+  font-size: clamp(22px, 2.4vw, 30px);
   font-weight: 300;
-  line-height: 1.35;
+  line-height: 1.4;
   color: var(--fg);
 }
 
-.real-life__formula strong {
+.real-life__lead strong {
   color: var(--accent);
   font-weight: 400;
 }
 
-.real-life__grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: clamp(18px, 2vw, 28px);
+.real-life__lead .note {
+  display: block;
+  margin-top: 18px;
+  font-family: var(--sans, system-ui);
+  font-size: var(--fs-sm);
+  color: var(--fg-3);
+  font-weight: 400;
+  line-height: 1.5;
 }
 
-@media (max-width: 900px) {
-  .real-life__grid {
-    grid-template-columns: 1fr;
-  }
+/* Stories container — vertical flow, different weights */
+.prodromal {
+  display: grid;
+  gap: clamp(28px, 4vw, 48px);
 }
 
-.rl-card {
-  display: grid;
-  gap: 18px;
-  padding: clamp(24px, 2.5vw, 32px);
+/* Shared story shell */
+.prod {
+  position: relative;
   border: 1px solid var(--line);
-  border-radius: 20px;
-  background:
-    radial-gradient(circle at 92% 6%, var(--accent-glow), transparent 42%),
-    color-mix(in oklab, var(--surface) 82%, transparent);
-  transition: transform 0.4s var(--ease), border-color 0.35s var(--ease);
+  border-radius: 22px;
+  background: color-mix(in oklab, var(--surface) 88%, transparent);
+  overflow: hidden;
+  transition: border-color 0.35s var(--ease);
 }
 
-.rl-card:hover {
-  transform: translateY(-3px);
+.prod:hover {
   border-color: var(--accent-line);
 }
 
-.rl-card--alert {
-  --accent: oklch(0.78 0.10 160);
-  --accent-glow: oklch(0.78 0.10 160 / 0.14);
-  --accent-line: oklch(0.78 0.10 160 / 0.45);
-  grid-column: 1 / -1;
+.prod__inner {
+  padding: clamp(28px, 3.2vw, 40px);
+  display: grid;
+  gap: 20px;
 }
 
-@media (min-width: 901px) {
-  .rl-card--alert {
-    display: grid;
-    grid-template-columns: 1fr 1fr;
-    gap: 20px 32px;
-  }
-  .rl-card--alert .rl-card__head,
-  .rl-card--alert .rl-case {
-    grid-column: 1 / -1;
+@media (min-width: 820px) {
+  .prod--split .prod__inner {
+    grid-template-columns: 1.1fr 0.9fr;
+    gap: 36px;
+    align-items: start;
   }
 }
 
-.rl-card__head {
-  display: flex;
-  align-items: baseline;
-  gap: 14px;
-  margin-bottom: 4px;
-}
-
-.rl-card__num {
+/* Eyebrow + title */
+.prod__tag {
   font-family: var(--mono);
-  font-size: var(--fs-xs);
+  font-size: 11px;
   letter-spacing: 0.14em;
+  text-transform: uppercase;
   color: var(--accent);
-  opacity: 0.9;
+  margin: 0 0 6px;
 }
 
-.rl-card__head h3 {
+.prod__title {
   font-family: var(--serif);
-  font-size: clamp(22px, 2.1vw, 28px);
+  font-size: clamp(24px, 2.4vw, 32px);
   font-weight: 400;
   line-height: 1.15;
   margin: 0;
   color: var(--fg);
 }
 
-.rl-block {
-  display: grid;
-  gap: 6px;
-}
-
-.rl-label {
-  font-family: var(--mono);
-  font-size: 11px;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--accent);
-}
-
-.rl-block p {
+.prod__body {
   margin: 0;
   color: var(--fg-2);
   font-size: var(--fs-sm);
-  line-height: 1.55;
+  line-height: 1.6;
 }
 
-.rl-case {
-  margin-top: 8px;
-  border-top: 1px solid var(--line);
-  padding-top: 14px;
+.prod__body + .prod__body {
+  margin-top: 10px;
 }
 
-.rl-case summary {
-  cursor: pointer;
-  list-style: none;
+/* Literature chip */
+.prod__ref {
   display: inline-flex;
   align-items: center;
-  gap: 10px;
+  gap: 8px;
+  margin-top: 4px;
+  padding: 7px 12px;
+  border-radius: 999px;
+  background: color-mix(in oklab, var(--bg-2) 75%, transparent);
+  border: 1px solid var(--line);
   font-family: var(--mono);
-  font-size: var(--fs-xs);
+  font-size: 11px;
+  letter-spacing: 0.04em;
+  color: var(--fg-3);
+}
+
+/* Right column / insight box */
+.prod__insight {
+  padding: 20px 22px;
+  border-radius: 16px;
+  background: color-mix(in oklab, var(--bg-2) 65%, transparent);
+  border: 1px solid var(--line);
+  display: grid;
+  gap: 12px;
+}
+
+.prod__insight h4 {
+  margin: 0;
+  font-family: var(--mono);
+  font-size: 11px;
   letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--fg);
-  padding: 10px 16px;
-  border: 1px solid var(--line-2);
-  border-radius: 999px;
-  transition: border-color 0.3s var(--ease), background 0.3s var(--ease), color 0.3s var(--ease);
-  user-select: none;
-}
-
-.rl-case summary::-webkit-details-marker {
-  display: none;
-}
-
-.rl-case summary::after {
-  content: '\2192';
-  transition: transform 0.3s var(--ease);
-}
-
-.rl-case[open] summary {
-  border-color: var(--accent-line);
-  background: var(--accent-glow);
   color: var(--accent);
 }
 
-.rl-case[open] summary::after {
-  transform: rotate(90deg);
+.prod__insight p {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.55;
+  color: var(--fg-2);
 }
 
-.rl-case summary:hover {
-  border-color: var(--accent-line);
-  background: var(--accent-glow);
+.prod__insight strong {
+  color: var(--fg);
+  font-weight: 500;
 }
 
-.rl-sequence {
-  margin: 18px 0 0;
+/* Special treatment for the cardiovascular block */
+.prod--heart {
+  --accent: oklch(0.72 0.12 25);
+  --accent-glow: oklch(0.72 0.12 25 / 0.12);
+  --accent-line: oklch(0.72 0.12 25 / 0.4);
+}
+
+.prod--heart .prod__tag,
+.prod--heart .prod__insight h4 {
+  color: oklch(0.72 0.12 25);
+}
+
+/* Convergence / NeuroAlert style — full weight */
+.prod--converge {
+  --accent: oklch(0.78 0.10 160);
+  --accent-glow: oklch(0.78 0.10 160 / 0.14);
+  --accent-line: oklch(0.78 0.10 160 / 0.45);
+  background:
+    radial-gradient(circle at 96% 0%, var(--accent-glow), transparent 45%),
+    color-mix(in oklab, var(--surface) 88%, transparent);
+}
+
+.prod--converge .prod__tag,
+.prod--converge .prod__insight h4 {
+  color: oklch(0.78 0.10 160);
+}
+
+/* Sequence inside convergence */
+.prod__seq {
+  margin: 0;
   padding: 0;
   list-style: none;
   display: grid;
-  gap: 12px;
+  gap: 10px;
   counter-reset: step;
 }
 
-.rl-sequence li {
+.prod__seq li {
   position: relative;
-  padding: 12px 14px 12px 48px;
+  padding: 11px 12px 11px 42px;
   border-radius: 12px;
   background: color-mix(in oklab, var(--bg-2) 70%, transparent);
   border: 1px solid var(--line);
@@ -186,18 +198,28 @@
   counter-increment: step;
 }
 
-.rl-sequence li::before {
+.prod__seq li::before {
   content: counter(step, decimal-leading-zero);
   position: absolute;
-  left: 14px;
-  top: 12px;
+  left: 12px;
+  top: 11px;
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   color: var(--accent);
 }
 
-.rl-sequence li strong {
+.prod__seq li strong {
   color: var(--fg);
   font-weight: 500;
+}
+
+/* Closing line */
+.real-life__close {
+  margin: clamp(40px, 5vw, 64px) auto 0;
+  max-width: 36rem;
+  text-align: center;
+  font-size: var(--fs-sm);
+  color: var(--fg-3);
+  line-height: 1.55;
 }
