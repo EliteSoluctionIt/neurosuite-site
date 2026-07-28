@@ -1,8 +1,0 @@
-{
-  "name": "NeuroSuite Control Center",
-  "short_name": "NS Control",
-  "start_url": "/control-center/",
-  "display": "standalone",
-  "background_color": "#05080d",
-  "theme_color": "#0d131d"
-}
