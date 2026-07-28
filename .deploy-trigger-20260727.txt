@@ -1,0 +1,3 @@
+NeuroSuite public site redeploy trigger — 2026-07-27 15:45 CEST.
+Triggered by Grok to restore neurosuite.dev.
+No public content changed.

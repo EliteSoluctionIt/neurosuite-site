@@ -1,295 +1,409 @@
 <!DOCTYPE html>
+
 <html data-accent="air" data-hero="constellation" data-mode="light" dir="ltr" lang="es">
 <head>
 <link href="https://neurosuite.dev/" rel="canonical"/>
+<meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots"/>
+<meta content="website" property="og:type"/>
+<meta content="Human Lines" property="og:site_name"/>
+<meta content="Human Lines — NeuroSuite y NeuroAlert" property="og:title"/>
+<meta content="Ver antes. Comprender antes. Devolver tiempo. Human Lines desarrolla NeuroSuite y NeuroAlert para transformar señales débiles y dispersas en tiempo útil." property="og:description"/>
+<meta content="https://neurosuite.dev/" property="og:url"/>
+<meta content="summary_large_image" name="twitter:card"/>
+<meta content="Human Lines — NeuroSuite y NeuroAlert" name="twitter:title"/>
+<meta content="Ver antes. Comprender antes. Devolver tiempo. Human Lines desarrolla NeuroSuite y NeuroAlert para transformar señales débiles y dispersas en tiempo útil." name="twitter:description"/>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "Organization",
+  "name": "Human Lines",
+  "url": "https://neurosuite.dev/",
+  "description": "Human Lines desarrolla NeuroSuite y NeuroAlert para transformar señales débiles y dispersas en tiempo útil para comprender e intervenir.",
+  "founder": {
+    "@type": "Person",
+    "name": "Alessandro Pindilli"
+  },
+  "areaServed": "Europe",
+  "knowsAbout": [
+    "Artificial Intelligence",
+    "Multimodal systems",
+    "Digital health",
+    "Assisted living",
+    "Observational intelligence"
+  ]
+}
+</script>
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
 <title>Human Lines — NeuroSuite y NeuroAlert</title>
-<meta content="El futuro de la medicina no es reaccionar. Es anticipar." name="description"/>
+<meta content="Ver antes. Comprender antes. Devolver tiempo. Human Lines desarrolla NeuroSuite y NeuroAlert para transformar señales débiles y dispersas en tiempo útil." name="description"/>
 <meta content="#f8fcfb" name="theme-color"/>
-<link href="styles.css" rel="stylesheet"/>
-<link href="real-life.css" rel="stylesheet"/>
+<link href="styles.css?v=20260728-1307" rel="stylesheet"/>
 <style id="ns-language-style">
-.ns-language-switcher{display:inline-flex;align-items:center;gap:4px;padding:4px;margin-right:8px;border:1px solid rgba(255,255,255,.16);border-radius:999px;background:rgba(10,10,12,.68);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px)}
-.ns-language-switcher a{display:inline-flex;align-items:center;justify-content:center;min-width:34px;min-height:30px;padding:4px 8px;border-radius:999px;color:inherit;text-decoration:none;font-size:12px;font-weight:700;letter-spacing:.04em;opacity:.68;transition:.2s ease}
-.ns-language-switcher a:hover,.ns-language-switcher a:focus-visible{opacity:1;background:rgba(255,255,255,.10)}
-.ns-language-switcher a.active{opacity:1;color:#0a0a0c;background:#f0b85a}
+.ns-language-switcher{
+  display:inline-flex;
+  align-items:center;
+  gap:4px;
+  padding:4px;
+  margin-right:8px;
+  border:1px solid rgba(255,255,255,.16);
+  border-radius:999px;
+  background:rgba(10,10,12,.68);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+}
+.ns-language-switcher a{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  min-width:34px;
+  min-height:30px;
+  padding:4px 8px;
+  border-radius:999px;
+  color:inherit;
+  text-decoration:none;
+  font-size:12px;
+  font-weight:700;
+  letter-spacing:.04em;
+  opacity:.68;
+  transition:.2s ease;
+}
+.ns-language-switcher a:hover,
+.ns-language-switcher a:focus-visible{
+  opacity:1;
+  background:rgba(255,255,255,.10);
+}
+.ns-language-switcher a.active{
+  opacity:1;
+  color:#0a0a0c;
+  background:#f0b85a;
+}
+html[dir="rtl"] body{
+  direction:rtl;
+  text-align:right;
+}
+html[dir="rtl"] .nav,
+html[dir="rtl"] .nav__actions,
+html[dir="rtl"] .ns-language-switcher{
+  direction:rtl;
+}
+@media(max-width:900px){
+  .ns-language-switcher{
+    order:-1;
+    margin-right:0;
+    margin-left:4px;
+  }
+  .ns-language-switcher a{
+    min-width:30px;
+    padding:4px 6px;
+    font-size:11px;
+  }
+}
 </style>
-</head>
+<style id="ns-final-rtl-style">
+html[dir="rtl"] body,
+html[dir="rtl"] main,
+html[dir="rtl"] section,
+html[dir="rtl"] header,
+html[dir="rtl"] footer {
+  direction: rtl;
+}
+html[dir="rtl"] h1,
+html[dir="rtl"] h2,
+html[dir="rtl"] h3,
+html[dir="rtl"] h4,
+html[dir="rtl"] p,
+html[dir="rtl"] label,
+html[dir="rtl"] .eyebrow {
+  text-align: right;
+}
+html[dir="rtl"] input,
+html[dir="rtl"] textarea,
+html[dir="rtl"] select {
+  direction: rtl;
+  text-align: right;
+}
+html[dir="rtl"] .ns-language-switcher {
+  direction: ltr;
+}
+.ns-language-switcher {
+  flex-shrink: 0;
+}
+@media (max-width: 720px) {
+  .ns-language-switcher a {
+    min-width: 28px;
+    padding-left: 5px;
+    padding-right: 5px;
+  }
+  html[dir="rtl"] .hero__title {
+    font-size: clamp(3rem, 15vw, 5.6rem);
+    line-height: .96;
+  }
+}
+</style></head>
 <body>
 <header class="nav" role="banner">
-<a aria-label="Inicio Human Lines" class="nav__brand" href="#top">
-<span aria-hidden="true" class="mark"><svg height="22" viewbox="0 0 22 22" width="22"><circle cx="11" cy="11" fill="none" r="9" stroke="currentColor" stroke-width="1"></circle><circle cx="11" cy="11" fill="currentColor" r="3"></circle><circle cx="11" cy="2" fill="currentColor" r="1.4"></circle><circle cx="20" cy="11" fill="currentColor" r="1.4"></circle><circle cx="11" cy="20" fill="currentColor" r="1.4"></circle><circle cx="2" cy="11" fill="currentColor" r="1.4"></circle></svg></span>
+<a aria-label="Inicio de Human Lines" class="nav__brand" href="#top">
+<span aria-hidden="true" class="mark">
+<svg height="22" viewbox="0 0 22 22" width="22">
+<circle cx="11" cy="11" fill="none" r="9" stroke="currentColor" stroke-width="1"></circle>
+<circle cx="11" cy="11" fill="currentColor" r="3"></circle>
+<circle cx="11" cy="2" fill="currentColor" r="1.4"></circle>
+<circle cx="20" cy="11" fill="currentColor" r="1.4"></circle>
+<circle cx="11" cy="20" fill="currentColor" r="1.4"></circle>
+<circle cx="2" cy="11" fill="currentColor" r="1.4"></circle>
+</svg>
+</span>
 <span>Human Lines</span>
 </a>
 <nav aria-label="Secciones" class="nav__links">
-<a href="#problema">Problema</a>
-<a href="#paradigma">Paradigma</a>
-<a href="#casi">Casos</a>
-<a href="#ecosistema">Ecosistema</a>
-<a href="#biblioteca">Ciencia</a>
+<a href="#perche">Origen</a>
+<a href="#trial">Ensayo</a>
+
+<a href="#funziona">Sistema</a>
+<a href="#confronto">Comparación</a>
+<a href="#stato">Estado actual</a>
 <a href="#accesso">Contacto</a>
 </nav>
-<div class="nav__actions">
-<div aria-label="Idioma" class="ns-language-switcher" role="navigation">
-<a data-language="en" href="index.html">EN</a>
-<a data-language="it" href="it.html">IT</a>
-<a aria-current="page" class="active" data-language="es" href="es.html">ES</a>
-<a data-language="ar" href="ar.html">العربية</a>
-</div>
-<button aria-label="Modo claro/oscuro" class="mode-toggle" id="mode-toggle"></button>
+<div class="nav__actions"><div aria-label="Selección de idioma" class="ns-language-switcher" role="navigation"><a data-language="en" href="index.html">EN</a><a data-language="it" href="it.html">IT</a><a aria-current="page" class="active" data-language="es" href="es.html">ES</a><a data-language="ar" href="ar.html">العربية</a></div>
+<button aria-label="Cambiar modo claro/oscuro" class="mode-toggle" id="mode-toggle"></button>
 <a class="nav__cta" href="privato.html">Área privada <span aria-hidden="true">→</span></a>
 </div>
 </header>
-
 <section class="hero" id="top">
 <canvas aria-hidden="true" class="hero__canvas" id="hero-canvas"></canvas>
 <div class="shell hero__content">
-<span class="eyebrow reveal">Human Lines · NeuroSuite</span>
-<h1 class="hero__title hero__title--time reveal">El único capital que no se puede comprar ni recuperar es <em>el tiempo.</em></h1>
-<p class="hero__payoff reveal">El futuro de la medicina no es reaccionar.<br>Es anticipar.</p>
-<p class="hero__sub reveal">NeuroSuite observa las señales débiles que preceden eventos críticos. Las hace legibles para quien aún puede actuar.</p>
+<span class="eyebrow reveal">Human Lines · NeuroSuite · NeuroAlert</span>
+<h1 class="hero__title hero__title--time reveal" id="hero-title">Existe un único capital que no podemos reconstruir ni volver a comprar: <em>el tiempo.</em></h1>
+<p class="hero__sub reveal">
+      NeuroSuite transforma señales débiles y dispersas en tiempo para comprender, tiempo para decidir y tiempo para intervenir.
+      La plataforma operativa integra teléfonos inteligentes, dispositivos portátiles, sensores ambientales y otros sistemas no invasivos dentro de una arquitectura basada en la investigación científica internacional más avanzada.
+    </p>
+<p class="hero__payoff reveal">Ver antes. Comprender antes. Devolver tiempo.</p>
+<div class="reveal hero__buttons">
+<a class="btn btn--primary" href="#human-lines">Descubrir Human Lines <span class="arrow"></span></a>
+<a class="btn" href="#perche">Explorar NeuroSuite</a>
+</div>
 </div>
 <div class="shell hero__meta reveal">
-<div class="hero__meta-col"><span>Enfoque</span><strong>Residencias · domicilio</strong></div>
-<div class="hero__meta-col"><span>Método</span><strong>Observación longitudinal</strong></div>
-<div class="hero__meta-col"><span>Enfoque</span><strong>Human-in-the-loop</strong></div>
-<div class="hero__meta-col"><span>Estado</span><strong>Plataforma operativa</strong></div>
+<div class="hero__meta-col"><span>Enfocar</span><strong>residencias asistenciales para personas mayores · viviendas con apoyo asistencial</strong></div>
+<div class="hero__meta-col"><span>Método</span><strong>Observación · contexto · prioridad</strong></div>
+<div class="hero__meta-col"><span>Acercarse</span><strong>apoyo para la observación· supervisión humana</strong></div>
+<div class="hero__meta-col"><span>Estado actual</span><strong>Plataforma operativa · piloto listo</strong></div>
 </div>
 </section>
-
 <div class="shell"><div class="gradient-line"></div></div>
-
-<section class="shell" id="problema">
+<section class="shell brand-intro" id="human-lines">
 <div class="s-head">
-<div class="s-head__index"><span>01</span> El problema</div>
-<h2 class="s-head__title">Durante décadas esperamos los síntomas.</h2>
+<div class="s-head__index"><span>01</span> Human Lines</div>
+<h2 class="s-head__title">Una visión. <em>Dos sistemas ya concretos.</em></h2>
+</div>
+<div class="brand-intro__grid">
+<div class="brand-intro__copy reveal">
+<p>Human Lines nació para transformar señales débiles y dispersas en tiempo útil. No es simplemente el nuevo nombre de NeuroSuite: es el proyecto global que desarrolla sistemas capaces de observar lo que cambia, comprender su contexto y llevarlo a la atención de las personas competentes cuando todavía hay tiempo para actuar.</p>
+<p>La misma arquitectura longitudinal y multimodal se aplica a necesidades diferentes, sin confundir los contextos y sin sustituir el criterio humano.</p>
+<p class="brand-intro__payoff">Ver antes. Comprender antes. Devolver tiempo.</p>
+</div>
+<div class="brand-products reveal">
+<article class="brand-product brand-product--suite">
+<span class="brand-product__type">Salud y asistencia de las personas</span>
+<h3>NeuroSuite</h3>
+<p>Conecta smartphones, dispositivos portátiles, sensores ambientales y otros sistemas no invasivos para construir líneas de base individuales y hacer legibles los cambios a lo largo del tiempo.</p>
+<a class="link" href="#perche">Explorar NeuroSuite →</a>
+</article>
+<article class="brand-product brand-product--alert">
+<span class="brand-product__type">Señales en tiempo real y alertas operativas</span>
+<h3>NeuroAlert</h3>
+<p>Integra datos autorizados de teléfonos inteligentes, dispositivos portátiles y sensores conectados en una vista operativa en tiempo real, destacando los cambios que requieren una verificación humana oportuna.</p>
+<a class="link" href="neuroalert/">Explorar NeuroAlert →</a>
+</article>
+</div>
+</div>
+</section>
+<section class="shell" id="perche">
+<div class="s-head">
+<div class="s-head__index"><span>02</span> NeuroSuite · Por qué se creó</div>
+<h2 class="s-head__title">NeuroSuite pone orden <em>en las señales disponibles.</em></h2>
 </div>
 <div class="why-grid">
-<p class="why-lede reveal">Hoy podemos observar lo que cambia <em>antes.</em></p>
+<p class="why-lede reveal">
+      En contextos sanitarios hay muchos acontecimientos. Es necesaria una lectura ordenada,
+ continuo y compartible de lo que sucede en el tiempo.
+    </p>
 <div class="why-body reveal">
-<p>Caídas, eventos cardiovasculares, declive cognitivo: llegan tras meses de señales dispersas. NeuroSuite las hace visibles a tiempo.</p>
+<p>NeuroSuite conecta señales ambientales, hábitos, demandas operativas y variaciones de contexto en una lectura simple, verificable y supervisada.</p>
+<p>NeuroSuite funciona como un sistema de apoyo observacional: recopila y organiza información útil, señala posibles cambios relevantes y la pone a disposición de las personas implicadas. La evaluación clínica corresponde exclusivamente a profesionales sanitarios autorizados, mientras que las decisiones permanecen en manos de los responsables de la atención y la asistencia.</p>
+<p>El objetivo es apoyar a los operadores y cuidadores en su trabajo diario, visibilizando señales, cambios y prioridades que merecen atención.</p>
 </div>
 </div>
-</section>
-
-<section class="shell" id="paradigma">
-<div class="s-head">
-<div class="s-head__index"><span>02</span> El cambio de paradigma</div>
-<h2 class="s-head__title">No observamos una enfermedad.</h2>
-</div>
-<div class="diff-block reveal">
-<p>Observamos cómo cambia una <strong>persona</strong>.</p>
+<div aria-label="Principios del sistema." class="fragments reveal">
+<div class="fragments__cell"><span class="label">Señales</span><span class="num">01</span><span class="desc">sensores, eventos ambientales, entradas operativas y dispositivos autorizados</span></div>
+<div class="fragments__cell"><span class="label">Contexto</span><span class="num">02</span><span class="desc">Ubicación, tiempo, frecuencia, repetición y rutina.</span></div>
+<div class="fragments__cell"><span class="label">Lectura</span><span class="num">03</span><span class="desc">variaciones, anomalías y prioridades operativas a verificar</span></div>
+<div class="fragments__cell"><span class="label">Acción</span><span class="num">04</span><span class="desc">soporte humano, verificación, documentación y mejora</span></div>
 </div>
 </section>
-
-<section class="shell" id="casi">
-<div class="s-head">
-<div class="s-head__index"><span>03</span> Casos concretos</div>
-<h2 class="s-head__title">Qué se vuelve legible.</h2>
-</div>
-<div class="case-grid reveal">
-<article class="case-card">
-<p class="case-card__tag">Caída</p>
-<h3>Variabilidad de la marcha</h3>
-<p>Velocidad y variabilidad del gait predicen caídas. Patrón longitudinal, no un solo paso.</p>
-</article>
-<article class="case-card">
-<p class="case-card__tag">Parkinson</p>
-<h3>QEEG y trayectoria cognitiva</h3>
-<p>Marcadores espectrales y motores en el espectro cognitivo. Observación, no diagnóstico.</p>
-</article>
-<article class="case-card">
-<p class="case-card__tag">Alzheimer</p>
-<h3>EEG en reposo y lenguaje</h3>
-<p>Cambios longitudinales en EEG y habla. Contexto para quien evalúa.</p>
-</article>
-<article class="case-card">
-<p class="case-card__tag">Delirium</p>
-<h3>Actividad y sueño</h3>
-<p>Descanso fragmentado y variaciones conductuales que merecen verificación.</p>
-</article>
-<article class="case-card">
-<p class="case-card__tag">HRV</p>
-<h3>Intervalo entre latidos</h3>
-<p>Variabilidad reducida asociada a riesgo isquémico y MACE. Patrón de varios días.</p>
-</article>
-<article class="case-card">
-<p class="case-card__tag">Cardiología</p>
-<h3>Frecuencia y coherencia</h3>
-<p>FC en reposo, sueño, actividad: lectura conjunta para prioridades humanas.</p>
-</article>
-<article class="case-card">
-<p class="case-card__tag">Fragilidad</p>
-<h3>Declive funcional</h3>
-<p>Pérdida progresiva de movilidad y autonomía. Visible antes de la crisis.</p>
-</article>
-</div>
-</section>
-
 <section class="shell" id="ecosistema">
 <div class="s-head">
-<div class="s-head__index"><span>04</span> Ecosistema</div>
-<h2 class="s-head__title">Un sistema. Varios puntos de contacto.</h2>
+<div class="s-head__index"><span>03</span> Alcances</div>
+<h2 class="s-head__title">Una primera opción clara. <em>Posibles futuras ampliaciones.</em></h2>
 </div>
-<div class="eco-mini reveal">
-<div class="eco-mini__item"><strong>Orion</strong><span>Motor</span></div>
-<div class="eco-mini__item"><strong>Nina</strong><span>Voz</span></div>
-<div class="eco-mini__item"><strong>NeuroAlert</strong><span>Prioridad</span></div>
-<div class="eco-mini__item"><strong>App</strong><span>Interfaz</span></div>
-<div class="eco-mini__item"><strong>Wearable</strong><span>Sensores</span></div>
-<div class="eco-mini__item"><strong>Cloud</strong><span>Datos</span></div>
-<div class="eco-mini__item"><strong>Dashboard</strong><span>Operadores</span></div>
+<p class="reveal intro-copy">
+    La comunicación pública mantiene una dirección principal: residencias asistenciales para personas mayores/ viviendas con apoyo asistencial/ apoyo a personas en situación de vulnerabilidad.
+ Otros contextos pueden evaluarse posteriormente como extensiones del mismo motor de observación, sólo cuando existan datos autorizados, necesidades operativas reales y supervisión humana.
+  </p>
+<div class="eco">
+<article class="eco-card reveal" style="--card-accent: oklch(0.78 0.10 160 / 0.40); --card-accent-solid: oklch(0.78 0.10 160);">
+<div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span> Alcance · 01</span><span>Primera elección</span></div>
+<div>
+<div class="eco-glyph"><svg preserveaspectratio="none" viewbox="0 0 240 84"><path d="M0,42 L60,42 L72,20 L86,64 L100,42 L240,42" fill="none" opacity="0.75" stroke="oklch(0.78 0.10 160)" stroke-width="1.2"></path></svg></div>
+<h3 class="eco-card__name">residencias asistenciales para personas mayores y viviendas con apoyo asistencial</h3>
+<p class="eco-card__manifesto">apoyo para la observación, prioridades operativas y continuidad del trabajo asistencial.</p>
+</div>
+<div class="eco-card__footer"><span class="powered">Desarrollado por NeuroSuite</span><a class="link" href="mailto:info@neurosuite.net?subject=Contatto%20NeuroSuite">Contacto directo →</a></div>
+</article>
+<article class="eco-card reveal" style="--card-accent: oklch(0.78 0.09 250 / 0.34); --card-accent-solid: oklch(0.78 0.09 250);">
+<div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span> Alcance · 02</span><span>extensión natural</span></div>
+<div>
+<div class="eco-glyph"><svg preserveaspectratio="none" viewbox="0 0 240 84"><path d="M16,58 C48,22 78,22 112,48 S178,68 224,26" fill="none" opacity="0.75" stroke="oklch(0.78 0.09 250)" stroke-width="1.2"></path></svg></div>
+<h3 class="eco-card__name">Hogar y cuidador</h3>
+<p class="eco-card__manifesto">La misma lógica de observación puede acompañar a la familia, la atención domiciliaria y las redes autorizadas.</p>
+</div>
+<div class="eco-card__footer"><span class="powered">Desarrollado por NeuroSuite</span></div>
+</article>
+<article class="eco-card reveal" style="--card-accent: oklch(0.82 0.08 75 / 0.34); --card-accent-solid: oklch(0.82 0.08 75);">
+<div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span> Alcance · 03</span><span>Futuro verificable</span></div>
+<div>
+<div class="eco-glyph"><svg preserveaspectratio="none" viewbox="0 0 240 84"><path d="M24,42 H78 M78,42 C96,18 126,18 144,42 S192,66 216,42" fill="none" opacity="0.75" stroke="oklch(0.82 0.08 75)" stroke-width="1.2"></path></svg></div>
+<h3 class="eco-card__name">Ámbitos futuros</h3>
+<p class="eco-card__manifesto">Otros contextos pueden utilizar el mismo motor después de la verificación de datos, la utilidad del mundo real y la supervisión humana.</p>
+</div>
+<div class="eco-card__footer"><span class="powered">Desarrollado por NeuroSuite</span><a class="link" href="#confronto">Comparación →</a></div>
+</article>
+</div>
+</section>
+<section class="flow" id="funziona">
+<div class="shell">
+<div class="s-head" style="padding-block: 0 clamp(40px, 5vw, 72px);">
+<div class="s-head__index"><span>04</span> Cómo funciona</div>
+<h2 class="s-head__title">Señales disponibles. <em>Leer dentro de una única lógica operativa.</em></h2>
+</div>
+<div class="flow__steps reveal">
+<div class="flow__step"><span class="flow__num">01 · ENTRADA</span><h4 class="flow__title">Señales autorizadas</h4><p class="flow__desc">El sistema parte de información disponible y autorizada: sensores ambientales, eventos digitales, entradas operativas o dispositivos existentes cuando corresponda.</p><div class="flow__viz"><svg preserveaspectratio="none" viewbox="0 0 200 60"><g opacity="0.4" stroke="currentColor" stroke-width="0.6"><line x1="10" x2="190" y1="30" y2="30"></line></g><g fill="var(--accent)" opacity="0.85"><circle cx="20" cy="30" r="1.6"></circle><circle cx="50" cy="30" r="1.6"></circle><circle cx="78" cy="30" r="1.6"></circle><circle cx="112" cy="30" r="1.6"></circle><circle cx="148" cy="30" r="1.6"></circle><circle cx="180" cy="30" r="1.6"></circle></g></svg></div></div>
+<div class="flow__step"><span class="flow__num">02 · CONTEXTO</span><h4 class="flow__title">Leer en contexto</h4><p class="flow__desc">Cada señal se lee junto con las demás: lugar, momento, frecuencia, repetición, proximidad y rutinas diarias.</p><div class="flow__viz"><svg preserveaspectratio="none" viewbox="0 0 200 60"><g opacity="0.3" stroke="currentColor" stroke-width="0.6"><rect fill="none" height="16" rx="2" width="40" x="20" y="22"></rect><rect fill="none" height="16" rx="2" width="40" x="80" y="22"></rect><rect fill="none" height="16" rx="2" width="40" x="140" y="22"></rect></g><g fill="var(--accent)" opacity="0.7"><circle cx="40" cy="30" r="2"></circle><circle cx="100" cy="30" r="2"></circle><circle cx="160" cy="30" r="2"></circle></g></svg></div></div>
+<div class="flow__step"><span class="flow__num">03 · VARIACIONES</span><h4 class="flow__title">¿Qué cambia con el tiempo?</h4><p class="flow__desc">NeuroSuite destaca variaciones, ocurrencias y combinaciones que pueden merecer verificación humana.</p><div class="flow__viz"><svg preserveaspectratio="none" viewbox="0 0 200 60"><path d="M0,48 Q50,40 100,30 T200,12" fill="none" opacity="0.85" stroke="var(--accent)" stroke-width="1.2"></path><path d="M0,52 Q50,46 100,38 T200,22" fill="none" opacity="0.3" stroke="currentColor" stroke-width="0.6"></path></svg></div></div>
+<div class="flow__step"><span class="flow__num">04 · PRIORIDAD</span><h4 class="flow__title">Prioridades legibles</h4><p class="flow__desc">Las decisiones quedan en manos de los responsables. NeuroSuite llama la atención de quienes trabajan sobre lo que merece ser visto.</p><div class="flow__viz"><svg preserveaspectratio="none" viewbox="0 0 200 60"><g opacity="0.3" stroke="currentColor" stroke-width="0.6"><line x1="20" x2="20" y1="48" y2="12"></line><line x1="60" x2="60" y1="48" y2="28"></line><line x1="100" x2="100" y1="48" y2="20"></line><line x1="140" x2="140" y1="48" y2="36"></line><line x1="180" x2="180" y1="48" y2="40"></line></g><g fill="var(--accent)" opacity="0.85"><circle cx="20" cy="12" r="2.4"></circle><circle cx="100" cy="20" r="2"></circle></g></svg></div></div>
+<div class="flow__step"><span class="flow__num">05 · ACCIÓN</span><h4 class="flow__title">Apoyo laboral real</h4><p class="flow__desc">Información oportuna, documentación ordenada y apoyo a la supervisión humana, junto a operadores y cuidadores.</p><div class="flow__viz"><svg preserveaspectratio="none" viewbox="0 0 200 60"><g fill="none" opacity="0.85" stroke="var(--accent)" stroke-width="1"><circle cx="100" cy="30" r="14"></circle><line x1="86" x2="60" y1="30" y2="30"></line><line x1="114" x2="140" y1="30" y2="30"></line></g><circle cx="100" cy="30" fill="var(--accent)" r="3"></circle></svg></div></div>
+</div>
+</div>
+</section>
+<section class="shell market" id="trial">
+<div class="s-head">
+<div class="s-head__index"><span>05</span> Prueba operativa</div>
+<h2 class="s-head__title">Actividades organizativas en curso. <em>Validación en contextos reales.</em></h2>
+</div>
+<div class="market-block market-block--lead">
+<div class="market-copy reveal">
+<p>Están en curso actividades organizativas para ensayos o proyectos piloto reales en centros residenciales de atención a personas mayores de alto nivel.</p>
+<p>El proceso está diseñado para verificar la utilidad operativa, la aceptación y la estabilidad técnica, respetando el consentimiento, la privacidad, las autorizaciones y la supervisión humana.</p>
+</div>
+<div class="status reveal">
+<div class="status-card"><div class="row"><span>Contexto</span><span class="pill"><span class="pulse"></span> Real</span></div><h4>Centros residenciales de alto nivel</h4><p>El primer ámbito de validación comprende centros organizados, con operadores y responsabilidades claramente definidos.</p></div>
+<div class="status-card"><div class="row"><span>Método</span><span class="pill"><span class="pulse"></span> Supervisado</span></div><h4>Ensayos y proyectos piloto controlados</h4><p>Los objetivos, los datos autorizados, los criterios de verificación y los resultados se definen con los centros participantes.</p></div>
+</div>
+</div>
+</section>
+<section class="shell" id="evidenze">
+<div class="s-head">
+<div class="s-head__index"><span>06</span> Fundamento científico</div>
+<h2 class="s-head__title">Señales digitales y neurofuncionales. <em>Una línea de investigación ya activa.</em></h2>
+</div>
+<p class="reveal intro-copy">NeuroSuite forma parte de una línea científica que estudia señales neurofisiológicas, lingüísticas, motoras y digitales. El sistema los utiliza como elementos observacionales y contextuales dentro de un recorrido supervisado.</p>
+<div class="evidence-grid reveal">
+<article class="evidence-card"><span>QUÉ HACE NEUROSUITE</span><h3>Conector EEG portátil operativo</h3><p>NeuroSuite adquiere y almacena instantáneamente un trazado mediante electroencefalografía portátil en seco y no invasiva, lista en unos tres segundos. La medición de nueve minutos alimenta el análisis, la línea de base individual y la monitorización longitudinal, sin fines diagnósticos.</p></article>
+<article class="evidence-card"><span>EEG PORTÁTIL · MÉTODO</span><h3><a href="https://pubmed.ncbi.nlm.nih.gov/28344546/" target="_blank" rel="noopener noreferrer">Krigolson et al. (2017)</a></h3><p>El estudio validó un sistema portátil específico y de bajo coste para investigación ERP. Respalda la viabilidad metodológica; no valida NeuroSuite ni el diagnóstico clínico.</p></article>
+<article class="evidence-card"><span>EEG EN REPOSO · REVISIÓN</span><h3><a href="https://pubmed.ncbi.nlm.nih.gov/30405860/" target="_blank" rel="noopener noreferrer">Cassani et al. (2018)</a></h3><p>La revisión sistemática examina el EEG en reposo en el diagnóstico y la progresión del Alzheimer. La heterogeneidad metodológica impide trasladar directamente sus resultados a NeuroSuite.</p></article>
+<article class="evidence-card"><span>PARKINSON · QEEG</span><h3><a href="https://pubmed.ncbi.nlm.nih.gov/26518336/" target="_blank" rel="noopener noreferrer">Caviness et al. (2016)</a></h3><p>El estudio informa diferencias cuantitativas de EEG en un espectro cognitivo parkinsoniano definido. Respalda la relevancia científica, no la predicción individual por NeuroSuite.</p></article>
+<article class="evidence-card"><span>LENGUAJE NARRATIVO</span><h3><a href="https://pubmed.ncbi.nlm.nih.gov/26484921/" target="_blank" rel="noopener noreferrer">Fraser, Meltzer &amp; Rudzicz (2016)</a></h3><p>Las características computacionales distinguieron muestras de habla en un conjunto de investigación específico. Es contexto científico, no prueba de diagnóstico actual por NeuroSuite.</p></article>
+<article class="evidence-card"><span>MARCHA · RIESGO LONGITUDINAL</span><h3><a href="https://pubmed.ncbi.nlm.nih.gov/12456852/" target="_blank" rel="noopener noreferrer">Verghese et al. (2002)</a></h3><p>En una cohorte prospectiva de personas mayores, las anomalías neurológicas de la marcha se asociaron con demencias no Alzheimer posteriores. La asociación no demuestra diagnóstico ni causalidad.</p></article>
+</div>
+</section>
+<section class="shell market" id="confronto">
+<div class="s-head"><div class="s-head__index"><span>07</span> Comparación de innovación</div><h2 class="s-head__title">No solo detectar el evento. <em>Comprender la trayectoria que puede precederlo.</em></h2></div>
+<p class="intro-copy reveal">NeuroSuite conecta señales ambientales, conductuales, fisiológicas, vocales y neurofuncionales para observar microvariaciones, desviaciones de la línea de base individual y patrones potencialmente prodrómicos a lo largo del tiempo. No proporciona diagnósticos: hace visibles los cambios relevantes para una verificación humana oportuna.</p>
+<div class="battle-wrap reveal"><table class="battle-table"><thead><tr><th style="text-align:left">Capacidad distintiva</th><th>NeuroSuite</th><th>Sistemas de seguridad orientados al evento</th><th>Monitorización centrada en dispositivos portátiles</th><th>Sistemas de observación ambiental</th><th>Asistentes de voz</th></tr></thead><tbody><tr><td>Trayectoria anterior a un evento crítico</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark no">×</span></td></tr><tr><td>Postura, marcha y evolución del riesgo de caída</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark no">×</span></td></tr><tr><td>Línea de base individual longitudinal</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark no">×</span></td></tr><tr><td>Desviaciones y patrones potencialmente prodrómicos</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark no">×</span></td></tr><tr><td>Red multimodal: entorno, comportamiento, fisiología y contexto</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark no">×</span></td></tr><tr><td>Conector para electroencefalografía portátil en seco y no invasiva</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark no">×</span></td></tr><tr><td>Nina: interacción vocal y verificación contextual</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark yes">✅</span></td></tr><tr><td>Alertas contextualizadas, informes y supervisión humana</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark part">◐</span></td></tr><tr><td>Motor horizontal reutilizable en múltiples verticales</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark part">◐</span></td></tr></tbody></table></div>
+<div class="battle-legend reveal"><span>✅ presente</span><span>◐ presente en parte</span><span>× ausente o no identificado en el ámbito público</span></div>
+</section>
+<section class="shell market" id="verticali-potenziali"><div class="s-head"><div class="s-head__index"><span>08</span> Verticales potenciales</div><h2 class="s-head__title">Un motor de observación. <em>Cuatro contextos coherentes.</em></h2></div><p class="intro-copy reveal">Las residencias asistenciales y el domicilio siguen siendo el primer ámbito público. La misma arquitectura observacional puede adaptarse, con validaciones específicas, a otros contextos donde importan las señales débiles, la línea de base individual y la observación no invasiva.</p><div class="evidence-grid reveal">
+<article class="evidence-card"><span>01 · AVIACIÓN Y TRANSPORTE</span><h3>Fatiga cognitiva en salas de control y vuelo</h3><p>Observación supervisada de cambios de vigilancia donde la atención y la continuidad operativa son esenciales.</p></article><article class="evidence-card"><span>02 · FLOTAS Y CONDUCCIÓN</span><h3>Microsueño y caídas de atención</h3><p>Integración de señales conductuales, ambientales y fisiológicas para destacar cambios que requieren verificación.</p></article><article class="evidence-card"><span>03 · DEFENSA Y SEGURIDAD</span><h3>Estrés operativo prolongado</h3><p>Observación contextual y supervisada de fatiga, sobrecarga y cambios en la continuidad operativa.</p></article><article class="evidence-card"><span>04 · DEPORTE DE ALTO RENDIMIENTO</span><h3>Carga cognitiva y recuperación</h3><p>Observación longitudinal de carga y recuperación mediante líneas de base individuales y señales multimodales.</p></article></div></div></section>
+<section class="shell" id="stato">
+<div class="s-head">
+<div class="s-head__index"><span>09</span> Estado actual</div>
+<h2 class="s-head__title">Un camino concreto <em>de validación.</em></h2>
+</div>
+<p class="reveal intro-copy">La plataforma está operativa y el primer piloto de atención a personas mayores está completamente estructurado: contexto, socios, objetivos y modelo de implementación están definidos. El siguiente paso es la activación sobre el terreno, la medición de resultados y la aceleración, cuando estén disponibles los recursos necesarios.</p>
+<div class="status">
+<div class="status-card reveal"><div class="row"><span>residencias asistenciales para personas mayores · viviendas con apoyo asistencial</span><span class="pill"><span class="pulse"></span> Primera elección</span></div><h4>Observación continua donde el tiempo operativo importa.</h4><p>apoyo observacional para hacer que las señales, variaciones y prioridades sean más legibles en contextos de atención.</p><div class="meta"><div><span>Contacto</span><br/><strong><a href="mailto:info@neurosuite.net?subject=Contatto%20NeuroSuite">info@neurosuite.net</a></strong></div><div><span>Fase</span><br/><strong>Piloto</strong></div><div><span>Nota</span><br/><strong>Supervisión humana</strong></div></div></div>
+<div class="status-card reveal"><div class="row"><span>Ampliaciones futuras</span><span class="pill" style="border-color: var(--line);"><span class="pulse" style="background: var(--fg-3); box-shadow: none;"></span> Por evaluar</span></div><h4>El mismo motor de observación puede adaptarse a otros contextos.</h4><p>Cada extensión requiere verificación de contexto, permiso de datos, utilidad en el mundo real y supervisión humana.</p><div class="meta"><div><span>Estado actual</span><br/><strong>Siguiente fase</strong></div><div><span>Método</span><br/><strong>Evaluación caso por caso</strong></div><div><span>Límite</span><br/><strong>Contexto verificado</strong></div></div></div>
+</div>
+</section>
+<section class="vision" id="visione">
+<div class="shell">
+<div class="s-head" style="padding-block: 0 clamp(32px, 4vw, 56px);">
+<div class="s-head__index"><span>10</span> Visión</div>
+<h2 class="s-head__title" style="display:none;">.</h2>
+</div>
+<p class="vision__quote reveal">Los sistemas que importan hacen legible<br/><em>lo que ya estaba ahí,</em> pero permanecía disperso.</p>
+<p class="vision__caption reveal">NeuroSuite evalúa lo que existe, integra lo que falta cuando es necesario y construye una interpretación operativa más clara. El objetivo es reducir el ruido, visibilizar señales relevantes y acercar a las personas información oportuna, verificable y supervisada.</p>
 </div>
 </section>
 
-<section class="shell" id="differenza">
-<div class="s-head">
-<div class="s-head__index"><span>05</span> Por qué es diferente</div>
-<h2 class="s-head__title">Su propia historia. No la media.</h2>
-</div>
-<div class="diff-block reveal">
-<p>NeuroSuite compara a cada persona con <strong>su propia línea base</strong>.</p>
-</div>
-</section>
 
-<section class="shell" id="biblioteca">
-<div class="s-head">
-<div class="s-head__index"><span>06</span> Biblioteca científica</div>
-<h2 class="s-head__title">La base. No el algoritmo.</h2>
-</div>
-<p class="intro-copy reveal">Solo literatura pública. Sin implementación propietaria.</p>
-<div class="lib-grid reveal">
-<article class="lib-card">
-<h3>Parkinson</h3>
-<p>QEEG y espectro cognitivo. Marcadores longitudinales.</p>
-<p class="lib-ref">Caviness et al. 2016 · PMID 26518336</p>
-<a href="https://pubmed.ncbi.nlm.nih.gov/26518336/" target="_blank" rel="noopener">Profundizar →</a>
-</article>
-<article class="lib-card">
-<h3>Alzheimer</h3>
-<p>EEG en reposo en diagnóstico y progresión.</p>
-<p class="lib-ref">Cassani et al. 2018 · PMID 30405860</p>
-<a href="https://pubmed.ncbi.nlm.nih.gov/30405860/" target="_blank" rel="noopener">Profundizar →</a>
-</article>
-<article class="lib-card">
-<h3>Demencias</h3>
-<p>Anomalías de la marcha y riesgo de demencia no Alzheimer.</p>
-<p class="lib-ref">Verghese et al. 2002 · PMID 12456852</p>
-<a href="https://pubmed.ncbi.nlm.nih.gov/12456852/" target="_blank" rel="noopener">Profundizar →</a>
-</article>
-<article class="lib-card">
-<h3>Caídas</h3>
-<p>Marcadores cuantitativos del gait y predicción de caídas.</p>
-<p class="lib-ref">Verghese · quantitative gait markers</p>
-<a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">Profundizar →</a>
-</article>
-<article class="lib-card">
-<h3>HRV</h3>
-<p>Variabilidad cardíaca, isquemia y MACE desde wearables.</p>
-<p class="lib-ref">HRV-DETECT · long-term wearable HRV</p>
-<a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">Profundizar →</a>
-</article>
-<article class="lib-card">
-<h3>Cardiología</h3>
-<p>HRV como marcador autonómico y pronóstico.</p>
-<p class="lib-ref">SDNN, RMSSD y resultados cardiovasculares</p>
-<a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">Profundizar →</a>
-</article>
-<article class="lib-card">
-<h3>Digital Biomarkers</h3>
-<p>Señales digitales longitudinales en cuidados.</p>
-<p class="lib-ref">AAL · multimodal sensing</p>
-<a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">Profundizar →</a>
-</article>
-<article class="lib-card">
-<h3>Explainable AI</h3>
-<p>Soporte de decisión supervisado, no autónomo.</p>
-<p class="lib-ref">Human-in-the-loop</p>
-<a href="#accesso">Profundizar →</a>
-</article>
-<article class="lib-card">
-<h3>Análisis longitudinal</h3>
-<p>Líneas base individuales y trayectorias.</p>
-<p class="lib-ref">Digital phenotyping</p>
-<a href="#accesso">Profundizar →</a>
-</article>
-<article class="lib-card">
-<h3>Medicina del sueño</h3>
-<p>Sueño y progresión en el continuum AD.</p>
-<p class="lib-ref">Meta-análisis sueño continuum AD</p>
-<a href="https://pubmed.ncbi.nlm.nih.gov/" target="_blank" rel="noopener">Profundizar →</a>
-</article>
-<article class="lib-card">
-<h3>Fragilidad</h3>
-<p>Declive funcional y riesgo operativo.</p>
-<p class="lib-ref">Gait · activity · sensing</p>
-<a href="#accesso">Profundizar →</a>
-</article>
-</div>
-</section>
-
-<section class="shell" id="applicazioni">
-<div class="s-head">
-<div class="s-head__index"><span>07</span> Aplicaciones</div>
-<h2 class="s-head__title">Donde el tiempo importa.</h2>
-</div>
-<div class="eco reveal">
-<article class="eco-card" style="--card-accent: oklch(0.78 0.10 160 / 0.40); --card-accent-solid: oklch(0.78 0.10 160);">
-<div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span> 01</span></div>
-<div><h3 class="eco-card__name">Residencias asistenciales</h3><p class="eco-card__manifesto">Residencias y viviendas con apoyo.</p></div>
-</article>
-<article class="eco-card" style="--card-accent: oklch(0.78 0.09 250 / 0.34); --card-accent-solid: oklch(0.78 0.09 250);">
-<div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span> 02</span></div>
-<div><h3 class="eco-card__name">Domicilio</h3><p class="eco-card__manifesto">Cuidadores y redes autorizadas.</p></div>
-</article>
-<article class="eco-card" style="--card-accent: oklch(0.82 0.08 75 / 0.34); --card-accent-solid: oklch(0.82 0.08 75);">
-<div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span> 03</span></div>
-<div><h3 class="eco-card__name">Hospitales · Rehab · Investigación</h3><p class="eco-card__manifesto">Contextos supervisados con datos autorizados.</p></div>
-</article>
-</div>
-</section>
 
 <section class="access" id="accesso">
 <div class="shell access__inner access__inner--single">
 <div class="reveal">
-<div class="s-head__index" style="margin-bottom: 22px;"><span>08</span> Contacto</div>
-<h3>Una dirección. <em>Un contacto.</em></h3>
-<p>Residencias, domicilio, asistencia. Otros contextos solo como extensiones futuras.</p>
+<div class="s-head__index" style="margin-bottom: 22px;"><span>11</span> Acceso</div>
+<h3>Una primera dirección clara. <em>Un contacto directo.</em></h3>
+<p>La comparación comienza desde el área residencias asistenciales para personas mayores/ viviendas con apoyo asistencial/ apoyo a personas en situación de vulnerabilidad. Otros contextos sólo pueden discutirse como posibles ampliaciones futuras.</p>
 <div class="streams">
-<a class="streams__row" href="mailto:info@neurosuite.net?subject=Contacto%20NeuroSuite"><span class="tag">Email</span><span class="desc">info@neurosuite.net</span><span class="when">Contacto</span></a>
+<a class="streams__row" href="mailto:info@neurosuite.net?subject=Contatto%20NeuroSuite"><span class="tag">residencias asistenciales para personas mayores</span><span class="desc">residencias asistenciales para personas mayores, viviendas con apoyo asistencial, entornos asistidos</span><span class="when">Contacto</span></a>
 </div>
 </div>
 </div>
 </section>
-
 <footer class="footer">
 <div class="shell">
 <div class="footer__inner">
-<div><div class="footer__brand">Human Lines</div><p class="footer__caption">Ver antes. Comprender antes. Devolver tiempo.</p></div>
-<div class="footer__col"><h5>Sistema</h5><a href="#casi">Casos</a><a href="#biblioteca">Ciencia</a><a href="#accesso">Contacto</a></div>
-<div class="footer__col"><h5>Contacto</h5><a href="mailto:info@neurosuite.net">info@neurosuite.net</a><a href="privato.html">Área privada</a></div>
+<div><div class="footer__brand">Human Lines</div><p class="footer__caption">Ver antes. Comprender antes. Devolver tiempo. NeuroSuite y NeuroAlert son los primeros sistemas del ecosistema Human Lines.</p></div>
+<div class="footer__col"><h5>Alcances</h5><a href="mailto:info@neurosuite.net?subject=Contatto%20NeuroSuite">residencias asistenciales para personas mayores</a><a href="#ecosistema">Posibles futuras ampliaciones</a></div>
+<div class="footer__col"><h5>Sistema</h5><a href="#funziona">Cómo funciona</a><a href="#stato">Estado actual</a><a href="#visione">Visión</a><a href="privato.html">Área privada</a></div>
+<div class="footer__col"><h5>Contacto</h5><a href="mailto:info@neurosuite.net?subject=Contatto%20NeuroSuite">info@neurosuite.net</a><a href="privato.html">Área privada</a></div>
 </div>
-<div class="footer__base"><span>© 2026 Human Lines</span><span>Observación · human-in-the-loop · privacy-by-design</span></div>
+<div class="footer__base"><span>© 2026 Human Lines</span><span>Apoyo observacional · supervisión humana · privacidad por diseño</span></div>
 </div>
 </footer>
-<script src="app.js"></script>
+<script src="app.js?v=20260728-1307"></script>
 <script id="ns-language-script">
 (function(){
   var current="es";
   var pages={en:"index.html",it:"it.html",es:"es.html",ar:"ar.html"};
   document.documentElement.lang=current;
   document.documentElement.dir=current==="ar"?"rtl":"ltr";
+
   document.querySelectorAll("[data-language]").forEach(function(link){
     link.addEventListener("click",function(){
       localStorage.setItem("neurosuite-language",this.getAttribute("data-language"));
     });
   });
+
   var saved=localStorage.getItem("neurosuite-language");
   if(saved && pages[saved] && saved!==current){
     var path=location.pathname;
     var isLanguagePage=/\/(index|it|es|ar)\.html$/.test(path) || path.endsWith("/");
-    if(isLanguagePage){ location.replace(pages[saved]+location.hash); }
+    if(isLanguagePage){
+      location.replace(pages[saved]+location.hash);
+    }
   }
 })();
 </script>

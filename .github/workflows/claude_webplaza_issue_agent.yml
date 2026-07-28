@@ -1,0 +1,74 @@
+name: Claude WebPlaza Issue Agent
+
+on:
+  issue_comment:
+    types: [created]
+  issues:
+    types: [opened, assigned, labeled]
+  workflow_dispatch:
+
+permissions:
+  contents: write
+  pull-requests: write
+  issues: write
+  id-token: write
+
+jobs:
+  claude:
+    if: |
+      github.event_name == 'workflow_dispatch' ||
+      (github.event_name == 'issue_comment' && contains(github.event.comment.body, '@claude')) ||
+      (github.event_name == 'issues' && contains(github.event.issue.body, '@claude'))
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: anthropics/claude-code-action@v1
+        with:
+          anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}
+          prompt: |
+            You are Claude for NeuroSuite WebPlaza.
+
+            Fix the public NeuroSuite horizontal deck without redesign.
+
+            Rules:
+            - do not change texts;
+            - do not change fonts;
+            - do not change colors;
+            - do not change visual identity;
+            - do not touch private-scenario.html unless strictly necessary;
+            - make minimal, verifiable changes.
+
+            Main files:
+            - app.js
+            - styles.css
+            - index.html only if necessary.
+
+            Fix:
+            - corrupted visible characters;
+            - repeated or broken public deck blocks;
+            - bottom overlap;
+            - controls/count/cue covering content;
+            - slides taller than viewport not scrolling;
+            - unreliable scroll cue.
+
+            Required behavior:
+            - desktop >= 761px uses horizontal deck;
+            - left/right arrows change slide;
+            - if one slide is taller than viewport, only that slide scrolls vertically;
+            - up/down arrows scroll inside active slide when it overflows;
+            - controls must never cover content;
+            - below 761px normal vertical page is acceptable.
+
+            Checks:
+            - node --check app.js
+            - git status --short
+            - search app.js, styles.css and index.html for corrupted characters
+            - leave repository clean
+
+            Commit message:
+            fix: stabilize public horizontal deck scrolling
+          claude_args: |
+            --max-turns 20
+            --model claude-sonnet-4-5

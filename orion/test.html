@@ -1,215 +1,137 @@
 <!DOCTYPE html>
-<html lang="it" dir="ltr">
+<html lang="it">
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex,nofollow,noarchive">
-<title>Orion · Test Fondamenti Scientifici</title>
+<title>Orion · Test Scientific Foundations</title>
 <style>
 :root{color-scheme:dark;--bg:#070b12;--panel:#0f1622;--line:#243044;--text:#eef3fa;--muted:#9aabbf;--accent:#5aa7ff;--ok:#2ecf7a}
 *{box-sizing:border-box}
 body{margin:0;min-height:100vh;background:radial-gradient(circle at 12% 0%,#12345a44,transparent 40%),var(--bg);color:var(--text);font:15px/1.55 Inter,system-ui,sans-serif}
-header{padding:14px 20px;border-bottom:1px solid var(--line);background:#070b12e8;backdrop-filter:blur(10px);position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;gap:16px;flex-wrap:wrap}
-.header-copy{min-width:220px}
-header strong{font-size:15px;display:block}
-header span{color:var(--muted);font-size:12px}
-.language-switcher{display:inline-flex;align-items:center;gap:4px;padding:4px;border:1px solid #33475f;border-radius:999px;background:#0a1019}
-.language-switcher button{min-width:38px;padding:7px 9px;border:0;border-radius:999px;background:transparent;color:var(--muted);font-size:12px;font-weight:800}
-.language-switcher button:hover,.language-switcher button:focus-visible{color:var(--text);background:#172233;outline:none}
-.language-switcher button.active{color:#06111e;background:linear-gradient(135deg,#72c1ff,#79a0ff)}
+header{padding:18px 20px;border-bottom:1px solid var(--line);background:#070b12cc;backdrop-filter:blur(10px);position:sticky;top:0;z-index:5}
+header strong{font-size:15px}
+header span{color:var(--muted);font-size:12px;margin-left:10px}
 main{max-width:860px;margin:0 auto;padding:18px}
 .panel{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px;margin:12px 0}
 .row{display:flex;gap:10px;flex-wrap:wrap}
-input,button{font:inherit;border-radius:12px;padding:12px 14px;border:1px solid #33475f;background:#0a1019;color:var(--text)}
-input{flex:1;min-width:220px}
+input,button,textarea{font:inherit;border-radius:12px;padding:12px 14px;border:1px solid #33475f;background:#0a1019;color:var(--text)}
+input,textarea{flex:1;min-width:220px}
 button{cursor:pointer;font-weight:700;border:0;background:linear-gradient(135deg,#55b1ff,#477cff);color:#fff;white-space:nowrap}
 button.ghost{background:#172233;border:1px solid #33475f}
 .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:10px}
-.chip{border:1px solid #33475f;background:#121b29;color:var(--muted);border-radius:999px;padding:7px 12px;font-size:12px;cursor:pointer;white-space:normal;text-align:start}
+.chip{border:1px solid #33475f;background:#121b29;color:var(--muted);border-radius:999px;padding:7px 12px;font-size:12px;cursor:pointer}
 .chip:hover{color:var(--text);border-color:var(--accent)}
-.msg{white-space:pre-wrap;line-height:1.65}
+.msg{white-space:pre-wrap;line-height:1.6}
+.ref{border-left:3px solid var(--accent);padding:10px 12px;margin:10px 0;background:#0b121d;border-radius:0 10px 10px 0}
+.ref b{color:var(--text)}
 .meta{color:var(--muted);font-size:12px}
 .status{color:var(--ok);font-size:12px;margin-top:8px}
 .err{color:#ff6b78}
-html[dir="rtl"] body,html[dir="rtl"] input,html[dir="rtl"] .msg,html[dir="rtl"] .chip{direction:rtl;text-align:right}
-html[dir="rtl"] .row,html[dir="rtl"] header{direction:rtl}
-html[dir="rtl"] .language-switcher{direction:ltr}
-@media(max-width:620px){header{align-items:flex-start}.language-switcher{width:100%;justify-content:space-between}.language-switcher button{flex:1}.row>button{flex:1}}
 </style>
 </head>
 <body>
 <header>
-  <div class="header-copy">
-    <strong id="header-title">Orion · Test Fondamenti Scientifici</strong>
-    <span id="header-subtitle">Base di conoscenza v2.0 · uso interno</span>
-  </div>
-  <nav class="language-switcher" id="language-switcher" aria-label="Selezione della lingua">
-    <button type="button" data-lang="it" class="active" aria-pressed="true">IT</button>
-    <button type="button" data-lang="en" aria-pressed="false">EN</button>
-    <button type="button" data-lang="es" aria-pressed="false">ES</button>
-    <button type="button" data-lang="ar" aria-pressed="false">العربية</button>
-  </nav>
+  <strong>Orion · Test Scientific Foundations</strong>
+  <span>Knowledge base v2.0 · solo uso interno</span>
 </header>
 <main>
   <section class="panel">
     <div class="row">
-      <input id="q" placeholder="Es. Su quali basi scientifiche utilizziamo l’EEG portatile con elettrodi a secco?" autocomplete="off">
-      <button id="ask" type="button">Chiedi a Orion</button>
-      <button id="reload" type="button" class="ghost">Ricarica la base</button>
+      <input id="q" placeholder="Es. Su che basi usiamo l'EEG portatile a secco?" />
+      <button id="ask">Chiedi a Orion</button>
+      <button id="reload" class="ghost">Ricarica KB</button>
     </div>
     <div class="chips" id="chips"></div>
-    <div class="status" id="status">Caricamento della base di conoscenza…</div>
+    <div class="status" id="status">Caricamento knowledge base…</div>
   </section>
   <section class="panel">
-    <div id="out" class="msg meta">Fai una domanda. Orion risponde in italiano utilizzando i riferimenti del corpus scientifico.</div>
+    <div id="out" class="msg meta">Fai una domanda. Orion risponderà solo con riferimenti dal corpus scientifico installato.</div>
   </section>
 </main>
-<script src="./i18n-ui.js?v=2.1"></script>
-<script src="./i18n-areas-1.js?v=2.1"></script>
-<script src="./i18n-areas-2.js?v=2.1"></script>
-<script src="./i18n-refs-it-1.js?v=2.1"></script>
-<script src="./i18n-refs-it-2.js?v=2.1"></script>
-<script src="./i18n-refs-it-3.js?v=2.1"></script>
-<script src="./i18n-refs-es-1.js?v=2.1"></script>
-<script src="./i18n-refs-es-2.js?v=2.1"></script>
-<script src="./i18n-refs-es-3.js?v=2.1"></script>
-<script src="./i18n-refs-ar-1.js?v=2.1"></script>
-<script src="./i18n-refs-ar-2.js?v=2.1"></script>
-<script src="./i18n-refs-ar-3.js?v=2.1"></script>
 <script>
-const UI=window.ORION_UI;
-const AREA_I18N=window.ORION_AREAS;
-const REF_I18N=window.ORION_REF_I18N||{};
-const SUPPORTED=["it","en","es","ar"];
-let KB=null;
-let currentLang="it";
-let lastQuestion="";
-const $=id=>document.getElementById(id);
-const t=()=>UI[currentLang]||UI.it;
-function format(template,values){return template.replace(/\{(\w+)\}/g,(_,key)=>values[key]??"");}
-function areaText(area){
-  const local=AREA_I18N[area.id]?.[currentLang]||AREA_I18N[area.id]?.en;
-  return {
-    name:local?.name||area["name_"+currentLang]||area.name||area.id,
-    claim:local?.claim||area["core_claim_"+currentLang]||area.core_claim||"",
-    clusters:local?.clusters||area.supporting_clusters||[]
-  };
-}
-function refText(ref){
-  const local=REF_I18N[currentLang]?.[ref.id];
-  return {
-    citation:local?.[0]||ref.citation||"",
-    finding:local?.[1]||ref.finding||"",
-    relevance:local?.[2]||ref.relevance||""
-  };
-}
+const SUGGESTIONS = [
+  "Su che basi scientifiche usiamo l'EEG portatile a secco?",
+  "Quali studi supportano il cammino come marker longitudinale di rischio?",
+  "Dammi i riferimenti sul linguaggio come segnale osservativo",
+  "Cosa dice la letteratura su QEEG e spettro cognitivo nel Parkinson?",
+  "Quali paper supportano i sensori wearable e ambientali nelle residenze?",
+  "Quali evidenze ci sono su resting-state EEG e traiettorie cognitive?"
+];
+
+let KB = null;
+
+const $ = id => document.getElementById(id);
+
 function renderChips(){
-  $("chips").innerHTML="";
-  t().suggestions.forEach(s=>{
-    const button=document.createElement("button");
-    button.className="chip";
-    button.type="button";
-    button.textContent=s;
-    button.onclick=()=>{$("q").value=s;ask();};
-    $("chips").appendChild(button);
+  $("chips").innerHTML = SUGGESTIONS.map(s => `<button class="chip" type="button">${s}</button>`).join("");
+  $("chips").querySelectorAll(".chip").forEach(btn => {
+    btn.onclick = () => { $("q").value = btn.textContent; ask(); };
   });
 }
-function updateStatus(){
-  if(!KB){$("status").textContent=t().loading;return;}
-  const n=(KB.areas||[]).reduce((sum,area)=>sum+(area.references?.length||0),0);
-  $("status").textContent=format(t().ready,{version:KB.version,areas:KB.areas.length,refs:n});
-}
-function setLanguage(lang,save=true){
-  currentLang=SUPPORTED.includes(lang)?lang:"it";
-  const rtl=currentLang==="ar";
-  document.documentElement.lang=currentLang;
-  document.documentElement.dir=rtl?"rtl":"ltr";
-  document.title=t().title;
-  $("header-title").textContent=t().header;
-  $("header-subtitle").textContent=t().subtitle;
-  $("q").placeholder=t().placeholder;
-  $("ask").textContent=t().ask;
-  $("reload").textContent=t().reload;
-  $("language-switcher").setAttribute("aria-label",t().langLabel);
-  document.querySelectorAll("[data-lang]").forEach(button=>{
-    const active=button.dataset.lang===currentLang;
-    button.classList.toggle("active",active);
-    button.setAttribute("aria-pressed",String(active));
-  });
-  renderChips();
-  updateStatus();
-  $("out").textContent=lastQuestion?answer(lastQuestion):t().intro;
-  if(save){
-    localStorage.setItem("orion-language",currentLang);
-    const url=new URL(location.href);
-    url.searchParams.set("lang",currentLang);
-    history.replaceState(null,"",url);
-  }
-}
+
 async function loadKB(){
-  $("status").textContent=t().loading;
-  try{
-    const response=await fetch("./scientific-foundations.json?ts="+Date.now());
-    if(!response.ok)throw new Error("HTTP "+response.status);
-    KB=await response.json();
-    updateStatus();
-  }catch(error){
-    $("status").innerHTML="";
-    const span=document.createElement("span");
-    span.className="err";
-    span.textContent=format(t().loadError,{error:error.message});
-    $("status").appendChild(span);
+  $("status").textContent = "Caricamento knowledge base…";
+  try {
+    const res = await fetch("./scientific-foundations.json?ts=" + Date.now());
+    if(!res.ok) throw new Error("HTTP " + res.status);
+    KB = await res.json();
+    const n = (KB.areas||[]).reduce((a,x)=>a+(x.references?x.references.length:0),0);
+    $("status").textContent = `KB attiva · v${KB.version} · ${KB.areas.length} aree · ${n} riferimenti`;
+  } catch(e){
+    $("status").innerHTML = `<span class="err">Errore caricamento KB: ${e.message}. Verifica path orion/scientific-foundations.json</span>`;
   }
 }
-function score(text,area){
-  const query=text.toLocaleLowerCase(currentLang);
-  const localizedArea=areaText(area);
-  const localizedRefs=(area.references||[]).map(ref=>Object.values(refText(ref)).join(" ")).join(" ");
-  const bag=(area.id+" "+localizedArea.name+" "+localizedArea.claim+" "+localizedRefs).toLocaleLowerCase(currentLang);
-  const keys=query.split(/[^\p{L}\p{N}]+/u).filter(word=>word.length>2);
-  let value=0;
-  keys.forEach(key=>{if(bag.includes(key))value+=2;});
-  if(/eeg|elettrod|electrod|electrodos|تخطيط|أقطاب|dry|secco|secos/.test(query)&&area.id==="EEG")value+=8;
-  if(/riposo|resting|reposo|راحة|alzheimer|alzheim|ألزهايمر|theta|alfa|alpha/.test(query)&&area.id==="RS")value+=8;
-  if(/parkinson|باركنسون|qeeg|quantit|cuantit|كمي/.test(query)&&area.id==="PD")value+=8;
-  if(/linguagg|language|lenguaje|speech|voce|voz|لغة|صوت|كلام/.test(query)&&area.id==="SP")value+=8;
-  if(/cammino|gait|marcha|مشي|andatur/.test(query)&&area.id==="GT")value+=8;
-  if(/sensor|sensori|sensores|حساس|استشعار|wearable|indossabil|portátil|ambient|cadut|caída|سقوط|residen/.test(query)&&area.id==="SN")value+=8;
-  if(/multimodal|baseline|riferiment|referencia|أساس|architettur|arquitectura|بنية/.test(query)&&area.id==="MM")value+=6;
-  return value;
+
+function score(text, area){
+  const t = text.toLowerCase();
+  let s = 0;
+  const bag = (area.id + " " + area.name + " " + (area.core_claim||"") + " " + (area.references||[]).map(r=>r.citation+" "+r.finding+" "+r.relevance).join(" ")).toLowerCase();
+  const keys = t.split(/[^a-zàèéìòóù0-9]+/i).filter(w=>w.length>3);
+  keys.forEach(k => { if(bag.includes(k)) s += 2; });
+  if(/eeg|elettrod|dry|portatil/.test(t) && area.id==="EEG") s += 8;
+  if(/resting|alzheimer|mci|alpha|theta|cognitive traject/.test(t) && area.id==="RS") s += 8;
+  if(/parkinson|qeeg|spettro cognit/.test(t) && area.id==="PD") s += 8;
+  if(/linguagg|speech|voce|vocal/.test(t) && area.id==="SP") s += 8;
+  if(/cammino|gait|andatur/.test(t) && area.id==="GT") s += 8;
+  if(/sensor|wearable|ambient|cadut|fall|residenz/.test(t) && area.id==="SN") s += 8;
+  if(/multimodal|baseline|architettur/.test(t) && area.id==="MM") s += 6;
+  return s;
 }
+
 function answer(question){
-  if(!KB)return t().notLoaded;
-  const ranked=(KB.areas||[]).map(area=>({area,value:score(question,area)})).sort((a,b)=>b.value-a.value);
-  const top=ranked.filter(item=>item.value>0).slice(0,2);
-  if(!top.length)return t().notFound;
-  let output="";
-  top.forEach((item,index)=>{
-    const localArea=areaText(item.area);
-    output+=(index?"\n\n":"")+t().area+": "+localArea.name+"\n"+localArea.claim+"\n\n"+t().references+":";
-    (item.area.references||[]).slice(0,6).forEach(ref=>{
-      const localRef=refText(ref);
-      output+="\n\n• "+localRef.citation+" ("+ref.year+")\n  "+localRef.finding+"\n  → "+localRef.relevance;
+  if(!KB) return "Knowledge base non caricata.";
+  const ranked = (KB.areas||[]).map(a => ({a, s: score(question,a)})).sort((x,y)=>y.s-x.s);
+  const top = ranked.filter(x => x.s > 0).slice(0,2);
+  if(!top.length){
+    return "Non ho trovato un'area strettamente collegata a questa domanda nel corpus attuale.\nProva una delle domande suggerite o riformula sul dominio EEG / gait / speech / sensori / QEEG / resting-state.";
+  }
+  let out = "";
+  top.forEach(({a}, idx) => {
+    out += (idx? "\n\n" : "") + `Area: ${a.name}\n${a.core_claim||""}\n\nRiferimenti rilevanti:`;
+    const refs = (a.references||[]).slice(0,6);
+    refs.forEach(r => {
+      out += `\n\n• ${r.citation} (${r.year})\n  ${r.finding}\n  → ${r.relevance}`;
     });
-    if(localArea.clusters?.length){
-      output+="\n\n"+t().clusters+":\n- "+localArea.clusters.join("\n- ");
+    if(a.supporting_clusters){
+      out += "\n\nCluster di supporto:\n- " + a.supporting_clusters.join("\n- ");
     }
   });
-  return output+"\n\n"+t().note;
+  out += "\n\nNota operativa: questi riferimenti costituiscono contesto scientifico della linea osservativa. Non equivalgono a validazione clinica di NeuroSuite.";
+  return out;
 }
+
 function ask(){
-  const question=$("q").value.trim();
-  if(!question){$("out").textContent=t().empty;return;}
-  lastQuestion=question;
-  $("out").textContent=answer(question);
+  const q = $("q").value.trim();
+  if(!q){ $("out").textContent = "Inserisci una domanda."; return; }
+  $("out").textContent = answer(q);
 }
-$("ask").onclick=ask;
-$("q").addEventListener("keydown",event=>{if(event.key==="Enter")ask();});
-$("reload").onclick=loadKB;
-document.querySelectorAll("[data-lang]").forEach(button=>button.onclick=()=>setLanguage(button.dataset.lang));
-const requested=new URLSearchParams(location.search).get("lang");
-const stored=localStorage.getItem("orion-language");
-setLanguage(SUPPORTED.includes(requested)?requested:(SUPPORTED.includes(stored)?stored:"it"),false);
+
+$("ask").onclick = ask;
+$("q").addEventListener("keydown", e => { if(e.key==="Enter") ask(); });
+$("reload").onclick = loadKB;
+
+renderChips();
 loadKB();
 </script>
 </body>

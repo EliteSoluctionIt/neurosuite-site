@@ -1,0 +1,1493 @@
+﻿<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <link rel="canonical" href="https://neurosuite.dev/neurosuite-hospitality-tourism-1-1-1-2.html">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="NeuroSuite">
+    <meta property="og:title" content="NeuroSuite Hospitality &amp; Tourism">
+    <meta property="og:description" content="NeuroSuite Hospitality &amp; Tourism — From clinical observation to premium guest experience">
+    <meta property="og:url" content="https://neurosuite.dev/neurosuite-hospitality-tourism-1-1-1-2.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NeuroSuite Hospitality &amp; Tourism">
+    <meta name="twitter:description" content="NeuroSuite Hospitality &amp; Tourism — From clinical observation to premium guest experience">
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="description" content="NeuroSuite Hospitality & Tourism — From clinical observation to premium guest experience">
+<title>NeuroSuite Hospitality & Tourism</title>
+<style>
+/* ============================================================
+   RESET & BASE
+   ============================================================ */
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --bg-deep:      #0a0a0c;
+  --bg-slide:     #0d0d10;
+  --bg-card:      #141418;
+  --bg-card2:     #1a1a20;
+  --gold:         #c9a84c;
+  --gold-light:   #e2c47a;
+  --gold-dim:     #7a6230;
+  --ivory:        #f0ead8;
+  --ivory-dim:    #a09880;
+  --white:        #ffffff;
+  --text-body:    #ccc5b0;
+  --text-muted:   #6e6a5e;
+  --accent-line:  rgba(201,168,76,0.25);
+  --radius:       3px;
+  --font-display: 'Didot', 'Bodoni MT', 'Bodoni 72', Georgia, 'Times New Roman', serif;
+  --font-body:    'Optima', 'Gill Sans', 'Century Gothic', Futura, 'Trebuchet MS', sans-serif;
+  --nav-h:        54px;
+  --pill-h:       44px;
+  --dots-h:       36px;
+}
+
+html, body {
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--bg-deep);
+  color: var(--ivory);
+  font-family: var(--font-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ============================================================
+   NAV BAR
+   ============================================================ */
+#topbar {
+  position: fixed;
+  top: 0; left: 0; right: 0;
+  height: var(--nav-h);
+  background: rgba(10,10,12,0.96);
+  border-bottom: 1px solid var(--accent-line);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 24px;
+  z-index: 1000;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+}
+
+#brand {
+  font-family: var(--font-display);
+  font-size: 13px;
+  letter-spacing: 0.18em;
+  color: var(--gold);
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+
+#lang-switcher {
+  display: flex;
+  gap: 4px;
+  align-items: center;
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
+.lang-btn {
+  background: none;
+  border: 1px solid transparent;
+  color: var(--ivory-dim);
+  font-family: var(--font-body);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  padding: 4px 10px;
+  cursor: pointer;
+  border-radius: 2px;
+  transition: all 0.25s;
+  text-transform: uppercase;
+  min-height: 30px;
+  min-width: 38px;
+}
+
+.lang-btn:hover {
+  color: var(--gold-light);
+  border-color: var(--gold-dim);
+}
+
+.lang-btn.active {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: rgba(201,168,76,0.08);
+}
+
+/* ============================================================
+   SLIDE CONTAINER
+   ============================================================ */
+#stage {
+  position: fixed;
+  top: var(--nav-h);
+  left: 0;
+  right: 0;
+  bottom: var(--dots-h);
+  overflow: hidden;
+}
+
+#track {
+  display: flex;
+  height: 100%;
+  transition: transform 0.55s cubic-bezier(0.77,0,0.175,1);
+  will-change: transform;
+}
+
+/* ============================================================
+   INDIVIDUAL SLIDES
+   ============================================================ */
+.slide {
+  flex: 0 0 100%;
+  width: 100%;
+  height: 100%;
+  overflow-y: auto;
+  overflow-x: hidden;
+  -webkit-overflow-scrolling: touch;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  /* Always start from top — scroll works correctly on all mobiles */
+  justify-content: flex-start;
+  padding: 0;
+  position: relative;
+}
+
+/* Inner wrapper: plain block, always starts at top.
+   JS adds padding-top dynamically to center short slides. */
+.slide-inner {
+  max-width: 760px;
+  width: 100%;
+  text-align: center;
+  display: block;
+  padding: 24px 28px 32px;
+  box-sizing: border-box;
+}
+
+/* subtle grain overlay */
+.slide::after {
+  content: '';
+  position: absolute;
+  inset: 0;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.028'/%3E%3C/svg%3E");
+  pointer-events: none;
+  z-index: 0;
+}
+
+.slide > * { position: relative; z-index: 1; }
+
+[dir="rtl"] .slide-inner {
+  text-align: right;
+}
+
+/* slide variants */
+.slide-hero       { background: var(--bg-deep); }
+.slide-dark       { background: var(--bg-slide); }
+.slide-card       { background: var(--bg-card); }
+.slide-card2      { background: var(--bg-card2); }
+.slide-cta        { background: #0b0b0e; }
+
+/* ============================================================
+   TYPOGRAPHY
+   ============================================================ */
+.kicker {
+  font-size: 10px;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 18px;
+  display: block;
+}
+
+h1.hero-title {
+  font-family: var(--font-display);
+  font-size: clamp(30px, 5.5vw, 62px);
+  font-weight: 400;
+  line-height: 1.12;
+  color: var(--ivory);
+  letter-spacing: -0.01em;
+  margin-bottom: 18px;
+}
+
+h1.hero-title em {
+  font-style: normal;
+  color: var(--gold);
+}
+
+h2.slide-title {
+  font-family: var(--font-display);
+  font-size: clamp(22px, 3.8vw, 40px);
+  font-weight: 400;
+  line-height: 1.18;
+  color: var(--ivory);
+  margin-bottom: 22px;
+  letter-spacing: -0.01em;
+}
+
+h3.sub-title {
+  font-family: var(--font-display);
+  font-size: clamp(16px, 2.5vw, 24px);
+  font-weight: 400;
+  line-height: 1.3;
+  color: var(--gold-light);
+  margin-bottom: 14px;
+}
+
+.hero-sub {
+  font-size: clamp(13px, 2vw, 17px);
+  color: var(--gold-light);
+  letter-spacing: 0.06em;
+  margin-bottom: 14px;
+  font-family: var(--font-display);
+  font-style: italic;
+}
+
+.hero-desc {
+  font-size: clamp(13px, 1.8vw, 16px);
+  color: var(--text-body);
+  line-height: 1.75;
+  max-width: 580px;
+  margin: 0 auto;
+}
+
+[dir="rtl"] .hero-desc { margin: 0; }
+
+p.body-text {
+  font-size: clamp(13px, 1.75vw, 15.5px);
+  color: var(--text-body);
+  line-height: 1.8;
+  margin-bottom: 14px;
+}
+
+p.body-text strong {
+  color: var(--ivory);
+  font-weight: 600;
+}
+
+.gold-rule {
+  width: 48px;
+  height: 1px;
+  background: var(--gold);
+  margin: 20px auto;
+  flex-shrink: 0;
+}
+
+[dir="rtl"] .gold-rule { margin: 20px 0; }
+
+/* ============================================================
+   PILL / TAG
+   ============================================================ */
+.tag {
+  display: inline-block;
+  font-size: 10px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  border: 1px solid var(--gold-dim);
+  color: var(--gold);
+  padding: 4px 12px;
+  border-radius: 2px;
+  margin: 0 4px 8px;
+}
+
+.tags { margin-bottom: 20px; }
+
+/* ============================================================
+   FEATURE GRID
+   ============================================================ */
+.feat-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 14px;
+  margin-top: 20px;
+  text-align: left;
+}
+
+[dir="rtl"] .feat-grid { text-align: right; }
+
+.feat-item {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(201,168,76,0.12);
+  border-radius: var(--radius);
+  padding: 18px 16px;
+}
+
+.feat-item .feat-label {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 8px;
+  display: block;
+}
+
+.feat-item p {
+  font-size: 13px;
+  color: var(--text-body);
+  line-height: 1.65;
+}
+
+/* ============================================================
+   CALLOUT BOX
+   ============================================================ */
+.callout {
+  border-left: 2px solid var(--gold);
+  padding: 16px 20px;
+  background: rgba(201,168,76,0.06);
+  border-radius: 0 var(--radius) var(--radius) 0;
+  margin: 18px 0;
+  text-align: left;
+}
+
+[dir="rtl"] .callout {
+  border-left: none;
+  border-right: 2px solid var(--gold);
+  border-radius: var(--radius) 0 0 var(--radius);
+  text-align: right;
+}
+
+.callout p {
+  font-size: 13.5px;
+  color: var(--text-body);
+  line-height: 1.75;
+}
+
+.callout strong { color: var(--ivory); }
+
+/* ============================================================
+   CTA BUTTON
+   ============================================================ */
+.cta-btn {
+  display: inline-block;
+  margin-top: 28px;
+  padding: 14px 36px;
+  border: 1px solid var(--gold);
+  color: var(--gold);
+  font-family: var(--font-body);
+  font-size: 12px;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  text-decoration: none;
+  border-radius: 2px;
+  cursor: pointer;
+  background: transparent;
+  transition: background 0.3s, color 0.3s;
+  min-height: 48px;
+}
+
+.cta-btn:hover {
+  background: var(--gold);
+  color: var(--bg-deep);
+}
+
+/* ============================================================
+   HERO DECORATION
+   ============================================================ */
+.hero-deco {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: hidden;
+  z-index: 0;
+}
+
+.hero-deco svg {
+  position: absolute;
+  right: -80px;
+  top: 50%;
+  transform: translateY(-50%);
+  opacity: 0.05;
+  width: min(500px, 80vw);
+}
+
+/* ============================================================
+   COMPARISON
+   ============================================================ */
+.compare-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 20px;
+  text-align: left;
+}
+
+[dir="rtl"] .compare-grid { text-align: right; }
+
+.compare-col {
+  padding: 18px 16px;
+  border-radius: var(--radius);
+}
+
+.compare-col.col-generic {
+  background: rgba(255,255,255,0.025);
+  border: 1px solid rgba(255,255,255,0.06);
+}
+
+.compare-col.col-ns {
+  background: rgba(201,168,76,0.06);
+  border: 1px solid rgba(201,168,76,0.18);
+}
+
+.compare-col .col-head {
+  font-size: 10px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  margin-bottom: 12px;
+  display: block;
+}
+
+.col-generic .col-head { color: var(--text-muted); }
+.col-ns .col-head { color: var(--gold); }
+
+.compare-col ul {
+  list-style: none;
+  padding: 0;
+}
+
+.compare-col ul li {
+  font-size: 13px;
+  color: var(--text-body);
+  line-height: 1.7;
+  padding: 4px 0;
+  border-bottom: 1px solid rgba(255,255,255,0.04);
+}
+
+.compare-col ul li:last-child { border-bottom: none; }
+.col-ns ul li { color: var(--ivory); }
+
+/* ============================================================
+   SLIDE COUNTER & DOTS
+   ============================================================ */
+#dots-bar {
+  position: fixed;
+  bottom: 0; left: 0; right: 0;
+  height: var(--dots-h);
+  background: rgba(10,10,12,0.96);
+  border-top: 1px solid var(--accent-line);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  z-index: 1000;
+}
+
+.dot {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  transition: background 0.3s, transform 0.3s;
+  cursor: pointer;
+  flex-shrink: 0;
+}
+
+.dot.active {
+  background: var(--gold);
+  transform: scale(1.4);
+}
+
+/* ============================================================
+   ARROW NAVIGATION
+   ============================================================ */
+.arrow {
+  position: fixed;
+  top: 50%;
+  transform: translateY(-50%);
+  background: rgba(10,10,12,0.7);
+  border: 1px solid var(--accent-line);
+  color: var(--gold-dim);
+  width: 44px;
+  height: 60px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  z-index: 999;
+  border-radius: 2px;
+  transition: color 0.25s, border-color 0.25s, background 0.25s;
+  font-size: 18px;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
+.arrow:hover {
+  color: var(--gold);
+  border-color: var(--gold);
+  background: rgba(201,168,76,0.08);
+}
+
+.arrow.hidden { opacity: 0; pointer-events: none; }
+
+#arr-prev { left: 8px; }
+#arr-next { right: 8px; }
+
+/* ============================================================
+   SLIDE COUNTER TEXT
+   ============================================================ */
+#slide-counter {
+  position: fixed;
+  bottom: calc(var(--dots-h) + 10px);
+  right: 18px;
+  font-size: 10px;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  z-index: 999;
+}
+
+/* ============================================================
+   ARABIC / RTL overrides
+   ============================================================ */
+[dir="rtl"] #brand { letter-spacing: 0.05em; }
+[dir="rtl"] .kicker { letter-spacing: 0.08em; }
+[dir="rtl"] #lang-switcher { flex-direction: row-reverse; }
+
+/* ============================================================
+   CHINESE font stack
+   ============================================================ */
+.lang-zh * {
+  font-family: 'PingFang SC', 'Hiragino Sans GB', 'Microsoft YaHei', 'WenQuanYi Micro Hei', var(--font-body);
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width: 600px) {
+  #topbar { padding: 0 12px; }
+  #brand { font-size: 11px; letter-spacing: 0.1em; }
+  .lang-btn { font-size: 10px; padding: 4px 7px; }
+  .slide-inner { padding: 20px 16px 24px; }
+  .compare-grid { grid-template-columns: 1fr; }
+  .feat-grid { grid-template-columns: 1fr; }
+  .arrow { display: none; }
+  h1.hero-title { font-size: clamp(26px, 7vw, 38px); }
+  h2.slide-title { font-size: clamp(20px, 5.5vw, 30px); }
+}
+
+@media (min-width: 900px) {
+  .slide-inner { text-align: left; }
+  [dir="rtl"] .slide-inner { text-align: right; }
+  .hero-desc { margin: 0; }
+  .gold-rule { margin: 20px 0; }
+}
+
+/* ============================================================
+   SUBTLE ENTRANCE ANIMATION
+   ============================================================ */
+@keyframes fadeUp {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.slide.active .slide-inner {
+  animation: fadeUp 0.55s ease forwards;
+}
+
+</style>
+</head>
+<body>
+
+<!-- ===== TOP BAR ===== -->
+<nav id="topbar">
+  <span id="brand">NeuroSuite</span>
+  <div id="lang-switcher">
+    <button class="lang-btn active" onclick="setLang('en')">EN</button>
+    <button class="lang-btn" onclick="setLang('en')">IT</button>
+    <button class="lang-btn" onclick="setLang('fr')">FR</button>
+    <button class="lang-btn" onclick="setLang('ar')">AR</button>
+    <button class="lang-btn" onclick="setLang('zh')">中文</button>
+  </div>
+</nav>
+
+<!-- ===== SLIDE COUNTER ===== -->
+<div id="slide-counter">1 / 12</div>
+
+<!-- ===== ARROWS ===== -->
+<button class="arrow hidden" id="arr-prev" aria-label="Previous" onclick="move(-1)">&#8592;</button>
+<button class="arrow" id="arr-next" aria-label="Next" onclick="move(1)">&#8594;</button>
+
+<!-- ===== STAGE ===== -->
+<div id="stage">
+  <div id="track">
+
+    <!-- ── SLIDE 1: HERO ── -->
+    <section class="slide slide-hero">
+      <div class="hero-deco">
+        <svg viewBox="0 0 400 400" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <circle cx="200" cy="200" r="180" stroke="white" stroke-width="0.5"/>
+          <circle cx="200" cy="200" r="130" stroke="white" stroke-width="0.5"/>
+          <circle cx="200" cy="200" r="80"  stroke="white" stroke-width="0.5"/>
+          <line x1="20" y1="200" x2="380" y2="200" stroke="white" stroke-width="0.5"/>
+          <line x1="200" y1="20"  x2="200" y2="380" stroke="white" stroke-width="0.5"/>
+          <line x1="72"  y1="72"  x2="328" y2="328" stroke="white" stroke-width="0.3"/>
+          <line x1="328" y1="72"  x2="72"  y2="328" stroke="white" stroke-width="0.3"/>
+        </svg>
+      </div>
+      <div class="slide-inner">
+        <span class="kicker" data-k="s1_kicker">Verticale Strategica</span>
+        <h1 class="hero-title">NeuroSuite<br><em data-k="s1_sub1">Hospitality &amp; Tourism</em></h1>
+        <p class="hero-sub" data-k="s1_sub2">From clinical observation to premium guest experience</p>
+        <div class="gold-rule"></div>
+        <p class="hero-desc" data-k="s1_desc">An intelligent, privacy-first architecture for hospitality, assistance, safety and personalized service.</p>
+      </div>
+    </section>
+
+    <!-- ── SLIDE 2: ORIGINE ── -->
+    <section class="slide slide-dark">
+      <div class="slide-inner">
+        <span class="kicker" data-k="s2_kicker">Genesi</span>
+        <h2 class="slide-title" data-k="s2_title">L'origine clinico-assistenziale</h2>
+        <div class="gold-rule"></div>
+        <p class="body-text" data-k="s2_p1">NeuroSuite nasce da una constatazione profonda: l'essere umano mostra segnali molto prima che fragilità, decadimento fisico o cognitivo, malessere o rischio diventino visibili.</p>
+        <p class="body-text" data-k="s2_p2">La scienza ha confermato l'esistenza di segnali precoci. Ma questi segnali restano spesso dispersi, invisibili o interpretati troppo tardi, quando l'occasione di intervento preventivo è già trascorsa.</p>
+        <div class="callout">
+          <p data-k="s2_callout">NeuroSuite è nata per raccogliere questi segnali, organizzarli e renderli leggibili, prima che diventino evidenti.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SLIDE 3: PARADIGMA ── -->
+    <section class="slide slide-card">
+      <div class="slide-inner">
+        <span class="kicker" data-k="s3_kicker">Approccio</span>
+        <h2 class="slide-title" data-k="s3_title">Un cambio di paradigma</h2>
+        <div class="gold-rule"></div>
+        <p class="body-text" data-k="s3_p1">NeuroSuite non aspetta il sintomo. Osserva in modo intelligente, continuo e non invasivo ciò che cambia nella persona.</p>
+        <div class="feat-grid">
+          <div class="feat-item">
+            <span class="feat-label" data-k="s3_f1l">Movimento</span>
+            <p data-k="s3_f1p">Andatura, postura, schemi motori e variazioni nel tempo.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s3_f2l">Voce</span>
+            <p data-k="s3_f2p">Tono, ritmo, articolazione e variazioni sottili nel parlato.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s3_f3l">Abitudini e routine</span>
+            <p data-k="s3_f3p">Orari, sequenze comportamentali, sonno, riposo e irregolarità.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s3_f4l">Segnale neurofunzionale</span>
+            <p data-k="s3_f4p">Eventuale lettura EEG tramite dispositivi indossabili semplici, senza gel e completamente non invasivi.</p>
+          </div>
+        </div>
+        <p class="body-text" style="margin-top:16px;" data-k="s3_p2">Ogni segnale viene confrontato con la normalità individuale di quella persona, non con medie statistiche di popolazione.</p>
+      </div>
+    </section>
+
+    <!-- ── SLIDE 4: NON DIAGNOSTICO ── -->
+    <section class="slide slide-card2">
+      <div class="slide-inner">
+        <span class="kicker" data-k="s4_kicker">Posizionamento</span>
+        <h2 class="slide-title" data-k="s4_title">Una piattaforma osservativa, non diagnostica</h2>
+        <div class="gold-rule"></div>
+        <p class="body-text" data-k="s4_p1">NeuroSuite non è uno strumento diagnostico e non sostituisce medici, clinici o operatori specializzati. Non emette diagnosi e non formula prognosi cliniche.</p>
+        <div class="callout">
+          <p data-k="s4_callout">Il suo valore è diverso: trasformare segnali piccoli e dispersi in informazioni utili, leggibili e tempestive per chi deve prendere decisioni.</p>
+        </div>
+        <div class="feat-grid" style="margin-top:14px;">
+          <div class="feat-item">
+            <span class="feat-label" data-k="s4_f1l">Osservazione</span>
+            <p data-k="s4_f1p">Raccolta e organizzazione multimodale dei dati.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s4_f2l">Prevenzione</span>
+            <p data-k="s4_f2p">Segnalazione precoce prima che il opportunità diventi evidente.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s4_f3l">Supporto decisionale</span>
+            <p data-k="s4_f3p">Informazioni chiare per il personale operativo e clinico.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s4_f4l">Sicurezza</span>
+            <p data-k="s4_f4p">Rilevamento discreto di situazioni che richiedono attenzione.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SLIDE 5: PRIVACY ── -->
+    <section class="slide slide-dark">
+      <div class="slide-inner">
+        <span class="kicker" data-k="s5_kicker">Privacy &amp; Consenso</span>
+        <h2 class="slide-title" data-k="s5_title">Privacy-first by design</h2>
+        <div class="gold-rule"></div>
+        <p class="body-text" data-k="s5_p1">Privacy, consenso, sicurezza, dignità della persona e protezione dei dati non sono accessori: sono condizioni fondamentali dell'architettura.</p>
+        <div class="feat-grid">
+          <div class="feat-item">
+            <span class="feat-label" data-k="s5_f1l">Attivazione vocale</span>
+            <p data-k="s5_f1p">Il sistema si attiva, elabora la richiesta, si disattiva. Non tiene in ascolto permanente senza necessità.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s5_f2l">Conversazioni non memorizzate</span>
+            <p data-k="s5_f2p">Le conversazioni non necessarie non vengono conservate. Le richieste operative possono restare registrate fino a fine soggiorno come prova del servizio, poi cancellate.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s5_f3l">Memoria personale su consenso</span>
+            <p data-k="s5_f3p">Le preferenze personali dell'ospite possono essere conservate solo con consenso esplicito, dichiarato e revocabile.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s5_f4l">Governance trasparente</span>
+            <p data-k="s5_f4p">Regole chiare, documentate e coerenti con normative sulla protezione dei dati personali.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SLIDE 6: DALLA CLINICA ALL'HOSPITALITY ── -->
+    <section class="slide slide-card">
+      <div class="slide-inner">
+        <span class="kicker" data-k="s6_kicker">Trasferimento</span>
+        <h2 class="slide-title" data-k="s6_title">Dalla clinica all'ospitalità premium</h2>
+        <div class="gold-rule"></div>
+        <p class="body-text" data-k="s6_p1">La provenienza clinica di NeuroSuite non è un dettaglio tecnico: è credenziale, rigore e standing. Pochi sistemi nel settore hospitality nascono da un'architettura pensata per ambienti di cura.</p>
+        <p class="body-text" data-k="s6_p2">La stessa piattaforma, la stessa logica, la stessa intelligenza relazionale possono ora diventare un livello superiore di esperienza per hotel, resort, turismo premium e accoglienza evoluta.</p>
+        <div class="callout">
+          <p data-k="s6_callout"><strong>Non è un semplice assistente vocale generico.</strong> È una intelligenza relazionale di contesto: conosce il luogo, i servizi reali, le procedure e le persone dietro ogni richiesta.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SLIDE 7: ASSISTENTE BRANDIZZATO ── -->
+    <section class="slide slide-card2">
+      <div class="slide-inner">
+        <span class="kicker" data-k="s7_kicker">Personalizzazione</span>
+        <h2 class="slide-title" data-k="s7_title">Il tuo brand, la nostra architettura</h2>
+        <div class="gold-rule"></div>
+        <p class="body-text" data-k="s7_p1">Ogni catena alberghiera, resort o gruppo turistico può personalizzare il modulo con il proprio nome, tono, stile, voce, servizi e identità di brand. Il cliente finale può non vedere mai il nome NeuroSuite.</p>
+        <div class="callout">
+          <p data-k="s7_callout">Una catena può chiamarlo <strong>Arturo</strong>, o scegliere qualsiasi altro nome coerente con il proprio brand. Sotto, con precisione, resta NeuroSuite: piattaforma, architettura, logica, intelligenza e sicurezza.</p>
+        </div>
+        <div class="feat-grid" style="margin-top:14px;">
+          <div class="feat-item">
+            <span class="feat-label" data-k="s7_f1l">Nome e voce</span>
+            <p data-k="s7_f1p">Personalizzazione completa dell'identità vocale e testuale.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s7_f2l">Servizi reali</span>
+            <p data-k="s7_f2p">Integrazione con i servizi, le procedure e il personale della struttura.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s7_f3l">Territorio</span>
+            <p data-k="s7_f3p">Conoscenza del contesto locale, eventi, esperienze e partner del territorio.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s7_f4l">Scalabilità</span>
+            <p data-k="s7_f4p">Dalla singola struttura alla catena internazionale multisede.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SLIDE 8: PRIMA DELL'ARRIVO ── -->
+    <section class="slide slide-dark">
+      <div class="slide-inner">
+        <span class="kicker" data-k="s8_kicker">Pre-Arrivo</span>
+        <h2 class="slide-title" data-k="s8_title">Prima ancora di arrivare</h2>
+        <div class="gold-rule"></div>
+        <p class="body-text" data-k="s8_p1">Il modulo può essere integrato direttamente nel sito della struttura o nella piattaforma di prenotazione. Prima dell'arrivo, l'ospite può dialogare, scoprire e pianificare.</p>
+        <div class="feat-grid">
+          <div class="feat-item">
+            <span class="feat-label" data-k="s8_f1l">Esperienze</span>
+            <p data-k="s8_f1p">Cene speciali, spa, escursioni, eventi privati, transfer e servizi personalizzati.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s8_f2l">Territorio</span>
+            <p data-k="s8_f2p">Informazioni turistiche, suggerimenti locali, itinerari, stagionalità e contesti culturali.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s8_f3l">Richieste particolari</span>
+            <p data-k="s8_f3p">Preferenze alimentari, celebrazioni private, allestimenti speciali, esigenze specifiche.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s8_f4l">Conversione</span>
+            <p data-k="s8_f4p">Il sistema trasforma l'interesse espresso in prenotazioni reali e servizi confermati.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SLIDE 9: DURANTE IL SOGGIORNO ── -->
+    <section class="slide slide-card">
+      <div class="slide-inner">
+        <span class="kicker" data-k="s9_kicker">In Camera</span>
+        <h2 class="slide-title" data-k="s9_title">Il concierge intelligente, H24</h2>
+        <div class="gold-rule"></div>
+        <p class="body-text" data-k="s9_p1">In camera diventa un concierge presente, discreto e capace. Non risponde soltanto: coordina, attiva e risolve.</p>
+        <div class="callout">
+          <p data-k="s9_callout">L'ospite chiede una cena privata in terrazza con barbecue. Il sistema coordina cucina, personale, tempi, allestimento e servizio. Poi lascia l'intimità agli ospiti, senza ulteriore intrusione.</p>
+        </div>
+        <div class="feat-grid" style="margin-top:14px;">
+          <div class="feat-item">
+            <span class="feat-label" data-k="s9_f1l">Room service</span>
+            <p data-k="s9_f1p">Champagne, colazione, cena in camera, richieste speciali in qualsiasi ora.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s9_f2l">Esperienze in loco</span>
+            <p data-k="s9_f2p">Barbecue privato, cena esclusiva, intrattenimento personalizzato, attività in struttura.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s9_f3l">Informazioni</span>
+            <p data-k="s9_f3p">Turismo locale, meteo, trasporti, attrazioni, raccomandazioni certificate.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s9_f4l">Passaggio umano</span>
+            <p data-k="s9_f4p">Il sistema inoltra sempre la richiesta dell’ospite alla persona o al reparto indicato dalla struttura, e segnala anche situazioni fuori dal normale.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SLIDE 10: SICUREZZA DISCRETA ── -->
+    <section class="slide slide-card2">
+      <div class="slide-inner">
+        <span class="kicker" data-k="s10_kicker">Protezione</span>
+        <h2 class="slide-title" data-k="s10_title">Sicurezza discreta e cura</h2>
+        <div class="gold-rule"></div>
+        <p class="body-text" data-k="s10_p1">Allo stesso tempo, il sistema resta discretamente attivo su sicurezza e cura. Non come sorveglianza: come livello protettivo silenzioso, sempre governato da privacy e consenso.</p>
+        <div class="feat-grid">
+          <div class="feat-item">
+            <span class="feat-label" data-k="s10_f1l">Cadute e malori</span>
+            <p data-k="s10_f1p">Rilevamento di cadute o possibili malori, con segnalazione immediata al personale.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s10_f2l">Accessi anomali</span>
+            <p data-k="s10_f2p">Rilevamento di accessi non autorizzati o situazioni operative fuori norma.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s10_f3l">Richiesta di intervento</span>
+            <p data-k="s10_f3p">Attivazione di assistenza umana rapida in caso di necessità espressa o rilevata.</p>
+          </div>
+          <div class="feat-item">
+            <span class="feat-label" data-k="s10_f4l">Anomalie operative</span>
+            <p data-k="s10_f4p">Segnalazione di situazioni che richiedono attenzione del personale di struttura.</p>
+          </div>
+        </div>
+        <p class="body-text" style="margin-top:14px;font-style:italic;color:var(--ivory-dim);" data-k="s10_p2">Ogni funzione di sicurezza è attivabile solo con configurazione esplicita, secondo le politiche della struttura e nel rispetto delle normative vigenti.</p>
+      </div>
+    </section>
+
+    <!-- ── SLIDE 11: NON UN ALTRO ALEXA ── -->
+    <section class="slide slide-dark">
+      <div class="slide-inner">
+        <span class="kicker" data-k="s11_kicker">Differenziazione</span>
+        <h2 class="slide-title" data-k="s11_title" style="color:var(--gold-light);">NeuroSuite Hospitality<br>non è un altro Alexa</h2>
+        <div class="gold-rule"></div>
+        <div class="compare-grid">
+          <div class="compare-col col-generic">
+            <span class="col-head" data-k="s11_col1head">Assistenti generici</span>
+            <ul>
+              <li data-k="s11_c1l1">Risposte generali, non contestuali</li>
+              <li data-k="s11_c1l2">Nessuna conoscenza della struttura</li>
+              <li data-k="s11_c1l3">Nessuna integrazione con i servizi reali</li>
+              <li data-k="s11_c1l4">Privacy difficile da governare</li>
+              <li data-k="s11_c1l5">Non coordinano il mondo reale</li>
+            </ul>
+          </div>
+          <div class="compare-col col-ns">
+            <span class="col-head" data-k="s11_col2head">NeuroSuite Hospitality</span>
+            <ul>
+              <li data-k="s11_c2l1">Intelligenza relazionale di contesto</li>
+              <li data-k="s11_c2l2">Conosce luogo, brand e servizi reali</li>
+              <li data-k="s11_c2l3">Coordina personale, cucina, logistica</li>
+              <li data-k="s11_c2l4">Privacy-first by design</li>
+              <li data-k="s11_c2l5">Attiva il mondo reale intorno all'ospite</li>
+            </ul>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ── SLIDE 12: CTA ── -->
+    <section class="slide slide-cta">
+      <div class="slide-inner" style="text-align:center;">
+        <span class="kicker" data-k="s12_kicker">Prossimo Passo</span>
+        <h2 class="slide-title" data-k="s12_title">Piattaforma madre. Intelligenza proprietaria.</h2>
+        <div class="gold-rule" style="margin:20px auto;"></div>
+        <p class="body-text" style="max-width:560px;margin:0 auto 14px;" data-k="s12_p1">Ogni struttura può personalizzare l'esperienza per i propri ospiti. Sotto resta NeuroSuite: piattaforma, architettura, logica, intelligenza, sicurezza e proprietà tecnologica.</p>
+        <p class="body-text" style="max-width:560px;margin:0 auto;" data-k="s12_p2">La tecnologia non viene ceduta. Viene offerta come servizio, con pieno controllo sull'identità di brand di chi la adotta.</p>
+        <div style="margin-top:28px;">
+          <div class="tags">
+            <span class="tag" data-k="s12_t1">Pilot</span>
+            <span class="tag" data-k="s12_t2">Partnership</span>
+            <span class="tag" data-k="s12_t3">Hospitality Premium</span>
+          </div>
+          <p style="font-size:13px;color:var(--ivory-dim);margin-bottom:6px;letter-spacing:0.08em;font-style:italic;" data-k="s12_cta_pre">A private conversation to explore pilots, partnerships and strategic hospitality applications.</p>
+          <a class="cta-btn" href="mailto:alessandro@neurosuite.dev" data-k="s12_cta">Request a Private Conversation</a>
+        </div>
+        <div style="margin-top:36px;padding-top:24px;border-top:1px solid var(--accent-line);">
+          <p style="font-size:10px;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-muted);">neurosuite.dev</p>
+        </div>
+      </div>
+    </section>
+
+  </div><!-- /track -->
+</div><!-- /stage -->
+
+<!-- ===== DOTS ===== -->
+<div id="dots-bar"></div>
+
+<!-- ===================================================
+     TRANSLATIONS
+     =================================================== -->
+<script>
+const T = {
+  it: {
+    s1_kicker:"Verticale Strategica",
+    s1_sub1:"Hospitality &amp; Tourism",
+    s1_sub2:"Dall'osservazione clinica all'esperienza ospite premium",
+    s1_desc:"Un'architettura intelligente e privacy-first per ospitalità, assistenza, sicurezza e servizio personalizzato.",
+    s2_kicker:"Genesi",
+    s2_title:"L'origine clinico-assistenziale",
+    s2_p1:"NeuroSuite nasce da una constatazione profonda: l'essere umano mostra segnali molto prima che fragilità, decadimento fisico o cognitivo, malessere o rischio diventino visibili.",
+    s2_p2:"La scienza ha confermato l'esistenza di segnali precoci. Ma questi segnali restano spesso dispersi, invisibili o interpretati troppo tardi, quando l'occasione di intervento preventivo è già trascorsa.",
+    s2_callout:"NeuroSuite è nata per raccogliere questi segnali, organizzarli e renderli leggibili, prima che diventino evidenti.",
+    s3_kicker:"Approccio",
+    s3_title:"Un cambio di paradigma",
+    s3_p1:"NeuroSuite non aspetta il sintomo. Osserva in modo intelligente, continuo e non invasivo ciò che cambia nella persona.",
+    s3_f1l:"Movimento",s3_f1p:"Andatura, postura, schemi motori e variazioni nel tempo.",
+    s3_f2l:"Voce",s3_f2p:"Tono, ritmo, articolazione e variazioni sottili nel parlato.",
+    s3_f3l:"Abitudini e routine",s3_f3p:"Orari, sequenze comportamentali, sonno, riposo e irregolarità.",
+    s3_f4l:"Segnale neurofunzionale",s3_f4p:"Eventuale lettura EEG tramite dispositivi indossabili semplici, senza gel e completamente non invasivi.",
+    s3_p2:"Ogni segnale viene confrontato con la normalità individuale di quella persona, non con medie statistiche di popolazione.",
+    s4_kicker:"Posizionamento",
+    s4_title:"Una piattaforma osservativa, non diagnostica",
+    s4_p1:"NeuroSuite non è uno strumento diagnostico e non sostituisce medici, clinici o operatori specializzati. Non emette diagnosi e non formula prognosi cliniche.",
+    s4_callout:"Il suo valore è diverso: trasformare segnali piccoli e dispersi in informazioni utili, leggibili e tempestive per chi deve prendere decisioni.",
+    s4_f1l:"Osservazione",s4_f1p:"Raccolta e organizzazione multimodale dei dati.",
+    s4_f2l:"Prevenzione",s4_f2p:"Segnalazione precoce prima che il opportunità diventi evidente.",
+    s4_f3l:"Supporto decisionale",s4_f3p:"Informazioni chiare per il personale operativo e clinico.",
+    s4_f4l:"Sicurezza",s4_f4p:"Rilevamento discreto di situazioni che richiedono attenzione.",
+    s5_kicker:"Privacy &amp; Consenso",
+    s5_title:"Privacy-first by design",
+    s5_p1:"Privacy, consenso, sicurezza, dignità della persona e protezione dei dati non sono accessori: sono condizioni fondamentali dell'architettura.",
+    s5_f1l:"Attivazione vocale",s5_f1p:"Il sistema si attiva, elabora la richiesta, si disattiva. Non tiene in ascolto permanente senza necessità.",
+    s5_f2l:"Conversazioni non memorizzate",s5_f2p:"Le conversazioni non necessarie non vengono conservate. Le richieste operative possono restare registrate fino a fine soggiorno come prova del servizio, poi cancellate.",
+    s5_f3l:"Memoria personale su consenso",s5_f3p:"Le preferenze personali dell'ospite possono essere conservate solo con consenso esplicito, dichiarato e revocabile.",
+    s5_f4l:"Governance trasparente",s5_f4p:"Regole chiare, documentate e coerenti con normative sulla protezione dei dati personali.",
+    s6_kicker:"Trasferimento",
+    s6_title:"Dalla clinica all'ospitalità premium",
+    s6_p1:"La provenienza clinica di NeuroSuite non è un dettaglio tecnico: è credenziale, rigore e standing. Pochi sistemi nel settore hospitality nascono da un'architettura pensata per ambienti di cura.",
+    s6_p2:"La stessa piattaforma, la stessa logica, la stessa intelligenza relazionale possono ora diventare un livello superiore di esperienza per hotel, resort, turismo premium e accoglienza evoluta.",
+    s6_callout:"<strong>Non è un semplice assistente vocale generico.</strong> È una intelligenza relazionale di contesto: conosce il luogo, i servizi reali, le procedure e le persone dietro ogni richiesta.",
+    s7_kicker:"Personalizzazione",
+    s7_title:"Il tuo brand, la nostra architettura",
+    s7_p1:"Ogni catena alberghiera, resort o gruppo turistico può personalizzare il modulo con il proprio nome, tono, stile, voce, servizi e identità di brand. Il cliente finale può non vedere mai il nome NeuroSuite.",
+    s7_callout:"Una catena può chiamarlo <strong>Arturo</strong>, o scegliere qualsiasi altro nome coerente con il proprio brand. Sotto, con precisione, resta NeuroSuite: piattaforma, architettura, logica, intelligenza e sicurezza.",
+    s7_f1l:"Nome e voce",s7_f1p:"Personalizzazione completa dell'identità vocale e testuale.",
+    s7_f2l:"Servizi reali",s7_f2p:"Integrazione con i servizi, le procedure e il personale della struttura.",
+    s7_f3l:"Territorio",s7_f3p:"Conoscenza del contesto locale, eventi, esperienze e partner del territorio.",
+    s7_f4l:"Scalabilità",s7_f4p:"Dalla singola struttura alla catena internazionale multisede.",
+    s8_kicker:"Pre-Arrivo",
+    s8_title:"Prima ancora di arrivare",
+    s8_p1:"Il modulo può essere integrato direttamente nel sito della struttura o nella piattaforma di prenotazione. Prima dell'arrivo, l'ospite può dialogare, scoprire e pianificare.",
+    s8_f1l:"Esperienze",s8_f1p:"Cene speciali, spa, escursioni, eventi privati, transfer e servizi personalizzati.",
+    s8_f2l:"Territorio",s8_f2p:"Informazioni turistiche, suggerimenti locali, itinerari, stagionalità e contesti culturali.",
+    s8_f3l:"Richieste particolari",s8_f3p:"Preferenze alimentari, celebrazioni private, allestimenti speciali, esigenze specifiche.",
+    s8_f4l:"Conversione",s8_f4p:"Il sistema trasforma l'interesse espresso in prenotazioni reali e servizi confermati.",
+    s9_kicker:"In Camera",
+    s9_title:"Il concierge intelligente, H24",
+    s9_p1:"In camera diventa un concierge presente, discreto e capace. Non risponde soltanto: coordina, attiva e risolve.",
+    s9_callout:"L'ospite chiede una cena privata in terrazza con barbecue. Il sistema coordina cucina, personale, tempi, allestimento e servizio. Poi lascia l'intimità agli ospiti, senza ulteriore intrusione.",
+    s9_f1l:"Room service",s9_f1p:"Champagne, colazione, cena in camera, richieste speciali in qualsiasi ora.",
+    s9_f2l:"Esperienze in loco",s9_f2p:"Barbecue privato, cena esclusiva, intrattenimento personalizzato, attività in struttura.",
+    s9_f3l:"Informazioni",s9_f3p:"Turismo locale, meteo, trasporti, attrazioni, raccomandazioni certificate.",
+    s9_f4l:"Passaggio umano",s9_f4p:"Il sistema inoltra sempre la richiesta dell’ospite alla persona o al reparto indicato dalla struttura, e segnala anche situazioni fuori dal normale.",
+    s10_kicker:"Protezione",
+    s10_title:"Sicurezza discreta e cura",
+    s10_p1:"Allo stesso tempo, il sistema resta discretamente attivo su sicurezza e cura. Non come sorveglianza: come livello protettivo silenzioso, sempre governato da privacy e consenso.",
+    s10_f1l:"Cadute e malori",s10_f1p:"Rilevamento di cadute o possibili malori, con segnalazione immediata al personale.",
+    s10_f2l:"Accessi anomali",s10_f2p:"Rilevamento di accessi non autorizzati o situazioni operative fuori norma.",
+    s10_f3l:"Richiesta di intervento",s10_f3p:"Attivazione di assistenza umana rapida in caso di necessità espressa o rilevata.",
+    s10_f4l:"Anomalie operative",s10_f4p:"Segnalazione di situazioni che richiedono attenzione del personale di struttura.",
+    s10_p2:"Ogni funzione di sicurezza è attivabile solo con configurazione esplicita, secondo le politiche della struttura e nel rispetto delle normative vigenti.",
+    s11_kicker:"Differenziazione",
+    s11_title:"NeuroSuite Hospitality<br>non è un altro Alexa",
+    s11_col1head:"Assistenti generici",
+    s11_c1l1:"Risposte generali, non contestuali",s11_c1l2:"Nessuna conoscenza della struttura",s11_c1l3:"Nessuna integrazione con i servizi reali",s11_c1l4:"Privacy difficile da governare",s11_c1l5:"Non coordinano il mondo reale",
+    s11_col2head:"NeuroSuite Hospitality",
+    s11_c2l1:"Intelligenza relazionale di contesto",s11_c2l2:"Conosce luogo, brand e servizi reali",s11_c2l3:"Coordina personale, cucina, logistica",s11_c2l4:"Privacy-first by design",s11_c2l5:"Attiva il mondo reale intorno all'ospite",
+    s12_kicker:"Prossimo Passo",
+    s12_title:"Piattaforma madre. Intelligenza proprietaria.",
+    s12_p1:"Ogni struttura può personalizzare l'esperienza per i propri ospiti. Sotto resta NeuroSuite: piattaforma, architettura, logica, intelligenza, sicurezza e proprietà tecnologica.",
+    s12_p2:"La tecnologia non viene ceduta. Viene offerta come servizio, con pieno controllo sull'identità di brand di chi la adotta.",
+    s12_t1:"Pilot",s12_t2:"Partnership",s12_t3:"Ospitalità Premium",
+    s12_cta_pre:"Una conversazione riservata per esplorare pilot, partnership e applicazioni strategiche nel settore hospitality.",
+    s12_cta:"Richiedi una conversazione privata"
+  },
+
+  en: {
+    s1_kicker:"Strategic Vertical",
+    s1_sub1:"Hospitality &amp; Tourism",
+    s1_sub2:"From clinical observation to premium guest experience",
+    s1_desc:"An intelligent, privacy-first architecture for hospitality, assistance, safety and personalized service.",
+    s2_kicker:"Origin",
+    s2_title:"A clinical-care origin",
+    s2_p1:"NeuroSuite was born from a deep observation: the human body reveals signals long before fragility, cognitive or physical decline, discomfort or risk become visible.",
+    s2_p2:"Science has confirmed the existence of early-warning signals. Yet they often remain dispersed, invisible or interpreted too late, once the window for preventive action has already closed.",
+    s2_callout:"NeuroSuite was built to collect these signals, organize them, and make them legible — before they become apparent.",
+    s3_kicker:"Approach",
+    s3_title:"A shift in paradigm",
+    s3_p1:"NeuroSuite does not wait for the symptom. It observes, continuously and non-invasively, what changes within a person.",
+    s3_f1l:"Movement",s3_f1p:"Gait, posture, motor patterns and their variations over time.",
+    s3_f2l:"Voice",s3_f2p:"Tone, rhythm, articulation and subtle variations in speech.",
+    s3_f3l:"Habits and routine",s3_f3p:"Schedules, behavioral sequences, sleep, rest and irregularities.",
+    s3_f4l:"Neurofunctional signal",s3_f4p:"Optional EEG reading via simple, gel-free, fully non-invasive wearable devices.",
+    s3_p2:"Every signal is compared against that individual's personal baseline, not against population averages.",
+    s4_kicker:"Positioning",
+    s4_title:"An observational platform, not diagnostic",
+    s4_p1:"NeuroSuite is not a diagnostic tool and does not replace physicians, clinicians or specialist operators. It does not issue diagnoses or clinical prognoses.",
+    s4_callout:"Its value is different: transforming small, dispersed signals into useful, readable and timely information for those who must make decisions.",
+    s4_f1l:"Observation",s4_f1p:"Multimodal data collection and organization.",
+    s4_f2l:"Prevention",s4_f2p:"Early flagging before a opportunity becomes apparent.",
+    s4_f3l:"Decision support",s4_f3p:"Clear information for operational and clinical staff.",
+    s4_f4l:"Safety",s4_f4p:"Discreet detection of situations that require attention.",
+    s5_kicker:"Privacy &amp; Consent",
+    s5_title:"Privacy-first by design",
+    s5_p1:"Privacy, consent, security, personal dignity and data protection are not add-ons: they are foundational conditions of the architecture.",
+    s5_f1l:"Voice activation",s5_f1p:"The system activates, processes the request, deactivates. It does not maintain permanent listening without need.",
+    s5_f2l:"Conversations not stored",s5_f2p:"Unnecessary conversations are not retained. Operational requests may be kept until end of stay as proof of service, then deleted.",
+    s5_f3l:"Personal memory by consent",s5_f3p:"Guest preferences may be retained only with explicit, declared and revocable consent.",
+    s5_f4l:"Transparent governance",s5_f4p:"Clear, documented rules consistent with applicable data protection regulations.",
+    s6_kicker:"Transfer",
+    s6_title:"From clinical care to premium hospitality",
+    s6_p1:"NeuroSuite's clinical heritage is not a technical footnote: it is a credential, a mark of rigor and standing. Few hospitality systems are born from an architecture designed for care environments.",
+    s6_p2:"The same platform, the same logic, the same relational intelligence can now become a superior layer of experience for hotels, resorts, premium tourism and evolved guest care.",
+    s6_callout:"<strong>This is not a generic voice assistant.</strong> It is contextual relational intelligence: it knows the property, the real services, the procedures and the people behind every request.",
+    s7_kicker:"Customization",
+    s7_title:"Your brand, our architecture",
+    s7_p1:"Every hotel chain, resort or travel group can personalize the module with its own name, tone, style, voice, services and brand identity. The end guest may never see the name NeuroSuite.",
+    s7_callout:"A chain can name it <strong>Arturo</strong>, or any name coherent with its own brand. Underneath, with precision, remains NeuroSuite: platform, architecture, logic, intelligence and security.",
+    s7_f1l:"Name and voice",s7_f1p:"Complete customization of vocal and textual identity.",
+    s7_f2l:"Real services",s7_f2p:"Integration with the property's services, procedures and staff.",
+    s7_f3l:"Territory",s7_f3p:"Knowledge of local context, events, experiences and destination partners.",
+    s7_f4l:"Scalability",s7_f4p:"From a single property to a multi-site international chain.",
+    s8_kicker:"Pre-Arrival",
+    s8_title:"Before they even arrive",
+    s8_p1:"The module can be integrated directly into the property website or booking platform. Before arrival, guests can converse, discover and plan.",
+    s8_f1l:"Experiences",s8_f1p:"Special dinners, spa, excursions, private events, transfers and personalized services.",
+    s8_f2l:"Territory",s8_f2p:"Tourist information, local tips, itineraries, seasonal highlights and cultural contexts.",
+    s8_f3l:"Special requests",s8_f3p:"Dietary preferences, private celebrations, special arrangements, specific needs.",
+    s8_f4l:"Conversion",s8_f4p:"The system turns expressed interest into real bookings and confirmed services.",
+    s9_kicker:"In-Room",
+    s9_title:"The intelligent concierge, 24/7",
+    s9_p1:"In the room, it becomes a present, discreet and capable concierge. It does not simply answer: it coordinates, activates and resolves.",
+    s9_callout:"A guest requests a private terrace dinner with a barbecue. The system coordinates the kitchen, staff, timing, setup and service. Then it steps back, leaving the guests their privacy.",
+    s9_f1l:"Room service",s9_f1p:"Champagne, breakfast, in-room dining, special requests at any hour.",
+    s9_f2l:"On-site experiences",s9_f2p:"Private barbecue, exclusive dinner, personalized entertainment, in-property activities.",
+    s9_f3l:"Information",s9_f3p:"Local tourism, weather, transport, attractions, certified recommendations.",
+    s9_f4l:"Human handoff",s9_f4p:"The system always forwards the guest request to the person or department designated by the property, and also flags situations outside normal patterns.",
+    s10_kicker:"Protection",
+    s10_title:"Discreet safety and care",
+    s10_p1:"At the same time, the system remains discreetly active on safety and care. Not as surveillance: as a silent protective layer, always governed by privacy and consent.",
+    s10_f1l:"Falls and medical events",s10_f1p:"Detection of falls or possible health events, with immediate notification to staff.",
+    s10_f2l:"Unauthorized access",s10_f2p:"Detection of unauthorized entries or operational situations outside normal parameters.",
+    s10_f3l:"Assistance request",s10_f3p:"Rapid activation of human assistance when a need is expressed or detected.",
+    s10_f4l:"Operational anomalies",s10_f4p:"Flagging of situations requiring attention from property staff.",
+    s10_p2:"Every safety function is activatable only through explicit configuration, in line with property policies and applicable regulations.",
+    s11_kicker:"Differentiation",
+    s11_title:"NeuroSuite Hospitality<br>is not another Alexa",
+    s11_col1head:"Generic assistants",
+    s11_c1l1:"General answers, no context",s11_c1l2:"No knowledge of the property",s11_c1l3:"No integration with real services",s11_c1l4:"Privacy difficult to govern",s11_c1l5:"They do not coordinate the real world",
+    s11_col2head:"NeuroSuite Hospitality",
+    s11_c2l1:"Contextual relational intelligence",s11_c2l2:"Knows the property, brand and real services",s11_c2l3:"Coordinates staff, kitchen, logistics",s11_c2l4:"Privacy-first by design",s11_c2l5:"Activates the real world around the guest",
+    s12_kicker:"Next Step",
+    s12_title:"Mother platform. Proprietary intelligence.",
+    s12_p1:"Every property can personalize the experience for its guests. Underneath remains NeuroSuite: platform, architecture, logic, intelligence, safety and technological ownership.",
+    s12_p2:"The technology is not transferred. It is offered as a service, with full control over the brand identity of those who adopt it.",
+    s12_t1:"Pilot",s12_t2:"Partnership",s12_t3:"Premium Hospitality",
+    s12_cta_pre:"A private conversation to explore pilots, partnerships and strategic hospitality applications.",
+    s12_cta:"Request a Private Conversation"
+  },
+
+  fr: {
+    s1_kicker:"Verticale Stratégique",
+    s1_sub1:"Hospitality &amp; Tourism",
+    s1_sub2:"De l'observation clinique à l'expérience hôte premium",
+    s1_desc:"Une architecture intelligente et respectueuse de la vie privée pour l'hôtellerie, l'assistance, la sécurité et le service personnalisé.",
+    s2_kicker:"Genèse",
+    s2_title:"Une origine clinique et soignante",
+    s2_p1:"NeuroSuite est née d'un constat profond : l'être humain manifeste des signaux bien avant que fragilité, déclin physique ou cognitif, malaise ou risque ne deviennent visibles.",
+    s2_p2:"La science a confirmé l'existence de signaux précoces. Mais ces signaux restent souvent dispersés, invisibles ou interprétés trop tard, une fois la fenêtre d'intervention préventive déjà fermée.",
+    s2_callout:"NeuroSuite a été construite pour collecter ces signaux, les organiser et les rendre lisibles, avant qu'ils ne deviennent apparents.",
+    s3_kicker:"Approche",
+    s3_title:"Un changement de paradigme",
+    s3_p1:"NeuroSuite n'attend pas le symptôme. Elle observe, de façon continue et non invasive, ce qui change dans la personne.",
+    s3_f1l:"Mouvement",s3_f1p:"Démarche, posture, schémas moteurs et leurs variations dans le temps.",
+    s3_f2l:"Voix",s3_f2p:"Ton, rythme, articulation et variations subtiles de la parole.",
+    s3_f3l:"Habitudes et routine",s3_f3p:"Horaires, séquences comportementales, sommeil, repos et irrégularités.",
+    s3_f4l:"Signal neurofonctionnel",s3_f4p:"Lecture EEG optionnelle via des dispositifs portables simples, sans gel et totalement non invasifs.",
+    s3_p2:"Chaque signal est comparé à la normalité individuelle de cette personne, et non à des moyennes statistiques de population.",
+    s4_kicker:"Positionnement",
+    s4_title:"Une plateforme d'observation, non diagnostique",
+    s4_p1:"NeuroSuite n'est pas un outil diagnostique et ne remplace ni médecins, ni cliniciens, ni opérateurs spécialisés. Elle n'émet pas de diagnostics ni de pronostics cliniques.",
+    s4_callout:"Sa valeur est différente : transformer des signaux petits et dispersés en informations utiles, lisibles et opportunes pour ceux qui doivent prendre des décisions.",
+    s4_f1l:"Observation",s4_f1p:"Collecte et organisation multimodale des données.",
+    s4_f2l:"Prévention",s4_f2p:"Signalement précoce avant que le problème ne devienne manifeste.",
+    s4_f3l:"Aide à la décision",s4_f3p:"Informations claires pour le personnel opérationnel et clinique.",
+    s4_f4l:"Sécurité",s4_f4p:"Détection discrète de situations nécessitant une attention particulière.",
+    s5_kicker:"Confidentialité &amp; Consentement",
+    s5_title:"Privacy-first by design",
+    s5_p1:"Confidentialité, consentement, sécurité, dignité de la personne et protection des données ne sont pas des options : ce sont des conditions fondamentales de l'architecture.",
+    s5_f1l:"Activation vocale",s5_f1p:"Le système s'active, traite la demande, se désactive. Il ne reste pas en écoute permanente sans nécessité.",
+    s5_f2l:"Conversations non conservées",s5_f2p:"Les conversations inutiles ne sont pas stockées. Les demandes opérationnelles peuvent rester enregistrées jusqu'à la fin du séjour comme preuve du service, puis être supprimées.",
+    s5_f3l:"Mémoire personnelle par consentement",s5_f3p:"Les préférences personnelles de l'hôte ne peuvent être conservées qu'avec un consentement explicite, déclaré et révocable.",
+    s5_f4l:"Gouvernance transparente",s5_f4p:"Règles claires, documentées et conformes aux réglementations applicables en matière de protection des données.",
+    s6_kicker:"Transfert",
+    s6_title:"De la clinique à l'hôtellerie premium",
+    s6_p1:"L'origine clinique de NeuroSuite n'est pas un détail technique : c'est une accréditation, une marque de rigueur et de standing. Peu de systèmes dans le secteur hôtelier naissent d'une architecture pensée pour les environnements de soins.",
+    s6_p2:"La même plateforme, la même logique, la même intelligence relationnelle peuvent désormais devenir un niveau supérieur d'expérience pour hôtels, resorts, tourisme premium et accueil évolué.",
+    s6_callout:"<strong>Ce n'est pas un simple assistant vocal générique.</strong> C'est une intelligence relationnelle contextuelle : elle connaît le lieu, les services réels, les procédures et les personnes derrière chaque demande.",
+    s7_kicker:"Personnalisation",
+    s7_title:"Votre marque, notre architecture",
+    s7_p1:"Chaque chaîne hôtelière, resort ou groupe touristique peut personnaliser le module avec son propre nom, ton, style, voix, services et identité de marque. Le client final peut ne jamais voir le nom NeuroSuite.",
+    s7_callout:"Une chaîne peut l'appeler <strong>Arturo</strong>, ou tout autre nom cohérent avec sa propre marque. En dessous, avec précision, reste NeuroSuite : plateforme, architecture, logique, intelligence et sécurité.",
+    s7_f1l:"Nom et voix",s7_f1p:"Personnalisation complète de l'identité vocale et textuelle.",
+    s7_f2l:"Services réels",s7_f2p:"Intégration avec les services, les procédures et le personnel de l'établissement.",
+    s7_f3l:"Territoire",s7_f3p:"Connaissance du contexte local, des événements, des expériences et des partenaires du territoire.",
+    s7_f4l:"Évolutivité",s7_f4p:"D'une structure unique à une chaîne internationale multi-sites.",
+    s8_kicker:"Pré-Arrivée",
+    s8_title:"Avant même d'arriver",
+    s8_p1:"Le module peut être intégré directement sur le site de l'établissement ou dans la plateforme de réservation. Avant l'arrivée, l'hôte peut dialoguer, découvrir et planifier.",
+    s8_f1l:"Expériences",s8_f1p:"Dîners spéciaux, spa, excursions, événements privés, transferts et services personnalisés.",
+    s8_f2l:"Territoire",s8_f2p:"Informations touristiques, suggestions locales, itinéraires, saisonnalité et contextes culturels.",
+    s8_f3l:"Demandes particulières",s8_f3p:"Préférences alimentaires, célébrations privées, aménagements spéciaux, besoins spécifiques.",
+    s8_f4l:"Conversion",s8_f4p:"Le système transforme l'intérêt exprimé en réservations réelles et services confirmés.",
+    s9_kicker:"En Chambre",
+    s9_title:"Le concierge intelligent, H24",
+    s9_p1:"En chambre, il devient un concierge présent, discret et compétent. Il ne répond pas seulement : il coordonne, active et résout.",
+    s9_callout:"L'hôte demande un dîner privé en terrasse avec barbecue. Le système coordonne la cuisine, le personnel, les horaires, l'installation et le service. Puis il s'efface, laissant l'intimité aux hôtes.",
+    s9_f1l:"Room service",s9_f1p:"Champagne, petit-déjeuner, dîner en chambre, demandes spéciales à toute heure.",
+    s9_f2l:"Expériences sur place",s9_f2p:"Barbecue privé, dîner exclusif, divertissement personnalisé, activités en établissement.",
+    s9_f3l:"Informations",s9_f3p:"Tourisme local, météo, transports, attractions, recommandations certifiées.",
+    s9_f4l:"Transmission humaine",s9_f4p:"Le système transmet toujours la demande de l’hôte à la personne ou au service désigné par l’établissement, et signale aussi les situations hors norme.",
+    s10_kicker:"Protection",
+    s10_title:"Sécurité discrète et bienveillance",
+    s10_p1:"Parallèlement, le système reste discrètement actif sur la sécurité et le soin. Non comme surveillance : comme couche protectrice silencieuse, toujours régie par la confidentialité et le consentement.",
+    s10_f1l:"Chutes et malaises",s10_f1p:"Détection de chutes ou de possibles malaises, avec notification immédiate au personnel.",
+    s10_f2l:"Accès non autorisés",s10_f2p:"Détection d'entrées non autorisées ou de situations opérationnelles hors normes.",
+    s10_f3l:"Demande d'intervention",s10_f3p:"Activation rapide d'une assistance humaine en cas de besoin exprimé ou détecté.",
+    s10_f4l:"Anomalies opérationnelles",s10_f4p:"Signalement de situations nécessitant l'attention du personnel de l'établissement.",
+    s10_p2:"Chaque fonction de sécurité n'est activable que par configuration explicite, conformément aux politiques de l'établissement et aux réglementations en vigueur.",
+    s11_kicker:"Différenciation",
+    s11_title:"NeuroSuite Hospitality<br>n'est pas un autre Alexa",
+    s11_col1head:"Assistants génériques",
+    s11_c1l1:"Réponses générales, hors contexte",s11_c1l2:"Aucune connaissance de l'établissement",s11_c1l3:"Aucune intégration aux services réels",s11_c1l4:"Confidentialité difficile à maîtriser",s11_c1l5:"Ne coordonnent pas le monde réel",
+    s11_col2head:"NeuroSuite Hospitality",
+    s11_c2l1:"Intelligence relationnelle contextuelle",s11_c2l2:"Connaît le lieu, la marque et les services réels",s11_c2l3:"Coordonne personnel, cuisine, logistique",s11_c2l4:"Privacy-first by design",s11_c2l5:"Active le monde réel autour de l'hôte",
+    s12_kicker:"Prochaine Étape",
+    s12_title:"Plateforme mère. Intelligence propriétaire.",
+    s12_p1:"Chaque établissement peut personnaliser l'expérience pour ses hôtes. En dessous reste NeuroSuite : plateforme, architecture, logique, intelligence, sécurité et propriété technologique.",
+    s12_p2:"La technologie n'est pas cédée. Elle est proposée en service, avec un contrôle total sur l'identité de marque de ceux qui l'adoptent.",
+    s12_t1:"Pilot",s12_t2:"Partenariat",s12_t3:"Hôtellerie Premium",
+    s12_cta_pre:"Une conversation privée pour explorer pilots, partenariats et applications stratégiques dans le secteur de l'hôtellerie.",
+    s12_cta:"Demander une conversation privée"
+  },
+
+  ar: {
+    s1_kicker:"قطاع استراتيجي",
+    s1_sub1:"Hospitality &amp; Tourism",
+    s1_sub2:"من الملاحظة السريرية إلى تجربة ضيف متميزة",
+    s1_desc:"بنية ذكية تضع الخصوصية في المقام الأول، مصممة للضيافة والمساعدة والأمان والخدمة الشخصية.",
+    s2_kicker:"النشأة",
+    s2_title:"الأصل السريري والرعائي",
+    s2_p1:"نشأت NeuroSuite من ملاحظة عميقة: يُظهر الإنسان إشارات مبكرة قبل أن تصبح الهشاشة أو التراجع الجسدي أو المعرفي أو الانزعاج أو الخطر مرئيًا.",
+    s2_p2:"أثبت العلم وجود هذه الإشارات المبكرة. غير أنها كثيرًا ما تبقى متفرقة أو غير مرئية أو يُفسَّر معناها متأخرًا، حين تكون نافذة التدخل الوقائي قد أُغلقت.",
+    s2_callout:"بُنيت NeuroSuite لجمع هذه الإشارات وتنظيمها وجعلها مقروءة، قبل أن تصبح واضحة.",
+    s3_kicker:"المنهج",
+    s3_title:"تحوّل في النموذج",
+    s3_p1:"لا تنتظر NeuroSuite ظهور الأعراض. بل تراقب بشكل ذكي ومستمر وغير تدخلي ما يتغير في الشخص.",
+    s3_f1l:"الحركة",s3_f1p:"المشية، الوضعية، الأنماط الحركية وتغيراتها عبر الزمن.",
+    s3_f2l:"الصوت",s3_f2p:"النبرة والإيقاع والنطق والتغيرات الدقيقة في الكلام.",
+    s3_f3l:"العادات والروتين",s3_f3p:"المواعيد والتسلسلات السلوكية والنوم والراحة والانتظام.",
+    s3_f4l:"الإشارة العصبية الوظيفية",s3_f4p:"قراءة EEG اختيارية عبر أجهزة قابلة للارتداء بسيطة، خالية من الجل، وغير تدخلية تمامًا.",
+    s3_p2:"تُقارن كل إشارة بالأساس الشخصي لذلك الفرد، لا بالمتوسطات الإحصائية للسكان.",
+    s4_kicker:"التموضع",
+    s4_title:"منصة رصد، لا تشخيص",
+    s4_p1:"NeuroSuite ليست أداة تشخيصية ولا تحل محل الأطباء أو الإكلينيكيين أو المتخصصين. إنها لا تصدر تشخيصات ولا تضع تكهنات سريرية.",
+    s4_callout:"قيمتها مختلفة: تحويل إشارات صغيرة ومتفرقة إلى معلومات مفيدة وقابلة للقراءة وفي الوقت المناسب لمن يتخذ القرارات.",
+    s4_f1l:"الملاحظة",s4_f1p:"جمع البيانات المتعددة الأبعاد وتنظيمها.",
+    s4_f2l:"الوقاية",s4_f2p:"التنبيه المبكر قبل أن تصبح المشكلة واضحة.",
+    s4_f3l:"دعم القرار",s4_f3p:"معلومات واضحة للكوادر التشغيلية والسريرية.",
+    s4_f4l:"الأمان",s4_f4p:"رصد تلقائي وتكتم للحالات التي تستدعي الانتباه.",
+    s5_kicker:"الخصوصية والموافقة",
+    s5_title:"الخصوصية في جوهر التصميم",
+    s5_p1:"الخصوصية والموافقة والأمان وكرامة الشخص وحماية البيانات ليست إضافات اختيارية: إنها شروط جوهرية في البنية.",
+    s5_f1l:"التفعيل الصوتي",s5_f1p:"يتفعّل النظام ويعالج الطلب ثم يتوقف. لا يبقى في وضع الاستماع الدائم دون حاجة.",
+    s5_f2l:"المحادثات غير المحفوظة",s5_f2p:"لا تُحتفظ بالمحادثات غير الضرورية. يمكن الاحتفاظ بالطلبات التشغيلية حتى نهاية الإقامة كدليل على الخدمة، ثم تُحذف.",
+    s5_f3l:"الذاكرة الشخصية بموافقة",s5_f3p:"لا يُحتفظ بتفضيلات الضيف الشخصية إلا بموافقة صريحة ومعلنة وقابلة للإلغاء.",
+    s5_f4l:"حوكمة شفافة",s5_f4p:"قواعد واضحة وموثقة ومتوافقة مع لوائح حماية البيانات المعمول بها.",
+    s6_kicker:"التحويل",
+    s6_title:"من الرعاية السريرية إلى الضيافة الراقية",
+    s6_p1:"الأصل السريري لـ NeuroSuite ليس تفصيلًا تقنيًا: إنه اعتماد ودقة ومكانة. قليل من الأنظمة في قطاع الضيافة تنبثق من بنية مصممة لبيئات الرعاية.",
+    s6_p2:"المنصة ذاتها، المنطق ذاته، الذكاء العلائقي ذاته يمكن أن يصبح الآن مستوى متفوقًا من التجربة للفنادق والمنتجعات والسياحة الراقية.",
+    s6_callout:"<strong>ليست مجرد مساعد صوتي عام.</strong> إنها ذكاء علائقي سياقي: تعرف المكان والخدمات الفعلية والإجراءات والأشخاص وراء كل طلب.",
+    s7_kicker:"التخصيص",
+    s7_title:"علامتك التجارية، بنيتنا",
+    s7_p1:"يمكن لكل سلسلة فندقية أو منتجع أو مجموعة سياحية تخصيص الوحدة باسمها ونبرتها وأسلوبها وصوتها وخدماتها وهويتها. قد لا يرى الضيف اسم NeuroSuite أبدًا.",
+    s7_callout:"يمكن لسلسلة أن تسميه <strong>أرتورو</strong> أو أي اسم يتناسب مع علامتها التجارية. في العمق تبقى NeuroSuite: المنصة والبنية والمنطق والذكاء والأمان.",
+    s7_f1l:"الاسم والصوت",s7_f1p:"تخصيص كامل للهوية الصوتية والنصية.",
+    s7_f2l:"الخدمات الفعلية",s7_f2p:"التكامل مع خدمات الفندق وإجراءاته وكوادره.",
+    s7_f3l:"المنطقة",s7_f3p:"معرفة السياق المحلي والفعاليات والتجارب وشركاء المنطقة.",
+    s7_f4l:"قابلية التوسع",s7_f4p:"من فندق واحد إلى سلسلة دولية متعددة المواقع.",
+    s8_kicker:"قبل الوصول",
+    s8_title:"قبل أن يصل الضيف",
+    s8_p1:"يمكن دمج الوحدة مباشرة في موقع الفندق أو منصة الحجز. قبل الوصول، يمكن للضيف الحوار واكتشاف الخيارات والتخطيط.",
+    s8_f1l:"التجارب",s8_f1p:"عشاء خاص، سبا، رحلات، فعاليات خاصة، نقل وخدمات مخصصة.",
+    s8_f2l:"المنطقة",s8_f2p:"معلومات سياحية، مقترحات محلية، مسارات، مواسم وسياقات ثقافية.",
+    s8_f3l:"طلبات خاصة",s8_f3p:"تفضيلات غذائية، احتفالات خاصة، ترتيبات مميزة، احتياجات محددة.",
+    s8_f4l:"التحويل",s8_f4p:"يحوّل النظام الاهتمام المُعبَّر عنه إلى حجوزات فعلية وخدمات مؤكدة.",
+    s9_kicker:"في الغرفة",
+    s9_title:"الكونسيرج الذكي، على مدار الساعة",
+    s9_p1:"في الغرفة يصبح كونسيرج حاضر ومتحفظ وكفؤ. لا يجيب فحسب: ينسّق ويُفعّل ويحل.",
+    s9_callout:"يطلب الضيف عشاء خاصًا في التراس مع شواء. ينسّق النظام المطبخ والكوادر والمواعيد والإعداد والخدمة. ثم يتراجع تاركًا الخصوصية للضيوف.",
+    s9_f1l:"خدمة الغرف",s9_f1p:"شمبانيا، إفطار، عشاء في الغرفة، طلبات خاصة في أي ساعة.",
+    s9_f2l:"تجارب داخلية",s9_f2p:"شواء خاص، عشاء حصري، ترفيه مخصص، أنشطة داخل الفندق.",
+    s9_f3l:"معلومات",s9_f3p:"السياحة المحلية، الطقس، المواصلات، المعالم، توصيات موثوقة.",
+    s9_f4l:"التسليم للإنسان",s9_f4p:"يرسل النظام دائمًا طلب الضيف إلى الشخص أو القسم الذي تحدده المنشأة، كما ينبه إلى الحالات الخارجة عن المألوف.",
+    s10_kicker:"الحماية",
+    s10_title:"أمان تكتم ورعاية",
+    s10_p1:"في الوقت ذاته، يبقى النظام نشطًا بتكتم على صعيد الأمان والرعاية. ليس مراقبة: بل طبقة حماية صامتة، تُحكمها دائمًا الخصوصية والموافقة.",
+    s10_f1l:"السقطات والحالات الصحية",s10_f1p:"رصد السقطات أو الحالات الصحية المحتملة مع إشعار فوري للكوادر.",
+    s10_f2l:"الدخول غير المصرح",s10_f2p:"رصد الدخول غير المصرح أو الحالات التشغيلية خارج المعيار.",
+    s10_f3l:"طلب التدخل",s10_f3p:"تفعيل سريع للمساعدة البشرية عند الحاجة المُعبَّر عنها أو المُرصودة.",
+    s10_f4l:"الشذوذات التشغيلية",s10_f4p:"تنبيه الكوادر بالحالات التي تستدعي الاهتمام.",
+    s10_p2:"كل وظيفة أمنية لا تُفعَّل إلا بتهيئة صريحة، وفق سياسات المنشأة والأنظمة المعمول بها.",
+    s11_kicker:"التميز",
+    s11_title:"NeuroSuite Hospitality<br>ليست Alexa أخرى",
+    s11_col1head:"المساعدات العامة",
+    s11_c1l1:"إجابات عامة بلا سياق",s11_c1l2:"لا معرفة بالمنشأة",s11_c1l3:"لا تكامل مع الخدمات الفعلية",s11_c1l4:"الخصوصية يصعب ضبطها",s11_c1l5:"لا تنسّق العالم الحقيقي",
+    s11_col2head:"NeuroSuite Hospitality",
+    s11_c2l1:"ذكاء علائقي سياقي",s11_c2l2:"تعرف المكان والعلامة التجارية والخدمات الفعلية",s11_c2l3:"تنسّق الكوادر والمطبخ واللوجستيات",s11_c2l4:"الخصوصية في جوهر التصميم",s11_c2l5:"تُفعّل العالم الحقيقي حول الضيف",
+    s12_kicker:"الخطوة التالية",
+    s12_title:"المنصة الأم. ذكاء خاص.",
+    s12_p1:"يمكن لكل منشأة تخصيص تجربة ضيوفها. في الخلفية تبقى NeuroSuite: المنصة والبنية والمنطق والذكاء والأمان والملكية التقنية.",
+    s12_p2:"لا تُنقل التقنية. تُقدَّم كخدمة مع تحكم كامل في هوية العلامة التجارية لمن يتبناها.",
+    s12_t1:"تجريبي",s12_t2:"شراكة",s12_t3:"ضيافة راقية",
+    s12_cta_pre:"محادثة خاصة لاستكشاف المشاريع التجريبية والشراكات والتطبيقات الاستراتيجية في قطاع الضيافة.",
+    s12_cta:"طلب محادثة خاصة"
+  },
+
+  zh: {
+    s1_kicker:"战略业务方向",
+    s1_sub1:"Hospitality &amp; Tourism",
+    s1_sub2:"从临床观察到卓越宾客体验",
+    s1_desc:"以隐私为核心的智能架构，专为高端酒店业、宾客服务与安全保障而构建。",
+    s2_kicker:"起源",
+    s2_title:"临床与护理的起点",
+    s2_p1:"NeuroSuite源于一项深刻的观察：人体在虚弱、认知或身体衰退、不适或风险变得可见之前，早已释放出微弱信号。",
+    s2_p2:"科学已证实早期预警信号的存在。然而这些信号往往分散、隐蔽，或被解读得过迟——预防干预的窗口期已然关闭。",
+    s2_callout:"NeuroSuite的使命：收集这些信号，加以整理，使其在显现之前便清晰可读。",
+    s3_kicker:"方法论",
+    s3_title:"范式转变",
+    s3_p1:"NeuroSuite不等待症状出现。它以持续、非侵入的方式，智能观测人体的细微变化。",
+    s3_f1l:"运动",s3_f1p:"步态、体态、运动模式及其随时间的变化。",
+    s3_f2l:"声音",s3_f2p:"音调、节奏、发音及语音中的细微变化。",
+    s3_f3l:"习惯与规律",s3_f3p:"作息时间、行为序列、睡眠、休息与异常。",
+    s3_f4l:"神经功能信号",s3_f4p:"可选EEG读取，通过简单、无凝胶、完全非侵入式的可穿戴设备实现。",
+    s3_p2:"每项信号均与该个体的个人基线进行比较，而非人口统计平均值。",
+    s4_kicker:"定位",
+    s4_title:"观测平台，非诊断工具",
+    s4_p1:"NeuroSuite不是诊断工具，不取代医生、临床医师或专业操作人员，不出具诊断结论或临床预测。",
+    s4_callout:"其价值在于：将微小、分散的信号转化为清晰、及时、可供决策者使用的信息。",
+    s4_f1l:"观测",s4_f1p:"多模态数据的采集与整合。",
+    s4_f2l:"预防",s4_f2p:"在问题显现前进行早期预警。",
+    s4_f3l:"决策支持",s4_f3p:"为运营及临床人员提供清晰信息。",
+    s4_f4l:"安全",s4_f4p:"低调检测需要关注的情况。",
+    s5_kicker:"隐私与授权",
+    s5_title:"隐私优先的设计理念",
+    s5_p1:"隐私、同意、安全、个人尊严与数据保护不是附加选项，而是架构的基本前提。",
+    s5_f1l:"语音激活",s5_f1p:"系统激活、处理请求、关闭。无需时不持续监听。",
+    s5_f2l:"对话不存储",s5_f2p:"非必要对话不予保留。运营请求可保留至住宿结束作为服务凭证，之后删除。",
+    s5_f3l:"个人记忆须授权",s5_f3p:"宾客个人偏好仅在获得明确、可撤销的书面同意后方可保留。",
+    s5_f4l:"透明治理",s5_f4p:"规则清晰、有据可查，符合适用的数据保护法规。",
+    s6_kicker:"迁移应用",
+    s6_title:"从临床护理到高端酒店业",
+    s6_p1:"NeuroSuite的临床基因不是技术细节，而是资质、严谨性与行业地位。在酒店业中，极少有系统源自专为医护环境设计的架构。",
+    s6_p2:"同一平台、同一逻辑、同一关系智能，如今可成为酒店、度假村、高端旅游与精品接待的卓越体验层。",
+    s6_callout:"<strong>这不是又一个通用语音助手。</strong>这是情境化关系智能：了解场所、真实服务、流程以及每个请求背后的人员。",
+    s7_kicker:"个性化定制",
+    s7_title:"您的品牌，我们的架构",
+    s7_p1:"每家酒店集团、度假村或旅游集团均可以自有名称、风格、声音与品牌形象定制模块。最终宾客可能始终不会看到NeuroSuite的名字。",
+    s7_callout:"一家酒店集团可将其命名为<strong>Arturo</strong>，或任何符合自身品牌的名称。其下始终是NeuroSuite：平台、架构、逻辑、智能与安全。",
+    s7_f1l:"名称与声音",s7_f1p:"语音与文字身份的完整定制。",
+    s7_f2l:"真实服务",s7_f2p:"与酒店服务、流程及员工的深度集成。",
+    s7_f3l:"本地化",s7_f3p:"了解本地环境、活动、体验及目的地合作伙伴。",
+    s7_f4l:"可扩展性",s7_f4p:"从单一物业扩展至多地点国际连锁。",
+    s8_kicker:"抵达前",
+    s8_title:"抵达之前",
+    s8_p1:"模块可直接集成至酒店官网或预订平台。宾客在抵达前便可对话、探索并规划行程。",
+    s8_f1l:"体验",s8_f1p:"特色晚餐、水疗、私人活动、接送及定制服务。",
+    s8_f2l:"目的地",s8_f2p:"旅游信息、本地推荐、行程路线、季节亮点与文化背景。",
+    s8_f3l:"特殊请求",s8_f3p:"饮食偏好、私人庆典、专属布置、特定需求。",
+    s8_f4l:"转化",s8_f4p:"将表达的兴趣转化为真实预订与已确认服务。",
+    s9_kicker:"客房内",
+    s9_title:"24小时智能礼宾",
+    s9_p1:"在客房内，它成为一位随时在场、低调而专业的礼宾。不仅应答，更能统筹、调度与解决。",
+    s9_callout:"宾客申请露台私人烧烤晚餐。系统统筹厨房、人员、时间安排与服务。随后退场，将私人空间留给宾客。",
+    s9_f1l:"客房服务",s9_f1p:"香槟、早餐、客房餐饮、全天候特殊请求。",
+    s9_f2l:"现场体验",s9_f2p:"私人烧烤、专属晚宴、个性化娱乐、酒店内活动。",
+    s9_f3l:"信息查询",s9_f3p:"本地旅游、天气、交通、景点、权威推荐。",
+    s9_f4l:"人工交接",s9_f4p:"系统会始终将宾客请求发送给酒店指定的人员或部门，并提示超出正常范围的情况。",
+    s10_kicker:"安全保障",
+    s10_title:"低调的安全与关怀",
+    s10_p1:"与此同时，系统低调地保持对安全与关怀的关注。不是监控，而是静默的保护层，始终受隐私与授权的约束。",
+    s10_f1l:"跌倒与健康事件",s10_f1p:"检测跌倒或可能的健康异常，并立即通知员工。",
+    s10_f2l:"未授权进入",s10_f2p:"检测未经授权的进入或非正常运营情况。",
+    s10_f3l:"干预请求",s10_f3p:"在检测到或表达需求时快速激活人工协助。",
+    s10_f4l:"运营异常",s10_f4p:"向员工发出需要关注的情况预警。",
+    s10_p2:"每项安全功能仅可通过明确配置启用，须符合酒店政策及适用法规。",
+    s11_kicker:"差异化",
+    s11_title:"NeuroSuite Hospitality<br>不是又一个Alexa",
+    s11_col1head:"通用助手",
+    s11_c1l1:"通用回答，缺乏情境",s11_c1l2:"不了解酒店具体信息",s11_c1l3:"不与真实服务集成",s11_c1l4:"隐私管理困难",s11_c1l5:"无法协调现实世界",
+    s11_col2head:"NeuroSuite Hospitality",
+    s11_c2l1:"情境化关系智能",s11_c2l2:"了解场所、品牌与真实服务",s11_c2l3:"协调员工、厨房与物流",s11_c2l4:"隐私优先的设计理念",s11_c2l5:"激活宾客周围的现实世界",
+    s12_kicker:"下一步",
+    s12_title:"母平台。自有智能。",
+    s12_p1:"每家物业均可为宾客定制体验。底层始终是NeuroSuite：平台、架构、逻辑、智能、安全与技术所有权。",
+    s12_p2:"技术不作转让，以服务形式提供，采用方对品牌形象拥有完全掌控权。",
+    s12_t1:"试点",s12_t2:"合作伙伴关系",s12_t3:"高端酒店业",
+    s12_cta_pre:"一次私密对话，探索试点项目、合作伙伴关系及酒店业战略应用。",
+    s12_cta:"申请私密对话"
+  }
+};
+
+// ============================================================
+// STATE
+// ============================================================
+let cur = 0;
+const slides = document.querySelectorAll('.slide');
+const total = slides.length;
+let lang = 'it';
+let startX = 0, startY = 0;
+let isSwiping = false;
+
+// ============================================================
+// DOTS
+// ============================================================
+const dotsBar = document.getElementById('dots-bar');
+for (let i = 0; i < total; i++) {
+  const d = document.createElement('button');
+  d.className = 'dot' + (i === 0 ? ' active' : '');
+  d.setAttribute('aria-label', 'Slide ' + (i + 1));
+  d.onclick = () => goTo(i);
+  dotsBar.appendChild(d);
+}
+const dots = dotsBar.querySelectorAll('.dot');
+
+// ============================================================
+// NAVIGATION
+// ============================================================
+function centerSlide(slideEl) {
+  const inner = slideEl.querySelector('.slide-inner');
+  if (!inner) return;
+  // Reset first
+  inner.style.paddingTop = '24px';
+  const slideH = slideEl.clientHeight;
+  const innerH = inner.scrollHeight;
+  if (innerH < slideH) {
+    const extra = Math.floor((slideH - innerH) / 2);
+    inner.style.paddingTop = Math.max(24, extra) + 'px';
+  }
+}
+
+function goTo(n) {
+  slides[cur].classList.remove('active');
+  cur = Math.max(0, Math.min(total - 1, n));
+  const track = document.getElementById('track');
+  track.style.transform = 'translateX(-' + (cur * 100) + '%)';
+  dots.forEach((d, i) => d.classList.toggle('active', i === cur));
+  document.getElementById('slide-counter').textContent = (cur + 1) + ' / ' + total;
+  document.getElementById('arr-prev').classList.toggle('hidden', cur === 0);
+  document.getElementById('arr-next').classList.toggle('hidden', cur === total - 1);
+  // Center vertically only when content fits, after transition completes
+  setTimeout(() => {
+    slides[cur].classList.add('active');
+    centerSlide(slides[cur]);
+  }, 30);
+}
+
+function move(dir) { goTo(cur + dir); }
+
+// ============================================================
+// KEYBOARD
+// ============================================================
+document.addEventListener('keydown', e => {
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') { e.preventDefault(); move(1); }
+  if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   { e.preventDefault(); move(-1); }
+});
+
+// ============================================================
+// TOUCH / SWIPE
+// ============================================================
+const stage = document.getElementById('stage');
+
+stage.addEventListener('touchstart', e => {
+  startX = e.touches[0].clientX;
+  startY = e.touches[0].clientY;
+  isSwiping = false;
+}, { passive: true });
+
+stage.addEventListener('touchmove', e => {
+  if (!isSwiping) {
+    const dx = Math.abs(e.touches[0].clientX - startX);
+    const dy = Math.abs(e.touches[0].clientY - startY);
+    if (dx > dy && dx > 8) isSwiping = true;
+  }
+  if (isSwiping) e.preventDefault();
+}, { passive: false });
+
+stage.addEventListener('touchend', e => {
+  if (!isSwiping) return;
+  const dx = e.changedTouches[0].clientX - startX;
+  if (Math.abs(dx) > 40) move(dx < 0 ? 1 : -1);
+  isSwiping = false;
+}, { passive: true });
+
+// ============================================================
+// LANGUAGE
+// ============================================================
+function setLang(l) {
+  lang = l;
+  const html = document.documentElement;
+  const body = document.body;
+
+  // RTL for Arabic
+  if (l === 'ar') {
+    html.setAttribute('lang', 'ar');
+    html.setAttribute('dir', 'rtl');
+  } else {
+    html.setAttribute('lang', l);
+    html.setAttribute('dir', 'ltr');
+  }
+
+  // Chinese font class
+  body.classList.toggle('lang-zh', l === 'zh');
+
+  // Update active button
+  document.querySelectorAll('.lang-btn').forEach(b => {
+    b.classList.toggle('active', b.textContent.toLowerCase() === l || (l === 'zh' && b.textContent === '中文'));
+  });
+
+  // Apply translations
+  const d = T[l];
+  document.querySelectorAll('[data-k]').forEach(el => {
+    const k = el.getAttribute('data-k');
+    if (d[k] !== undefined) el.innerHTML = d[k];
+  });
+}
+
+// ============================================================
+// INIT
+// ============================================================
+(function init() {
+  goTo(0);
+  setLang('en');
+})();
+
+window.addEventListener('resize', () => { centerSlide(slides[cur]); });
+</script>
+</body>
+</html>
+

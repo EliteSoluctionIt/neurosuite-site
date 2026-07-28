@@ -1,0 +1,198 @@
+﻿<!DOCTYPE html>
+<html lang="it"><head>
+    <link rel="canonical" href="https://neurosuite.dev/NeuroSuite_Mobility.html">
+    <meta name="robots" content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1">
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="NeuroSuite">
+    <meta property="og:title" content="NeuroSuite estensioni operative. Altri ambiti restano possibili estensioni dello stesso motore osservativo, non promesse di prodotto già concluso.">
+    <meta property="og:description" content="NeuroSuite collega segnali, contesto e priorità operative in sanità, assistenza e ambienti intelligenti.">
+    <meta property="og:url" content="https://neurosuite.dev/NeuroSuite_Mobility.html">
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="NeuroSuite estensioni operative. Altri ambiti restano possibili estensioni dello stesso motore osservativo, non promesse di prodotto già concluso.">
+    <meta name="twitter:description" content="NeuroSuite collega segnali, contesto e priorità operative in sanità, assistenza e ambienti intelligenti."><meta charset="UTF-8"/><meta name="viewport" content="width=device-width,initial-scale=1.0"/>
+<title>NeuroSuite estensioni operative. Altri ambiti restano possibili estensioni dello stesso motore osservativo, non promesse di prodotto già concluso.</title><style>
+:root{
+  --bg:#F7F9FB; --paper:#FFFFFF; --ink:#172033; --muted:#5F6B7A; --line:#DCE4EE;
+  --blue:#1558C8; --teal:#0A8A7A; --gold:#B07800; --red:#C03020; --purple:#6040A8; --orange:#D06010; --dark:#0D1420;
+  --shadow:0 18px 50px rgba(13,20,32,.10); --radius:20px;
+}
+*{box-sizing:border-box}
+html,body{margin:0;width:100%;height:100%;overflow:hidden;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Arial,sans-serif}
+body{position:fixed;inset:0}
+.nav{position:fixed;top:0;left:0;right:0;height:44px;background:rgba(247,249,251,.96);backdrop-filter:blur(12px);border-bottom:1px solid rgba(23,32,51,.08);z-index:20;display:flex;align-items:center;gap:10px;padding:5px 12px}
+.brand{font-family:Georgia,serif;font-weight:700;font-size:18px;white-space:nowrap}
+.badge{font-size:11px;font-weight:700;color:var(--blue);border:1px solid rgba(21,88,200,.18);background:rgba(21,88,200,.08);border-radius:999px;padding:4px 10px;white-space:nowrap}
+select{flex:1;max-width:460px;height:32px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);padding:0 10px}
+button{width:32px;height:32px;border:1px solid var(--line);border-radius:8px;background:#fff;color:var(--ink);font-weight:700}
+.workspace{position:absolute;top:44px;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;padding:10px 12px}
+.slide{width:min(1280px, calc((100vh - 64px) * 16 / 9), calc(100vw - 24px));aspect-ratio:16/9;background:var(--paper);border-radius:20px;box-shadow:var(--shadow);overflow:hidden;border:1px solid rgba(19,34,60,.07);display:grid;grid-template-columns:7px 1fr}
+.band{background:var(--accent)}
+.main{display:grid;grid-template-rows:3px 1fr;min-height:0;position:relative}
+.topline{background:linear-gradient(90deg,var(--accent),#6FA7FF,#0A8A7A,#B07800)}
+.body{padding:22px 26px 20px;position:relative;overflow:hidden}
+.rays{position:absolute;inset:0;pointer-events:none;z-index:1}
+.content{position:relative;z-index:2;height:100%;display:grid;gap:14px}
+.num{position:absolute;right:22px;bottom:16px;color:rgba(23,32,51,.48);font-size:12px;font-weight:700;letter-spacing:.08em;z-index:5}
+.eyebrow{margin:0 0 8px;font-size:11px;text-transform:uppercase;letter-spacing:.18em;color:var(--muted);font-weight:700}
+h1,h2,h3,h4,p{margin:0}
+.title{font-family:Georgia,serif;font-size:clamp(30px,3.6vw,52px);line-height:.95;font-weight:700;letter-spacing:-.02em}
+.subtitle{margin-top:10px;color:var(--muted);font-size:clamp(15px,1.38vw,20px);line-height:1.35;max-width:92%}
+.cover{display:grid;grid-template-columns:42% 58%;height:100%;gap:0}
+.cover-left{background:var(--dark);color:white;border-radius:0;padding:20px;display:grid;grid-template-rows:auto 1fr auto;gap:14px;position:relative;overflow:hidden}
+.cover-logo{font-family:Georgia,serif;font-size:clamp(42px,5vw,72px);line-height:.9}
+.cover-kicker{font-size:11px;text-transform:uppercase;letter-spacing:.16em;opacity:.75}
+.cover-card{background:rgba(255,255,255,.055);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:16px;display:grid;gap:8px;align-content:start}
+.cover-card p{font-size:clamp(10px,.95vw,13px);line-height:1.48}
+.cover-right{padding:20px 22px 18px;display:grid;grid-template-rows:auto 1fr auto;gap:14px}
+.topic{background:rgba(21,88,200,.08);border:1px solid rgba(21,88,200,.16);border-radius:16px;padding:14px 16px;font-size:clamp(10px,.95vw,13px);line-height:1.45}
+.grid2{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.grid4{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.card{background:#FBFCFE;border:1px solid rgba(19,34,60,.08);border-radius:16px;padding:15px;position:relative;overflow:hidden}
+.card:before{content:"";position:absolute;top:0;left:0;right:0;height:3px;background:var(--c,var(--accent))}
+.card h3,.card h4{font-size:clamp(13px,1.15vw,16px);line-height:1.18;margin-bottom:8px}
+.card p,.card li{font-size:clamp(9.5px,.9vw,12.5px);line-height:1.43;color:var(--muted)}
+ul{margin:0;padding-left:18px;display:grid;gap:5px}
+.darkbox{background:linear-gradient(115deg,var(--dark),#123552);color:#fff;border-radius:18px;padding:16px 18px;display:grid;gap:7px}
+.darkbox h3{font-size:13px;text-transform:uppercase;letter-spacing:.14em;opacity:.78}
+.darkbox p{font-size:clamp(14px,1.18vw,18px);line-height:1.4}
+.ba{display:grid;grid-template-columns:1fr 80px 1fr;gap:14px;align-items:stretch}
+.arrow{display:grid;place-items:center;font-size:42px;color:var(--accent);font-weight:800}
+.panel{border:1px solid rgba(19,34,60,.08);background:#FBFCFE;border-radius:18px;padding:16px}
+.panel h3{font-family:Georgia,serif;font-size:clamp(22px,2vw,34px);margin-bottom:10px}
+.table{border:1px solid rgba(19,34,60,.08);border-radius:16px;overflow:hidden;background:#fff}
+.row{display:grid;grid-template-columns:1fr 1fr;border-bottom:1px solid rgba(19,34,60,.08)}
+.row:last-child{border-bottom:0}
+.cell{padding:9px 10px;font-size:clamp(9px,.82vw,11.5px);line-height:1.32}
+.head .cell{background:#F3F7FC;color:var(--muted);font-weight:800;text-transform:uppercase;letter-spacing:.08em}
+.timeline{display:grid;gap:10px}
+.trow{display:grid;grid-template-columns:180px 1fr 140px;gap:10px;align-items:center}
+.pill{border-radius:999px;padding:8px 12px;text-align:center;font-size:clamp(8.5px,.8vw,11px);font-weight:800;background:rgba(21,88,200,.08);color:var(--blue)}
+.alert{background:rgba(192,48,32,.10);color:var(--red)}
+.statgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.stat{background:#FBFCFE;border:1px solid rgba(19,34,60,.08);border-radius:18px;padding:16px}
+.statnum{font-family:Georgia,serif;font-size:clamp(40px,5vw,76px);line-height:.9;font-weight:700;color:var(--accent)}
+.stat p{font-size:clamp(9.5px,.95vw,13px);line-height:1.4;color:var(--muted)}
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.step{border:1px solid rgba(19,34,60,.08);background:linear-gradient(180deg,#fff,#F9FBFD);border-radius:18px;padding:16px;min-height:150px;position:relative}
+.stepno{position:absolute;right:10px;top:6px;font-family:Georgia,serif;font-size:64px;line-height:.8;opacity:.13;font-weight:700;color:var(--accent)}
+.step h3{color:var(--accent);font-size:clamp(14px,1.2vw,18px);margin-bottom:8px}
+.step p{font-size:clamp(9.5px,.9vw,12.5px);line-height:1.45;color:var(--muted)}
+.banner{background:linear-gradient(115deg,var(--dark),#123552);color:white;border-radius:20px;padding:22px;display:grid;align-content:center}
+.banner h2{font-family:Georgia,serif;font-size:clamp(34px,4.2vw,64px);line-height:.95}
+.footer{position:absolute;left:26px;bottom:16px;font-size:11px;color:rgba(23,32,51,.45)}
+@media(max-width:900px){
+  .slide{width:calc(100vw - 12px)}
+  .body{padding:16px}
+  .grid2,.grid3,.grid4,.ba,.flow,.statgrid,.cover{grid-template-columns:1fr}
+  .cover-left{display:none}
+}
+
+/* === RESPONSIVE LAPTOP FIX - NeuroSuite WebPlaza === */
+@media (max-width: 1500px){
+  .workspace{padding:8px 10px;}
+  .slide{
+    width:min(1180px, calc((100dvh - 60px) * 16 / 9), calc(100vw - 20px));
+    border-radius:18px;
+  }
+  .body{padding:18px 22px 16px;}
+  .content{gap:10px;}
+  .cover{grid-template-columns:minmax(330px,38%) minmax(0,1fr);}
+  .cover-left{padding:18px;gap:10px;}
+  .cover-right{padding:18px 18px 16px;gap:10px;}
+  .cover-logo{font-size:clamp(34px,4.05vw,58px);line-height:.88;}
+  .title{font-size:clamp(30px,3.25vw,48px);line-height:.94;}
+  .subtitle{font-size:clamp(13px,1.18vw,18px);line-height:1.28;margin-top:8px;}
+  .eyebrow{font-size:10px;margin-bottom:6px;}
+  .grid2{gap:10px;}
+  .grid3{gap:10px;}
+  .grid4{gap:10px;}
+  .card{padding:12px 13px;}
+  .card h3,.card h4{font-size:clamp(12px,1.02vw,15px);margin-bottom:6px;}
+  .card p,.card li{font-size:clamp(9px,.78vw,11.5px);line-height:1.34;}
+  .topic{padding:11px 13px;font-size:clamp(9px,.82vw,11.8px);line-height:1.34;}
+  .cover-card{padding:13px;gap:6px;}
+  .cover-card p{font-size:clamp(9px,.78vw,11.6px);line-height:1.38;}
+  .darkbox{padding:13px 15px;}
+  .panel{padding:13px;}
+  .panel h3{font-size:clamp(20px,1.75vw,30px);}
+  .stat{padding:13px;}
+  .statnum{font-size:clamp(34px,4.1vw,64px);}
+  .step{padding:13px;min-height:120px;}
+  .stepno{font-size:52px;}
+  .trow{grid-template-columns:150px 1fr 120px;gap:8px;}
+  .num{right:18px;bottom:13px;}
+  .footer{left:22px;bottom:13px;}
+}
+@media (max-width: 1180px){
+  html,body{overflow:auto;}
+  body{position:static;min-height:100dvh;}
+  .nav{position:sticky;height:auto;min-height:44px;flex-wrap:wrap;}
+  .brand{font-size:16px;}
+  .badge{font-size:10px;}
+  select{min-width:220px;max-width:none;}
+  .workspace{position:static;min-height:calc(100dvh - 44px);padding:10px;}
+  .slide{width:100%;max-width:100%;height:auto;min-height:auto;aspect-ratio:auto;}
+  .body{overflow:visible;}
+  .content{height:auto;min-height:620px;}
+  .cover{grid-template-columns:1fr;}
+  .cover-left{display:none;}
+  .cover-right{min-height:620px;}
+  .grid4{grid-template-columns:repeat(2,1fr);}
+  .ba{grid-template-columns:1fr;}
+  .arrow{font-size:28px;transform:rotate(90deg);}
+  .flow{grid-template-columns:repeat(2,1fr);}
+  .statgrid{grid-template-columns:1fr;}
+}
+@media (max-width: 700px){
+  .workspace{padding:6px;}
+  .body{padding:14px;}
+  .content{min-height:auto;}
+  .cover-right{min-height:auto;}
+  .grid2,.grid3,.grid4,.flow{grid-template-columns:1fr;}
+  .title{font-size:clamp(28px,9vw,42px);}
+  .subtitle{max-width:100%;}
+}
+
+</style></head>
+<body>
+<nav class="nav"><div class="brand">NeuroSuite</div><div class="badge">NeuroSuite estensioni operative. Altri ambiti restano possibili estensioni dello stesso motore osservativo, non promesse di prodotto già concluso.</div><select id="menu"><option value="0">01 · Cover</option><option value="1">02 · L'esigenza</option><option value="2">03 · Cosa osserva</option><option value="3">04 · Pre-evento</option><option value="4">05 · Multi-store</option><option value="5">06 · Personale interno</option><option value="6">07 · Sicurezza persone</option><option value="7">08 · Privacy</option><option value="8">09 · Visione</option></select><button id="prev">←</button><button id="next">→</button></nav>
+<main class="workspace"><div id="root"><section class="slide" style="--accent:#1558C8">
+<div class="band"></div><div class="main"><div class="topline"></div><div class="body"><svg class="rays" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">
+<line x1="1280" y1="720" x2="420" y2="0" stroke="white" stroke-width="24" opacity=".06"/>
+<line x1="1280" y1="720" x2="650" y2="0" stroke="white" stroke-width="14" opacity=".05"/>
+<line x1="1280" y1="720" x2="910" y2="0" stroke="white" stroke-width="18" opacity=".045"/>
+<radialGradient id="g"><stop offset="0%" stop-color="#88BBFF" stop-opacity=".13"/><stop offset="100%" stop-color="#88BBFF" stop-opacity="0"/></radialGradient>
+<ellipse cx="1200" cy="680" rx="280" ry="180" fill="url(#g)"/>
+</svg><div class="content"><div class="cover">
+<div class="cover-left">
+  <div><p class="cover-kicker">Presentazione verticale · NeuroSuite</p><h1 class="cover-logo">NeuroSuite estensioni operative. Altri ambiti restano possibili estensioni dello stesso motore osservativo, non promesse di prodotto già concluso.</h1></div>
+  <div class="cover-card">
+    <p>Una piattaforma non nasce da un sensore in più, ma da un cambio di punto di vista.</p>
+    <p>La maggior parte dei sistemi osserva un evento. NeuroSuite osserva l’evoluzione che porta all’evento.</p>
+    <p>Il valore non è nel singolo dato: è nella correlazione progressiva tra segnali, contesto e tempo.</p>
+  </div>
+  <div style="font-size:11px;opacity:.75;border-top:1px solid rgba(255,255,255,.14);padding-top:8px">Documento riservato · materiale preliminare</div>
+</div>
+<div class="cover-right">
+  <div><p class="eyebrow">Piattaforma modulare di intelligenza operativa</p><h2 class="title">NeuroSuite estensioni operative. Altri ambiti restano possibili estensioni dello stesso motore osservativo, non promesse di prodotto già concluso.</h2><p class="subtitle">Sicurezza predittiva per trasporti, stazioni, aeroporti e hub ad alta densità.</p></div>
+  <div class="grid2">
+    <div class="card"><h4>Osservazione continua</h4><p>Non istantanee isolate, ma segnali nel tempo.</p></div>
+    <div class="card"><h4>Contesto operativo</h4><p>Ogni alert ha zona, priorità e motivazione.</p></div>
+    <div class="card"><h4>Supervisione umana</h4><p>Il sistema supporta: non decide automaticamente.</p></div>
+    <div class="card"><h4>Crescita modulare</h4><p>Si integra con infrastrutture e sensori già esistenti.</p></div>
+  </div>
+  <div class="topic"><strong>Dentro questa verticale:</strong><ul><li>trasporti pubblici e privati</li><li>aeroporti, stazioni, metro, tram, bus, flotte</li><li>monitoraggio conducenti e operatori</li><li>prevenzione eventi critici e supporto centrale</li></ul></div>
+</div>
+</div></div></div><div class="num">01 / 09</div></div></section></div></main>
+<script>
+const slides = ['<section class="slide" style="--accent:#1558C8">\n<div class="band"></div><div class="main"><div class="topline"></div><div class="body"><svg class="rays" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">\n<line x1="1280" y1="720" x2="420" y2="0" stroke="white" stroke-width="24" opacity=".06"/>\n<line x1="1280" y1="720" x2="650" y2="0" stroke="white" stroke-width="14" opacity=".05"/>\n<line x1="1280" y1="720" x2="910" y2="0" stroke="white" stroke-width="18" opacity=".045"/>\n<radialGradient id="g"><stop offset="0%" stop-color="#88BBFF" stop-opacity=".13"/><stop offset="100%" stop-color="#88BBFF" stop-opacity="0"/></radialGradient>\n<ellipse cx="1200" cy="680" rx="280" ry="180" fill="url(#g)"/>\n</svg><div class="content"><div class="cover">\n<div class="cover-left">\n  <div><p class="cover-kicker">Presentazione verticale · NeuroSuite</p><h1 class="cover-logo">NeuroSuite estensioni operative. Altri ambiti restano possibili estensioni dello stesso motore osservativo, non promesse di prodotto già concluso.</h1></div>\n  <div class="cover-card">\n    <p>Una piattaforma non nasce da un sensore in più, ma da un cambio di punto di vista.</p>\n    <p>La maggior parte dei sistemi osserva un evento. NeuroSuite osserva l’evoluzione che porta all’evento.</p>\n    <p>Il valore non è nel singolo dato: è nella correlazione progressiva tra segnali, contesto e tempo.</p>\n  </div>\n  <div style="font-size:11px;opacity:.75;border-top:1px solid rgba(255,255,255,.14);padding-top:8px">Documento riservato · materiale preliminare</div>\n</div>\n<div class="cover-right">\n  <div><p class="eyebrow">Piattaforma modulare di intelligenza operativa</p><h2 class="title">NeuroSuite estensioni operative. Altri ambiti restano possibili estensioni dello stesso motore osservativo, non promesse di prodotto già concluso.</h2><p class="subtitle">Sicurezza predittiva per trasporti, stazioni, aeroporti e hub ad alta densità.</p></div>\n  <div class="grid2">\n    <div class="card"><h4>Osservazione continua</h4><p>Non istantanee isolate, ma segnali nel tempo.</p></div>\n    <div class="card"><h4>Contesto operativo</h4><p>Ogni alert ha zona, priorità e motivazione.</p></div>\n    <div class="card"><h4>Supervisione umana</h4><p>Il sistema supporta: non decide automaticamente.</p></div>\n    <div class="card"><h4>Crescita modulare</h4><p>Si integra con infrastrutture e sensori già esistenti.</p></div>\n  </div>\n  <div class="topic"><strong>Dentro questa verticale:</strong><ul><li>trasporti pubblici e privati</li><li>aeroporti, stazioni, metro, tram, bus, flotte</li><li>monitoraggio conducenti e operatori</li><li>prevenzione eventi critici e supporto centrale</li></ul></div>\n</div>\n</div></div></div><div class="num">01 / 09</div></div></section>', '<section class="slide" style="--accent:#1558C8">\n<div class="band"></div><div class="main"><div class="topline"></div><div class="body"><svg class="rays" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">\n<line x1="1280" y1="720" x2="420" y2="0" stroke="white" stroke-width="24" opacity=".06"/>\n<line x1="1280" y1="720" x2="650" y2="0" stroke="white" stroke-width="14" opacity=".05"/>\n<line x1="1280" y1="720" x2="910" y2="0" stroke="white" stroke-width="18" opacity=".045"/>\n<radialGradient id="g"><stop offset="0%" stop-color="#88BBFF" stop-opacity=".13"/><stop offset="100%" stop-color="#88BBFF" stop-opacity="0"/></radialGradient>\n<ellipse cx="1200" cy="680" rx="280" ry="180" fill="url(#g)"/>\n</svg><div class="content"><div><p class="eyebrow">Problema operativo</p><h2 class="title">La sicurezza arriva spesso quando l’evento è già iniziato.</h2><p class="subtitle">Telecamere e centrali registrano moltissimo, ma comprendono poco la traiettoria che precede un evento critico.</p></div><div class="statgrid"><div class="stat"><div class="statnum">01</div><p>Eventi improvvisi: malori, cadute, aggressioni, panico, anomalie in banchina o in area imbarchi.</p></div><div class="stat"><div class="statnum">02</div><p>Sistemi frammentati: video, sensori, personale e centrali lavorano spesso come mondi separati.</p></div><div class="stat"><div class="statnum">03</div><p>Intervento tardivo: l’allarme nasce quando la scena è già degenerata.</p></div></div><div class="darkbox"><h3>Tesi</h3><p>La maggior parte dei sistemi osserva l’evento. NeuroSuite osserva l’evoluzione che porta all’evento.</p></div></div></div><div class="num">02 / 09</div></div></section>', '<section class="slide" style="--accent:#1558C8">\n<div class="band"></div><div class="main"><div class="topline"></div><div class="body"><svg class="rays" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">\n<line x1="1280" y1="720" x2="420" y2="0" stroke="white" stroke-width="24" opacity=".06"/>\n<line x1="1280" y1="720" x2="650" y2="0" stroke="white" stroke-width="14" opacity=".05"/>\n<line x1="1280" y1="720" x2="910" y2="0" stroke="white" stroke-width="18" opacity=".045"/>\n<radialGradient id="g"><stop offset="0%" stop-color="#88BBFF" stop-opacity=".13"/><stop offset="100%" stop-color="#88BBFF" stop-opacity="0"/></radialGradient>\n<ellipse cx="1200" cy="680" rx="280" ry="180" fill="url(#g)"/>\n</svg><div class="content"><div><p class="eyebrow">Lettura multimodale</p><h2 class="title">Non solo video. Contesto, movimento, traiettoria.</h2><p class="subtitle">NeuroSuite estensioni operative. Altri ambiti restano possibili estensioni dello stesso motore osservativo, non promesse di prodotto già concluso. combina segnali diversi per dare una priorità operativa comprensibile.</p></div><div class="grid4"><div class="card"><h4>Movimento</h4><p>Postura, accelerazioni, direzione, micro-variazioni e anomalie di percorso.</p></div><div class="card"><h4>Ambiente</h4><p>Densità, congestione, zone critiche, prossimità a binari, varchi, scale mobili.</p></div><div class="card"><h4>Acustica</h4><p>Urla, rotture, intensità, pattern non semantici senza ascoltare contenuti privati.</p></div><div class="card"><h4>Tempo</h4><p>Ripetizione, persistenza, escalation e deviazione da pattern normali.</p></div></div><div class="darkbox"><p>L’obiettivo non è “sorvegliare di più”. È dare al personale un segnale più utile, prima.</p></div></div></div><div class="num">03 / 09</div></div></section>', '<section class="slide" style="--accent:#1558C8">\n<div class="band"></div><div class="main"><div class="topline"></div><div class="body"><svg class="rays" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">\n<line x1="1280" y1="720" x2="420" y2="0" stroke="white" stroke-width="24" opacity=".06"/>\n<line x1="1280" y1="720" x2="650" y2="0" stroke="white" stroke-width="14" opacity=".05"/>\n<line x1="1280" y1="720" x2="910" y2="0" stroke="white" stroke-width="18" opacity=".045"/>\n<radialGradient id="g"><stop offset="0%" stop-color="#88BBFF" stop-opacity=".13"/><stop offset="100%" stop-color="#88BBFF" stop-opacity="0"/></radialGradient>\n<ellipse cx="1200" cy="680" rx="280" ry="180" fill="url(#g)"/>\n</svg><div class="content"><div><p class="eyebrow">Conducenti e operatori</p><h2 class="title">Il mezzo è sicuro solo se anche l’essere umano resta dentro soglia.</h2><p class="subtitle">Malore, affaticamento e riduzione attentiva del conducente sono eventi rari ma ad alto impatto.</p></div><div class="ba"><div class="panel"><h3>Oggi</h3><ul><li>controlli episodici</li><li>alert tardivi</li><li>poche correlazioni tra stato umano e contesto operativo</li><li>molta responsabilità sul singolo operatore</li></ul></div><div class="arrow">→</div><div class="panel"><h3>NeuroSuite</h3><ul><li>indicatori compatibili con fatigue</li><li>possibili segnali di malore operativo</li><li>anomalia della reattività e del comportamento</li><li>alert a centrale e procedure di sicurezza</li></ul></div></div><div class="darkbox"><p>Non sostituisce il conducente. Supporta il sistema attorno al conducente.</p></div></div></div><div class="num">04 / 09</div></div></section>', '<section class="slide" style="--accent:#1558C8">\n<div class="band"></div><div class="main"><div class="topline"></div><div class="body"><svg class="rays" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">\n<line x1="1280" y1="720" x2="420" y2="0" stroke="white" stroke-width="24" opacity=".06"/>\n<line x1="1280" y1="720" x2="650" y2="0" stroke="white" stroke-width="14" opacity=".05"/>\n<line x1="1280" y1="720" x2="910" y2="0" stroke="white" stroke-width="18" opacity=".045"/>\n<radialGradient id="g"><stop offset="0%" stop-color="#88BBFF" stop-opacity=".13"/><stop offset="100%" stop-color="#88BBFF" stop-opacity="0"/></radialGradient>\n<ellipse cx="1200" cy="680" rx="280" ry="180" fill="url(#g)"/>\n</svg><div class="content"><div><p class="eyebrow">Hub ad alta densità</p><h2 class="title">Aeroporti, stazioni e metro non sono solo luoghi: sono sistemi dinamici.</h2><p class="subtitle">Flussi, code, stress, attese, spazi confinati e rischio escalation convivono nello stesso ambiente.</p></div><div class="timeline"><div class="trow"><div class="pill">Segnale debole</div><div class="card"><h4>Comportamento fuori pattern</h4><p>Corsa improvvisa, stazionamento anomalo, avvicinamento a bordo banchina, disorientamento.</p></div><div class="pill alert">Attenzione</div></div><div class="trow"><div class="pill">Escalation</div><div class="card"><h4>Contesto aumenta il rischio</h4><p>Densità, urla, conflitto, compressione dei flussi, zona isolata o critica.</p></div><div class="pill alert">Allerta</div></div><div class="trow"><div class="pill">Intervento</div><div class="card"><h4>Segnalazione operativa</h4><p>Zona, livello, tipo anomalia e suggerimento di verifica umana.</p></div><div class="pill alert">Priorità</div></div></div></div></div><div class="num">05 / 09</div></div></section>', '<section class="slide" style="--accent:#1558C8">\n<div class="band"></div><div class="main"><div class="topline"></div><div class="body"><svg class="rays" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">\n<line x1="1280" y1="720" x2="420" y2="0" stroke="white" stroke-width="24" opacity=".06"/>\n<line x1="1280" y1="720" x2="650" y2="0" stroke="white" stroke-width="14" opacity=".05"/>\n<line x1="1280" y1="720" x2="910" y2="0" stroke="white" stroke-width="18" opacity=".045"/>\n<radialGradient id="g"><stop offset="0%" stop-color="#88BBFF" stop-opacity=".13"/><stop offset="100%" stop-color="#88BBFF" stop-opacity="0"/></radialGradient>\n<ellipse cx="1200" cy="680" rx="280" ry="180" fill="url(#g)"/>\n</svg><div class="content"><div><p class="eyebrow">Architettura</p><h2 class="title">Edge-first, modulare, integrabile.</h2><p class="subtitle">La piattaforma può partire da ciò che esiste e crescere per livelli.</p></div><div class="flow"><div class="step"><div class="stepno">1</div><h3>Input</h3><p>Telecamere, radar, sensori ambientali, flussi di area, eventi acustici.</p></div><div class="step"><div class="stepno">2</div><h3>Eventi</h3><p>Trasformazione del dato grezzo in micro-eventi leggibili.</p></div><div class="step"><div class="stepno">3</div><h3>Traiettoria</h3><p>Correlazione temporale e contestuale per ridurre rumore e falsi positivi.</p></div><div class="step"><div class="stepno">4</div><h3>Output</h3><p>Alert, priorità, timeline, zona, motivazione e verifica umana.</p></div></div><div class="darkbox"><p>Non serve sostituire tutto: serve collegare meglio ciò che già vede ma non comprende.</p></div></div></div><div class="num">06 / 09</div></div></section>', '<section class="slide" style="--accent:#1558C8">\n<div class="band"></div><div class="main"><div class="topline"></div><div class="body"><svg class="rays" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">\n<line x1="1280" y1="720" x2="420" y2="0" stroke="white" stroke-width="24" opacity=".06"/>\n<line x1="1280" y1="720" x2="650" y2="0" stroke="white" stroke-width="14" opacity=".05"/>\n<line x1="1280" y1="720" x2="910" y2="0" stroke="white" stroke-width="18" opacity=".045"/>\n<radialGradient id="g"><stop offset="0%" stop-color="#88BBFF" stop-opacity=".13"/><stop offset="100%" stop-color="#88BBFF" stop-opacity="0"/></radialGradient>\n<ellipse cx="1200" cy="680" rx="280" ry="180" fill="url(#g)"/>\n</svg><div class="content"><div><p class="eyebrow">Confronto competitivo</p><h2 class="title">Il mercato vede sicurezza. NeuroSuite vede continuità operativa.</h2></div><div class="table"><div class="row head"><div class="cell">Sistemi tradizionali</div><div class="cell">NeuroSuite estensioni operative. Altri ambiti restano possibili estensioni dello stesso motore osservativo, non promesse di prodotto già concluso.</div></div><div class="row"><div class="cell">Video come prova o revisione</div><div class="cell">Video e sensori come segnale operativo anticipato</div></div><div class="row"><div class="cell">Alert statico su area o evento</div><div class="cell">Alert contestuale basato su traiettoria e persistenza</div></div><div class="row"><div class="cell">Silos: CCTV, centrale, personale</div><div class="cell">Lettura unificata e priorità condivisa</div></div><div class="row"><div class="cell">Focus su evento</div><div class="cell">Focus su evoluzione che porta all’evento</div></div></div><div class="darkbox"><p>Non “nessuno lo fa”. Il punto è: pochi stanno provando a unire contesto, continuità e decisione operativa in una sola architettura.</p></div></div></div><div class="num">07 / 09</div></div></section>', '<section class="slide" style="--accent:#1558C8">\n<div class="band"></div><div class="main"><div class="topline"></div><div class="body"><svg class="rays" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">\n<line x1="1280" y1="720" x2="420" y2="0" stroke="white" stroke-width="24" opacity=".06"/>\n<line x1="1280" y1="720" x2="650" y2="0" stroke="white" stroke-width="14" opacity=".05"/>\n<line x1="1280" y1="720" x2="910" y2="0" stroke="white" stroke-width="18" opacity=".045"/>\n<radialGradient id="g"><stop offset="0%" stop-color="#88BBFF" stop-opacity=".13"/><stop offset="100%" stop-color="#88BBFF" stop-opacity="0"/></radialGradient>\n<ellipse cx="1200" cy="680" rx="280" ry="180" fill="url(#g)"/>\n</svg><div class="content"><div><p class="eyebrow">Output</p><h2 class="title">Non un allarme generico. Una decisione più informata.</h2></div><div class="grid3"><div class="card"><h4>Alert multilivello</h4><p>Verde, attenzione, allerta, emergenza con destinatari diversi.</p></div><div class="card"><h4>Timeline evento</h4><p>Cosa è cambiato, dove, in quanto tempo e con quale persistenza.</p></div><div class="card"><h4>Priorità operativa</h4><p>Aiuta centrale e personale a non trattare tutti i segnali allo stesso modo.</p></div></div><div class="grid3"><div class="card"><h4>Verifica umana</h4><p>Nessuna decisione automatica su persone. Il sistema propone, l’operatore verifica.</p></div><div class="card"><h4>Riduzione rumore</h4><p>Più contesto significa meno alert inutili e più segnali azionabili.</p></div><div class="card"><h4>Apprendimento rete</h4><p>Ogni nodo operativo migliora le soglie e i pattern del sistema.</p></div></div></div></div><div class="num">08 / 09</div></div></section>', '<section class="slide" style="--accent:#1558C8">\n<div class="band"></div><div class="main"><div class="topline"></div><div class="body"><svg class="rays" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid slice">\n<line x1="1280" y1="720" x2="420" y2="0" stroke="white" stroke-width="24" opacity=".06"/>\n<line x1="1280" y1="720" x2="650" y2="0" stroke="white" stroke-width="14" opacity=".05"/>\n<line x1="1280" y1="720" x2="910" y2="0" stroke="white" stroke-width="18" opacity=".045"/>\n<radialGradient id="g"><stop offset="0%" stop-color="#88BBFF" stop-opacity=".13"/><stop offset="100%" stop-color="#88BBFF" stop-opacity="0"/></radialGradient>\n<ellipse cx="1200" cy="680" rx="280" ry="180" fill="url(#g)"/>\n</svg><div class="content"><div class="banner"><h2>La sicurezza moderna non guarda solo ciò che accade. Impara a leggere ciò che sta cambiando.</h2></div><div class="grid3"><div class="card"><h4>Prima</h4><p>Intercettare i segnali deboli prima dell’evento critico.</p></div><div class="card"><h4>Meglio</h4><p>Dare più contesto al personale e alle centrali operative.</p></div><div class="card"><h4>In rete</h4><p>Far crescere la precisione con ogni ambiente collegato.</p></div></div><div class="footer">NeuroSuite estensioni operative. Altri ambiti restano possibili estensioni dello stesso motore osservativo, non promesse di prodotto già concluso. · documento preliminare</div></div></div><div class="num">09 / 09</div></div></section>'];
+let index = 0;
+const root=document.getElementById('root'), menu=document.getElementById('menu');
+function show(i){index=(i+slides.length)%slides.length;root.innerHTML=slides[index];menu.value=index;}
+document.getElementById('prev').onclick=()=>show(index-1);
+document.getElementById('next').onclick=()=>show(index+1);
+menu.onchange=e=>show(Number(e.target.value));
+document.addEventListener('keydown',e=>{if(e.key==='ArrowRight'||e.key===' ')show(index+1); if(e.key==='ArrowLeft')show(index-1);});
+document.addEventListener('click',e=>{ if(!e.target.closest('button,select')) show(index+1); });
+</script></body></html>
