@@ -1,12 +1,4 @@
 User-agent: *
 Allow: /
-Disallow: /riservato/
-Disallow: /investors/
-Disallow: /control-center/
-Disallow: /admin.html
-Disallow: /privato.html
-Disallow: /private-scenario.html
-Disallow: /backup_paule/
-Disallow: /functions/
 
 Sitemap: https://neurosuite.dev/sitemap.xml
