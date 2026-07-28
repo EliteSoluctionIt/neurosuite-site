@@ -1,109 +1,154 @@
-/* Segnali prodromici — fatti, spacing fisso, zero pastone */
+/* Casi concreti + biblioteca scientifica — design system compliant */
 
-.real-life {
+.case-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 14px;
   padding-bottom: var(--section-y);
 }
 
-.real-life .s-head {
-  margin-bottom: clamp(28px, 4vw, 40px);
-}
-
-.fact-grid {
-  display: grid;
-  gap: 16px;
-}
-
-@media (min-width: 900px) {
-  .fact-grid {
-    grid-template-columns: 1fr 1fr;
-  }
-  .fact-card--wide {
-    grid-column: 1 / -1;
-  }
-}
-
-.fact-card {
+.case-card {
   border: 1px solid var(--line);
-  border-radius: 16px;
-  background: color-mix(in oklab, var(--surface) 90%, transparent);
-  padding: 22px 24px;
-  display: flex;
-  flex-direction: column;
-  gap: 14px;
+  border-radius: 18px;
+  background: color-mix(in oklab, var(--surface) 85%, transparent);
+  padding: 22px 22px 20px;
+  display: grid;
+  gap: 10px;
+  min-height: 160px;
+  transition: border-color 0.35s var(--ease), transform 0.35s var(--ease);
 }
 
-.fact-card__tag {
+.case-card:hover {
+  border-color: var(--accent-line);
+  transform: translateY(-2px);
+}
+
+.case-card__tag {
   margin: 0;
   font-family: var(--mono);
-  font-size: 11px;
+  font-size: var(--fs-xs);
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
   line-height: 1.3;
 }
 
-.fact-card__title {
+.case-card h3 {
   margin: 0;
   font-family: var(--serif);
-  font-size: clamp(20px, 2vw, 24px);
+  font-size: clamp(20px, 1.8vw, 24px);
   font-weight: 400;
-  line-height: 1.25;
+  line-height: 1.15;
   color: var(--fg);
 }
 
-.fact-list {
+.case-card p {
   margin: 0;
-  padding: 0;
-  list-style: none;
-  display: grid;
-  gap: 8px;
-}
-
-.fact-list li {
-  margin: 0;
-  padding: 0;
-  font-size: 14px;
-  line-height: 1.45;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
   color: var(--fg-2);
 }
 
-.fact-list li strong {
-  color: var(--fg);
-  font-weight: 500;
+.lib-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+  gap: 14px;
+  padding-bottom: var(--section-y);
 }
 
-.fact-ref {
+.lib-card {
+  border: 1px solid var(--line);
+  border-radius: 16px;
+  background: color-mix(in oklab, var(--surface) 82%, transparent);
+  padding: 20px;
+  display: grid;
+  gap: 8px;
+  transition: border-color 0.3s var(--ease);
+}
+
+.lib-card:hover {
+  border-color: var(--accent-line);
+}
+
+.lib-card h3 {
   margin: 0;
+  font-family: var(--serif);
+  font-size: var(--fs-lg);
+  font-weight: 400;
+  line-height: 1.15;
+}
+
+.lib-card p {
+  margin: 0;
+  font-size: var(--fs-sm);
+  line-height: 1.5;
+  color: var(--fg-2);
+}
+
+.lib-card .lib-ref {
   font-family: var(--mono);
   font-size: 11px;
-  letter-spacing: 0.04em;
   color: var(--fg-3);
+  letter-spacing: 0.04em;
   line-height: 1.4;
 }
 
-.fact-card--heart {
-  --accent: oklch(0.72 0.12 25);
+.lib-card a {
+  font-family: var(--mono);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 4px;
 }
 
-.fact-card--heart .fact-card__tag {
-  color: oklch(0.72 0.12 25);
+.eco-mini {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 12px;
+  padding-bottom: var(--section-y);
 }
 
-.fact-card--alert {
-  --accent: oklch(0.78 0.10 160);
-  background:
-    radial-gradient(circle at 100% 0%, oklch(0.78 0.10 160 / 0.1), transparent 50%),
-    color-mix(in oklab, var(--surface) 90%, transparent);
-}
-
-.fact-card--alert .fact-card__tag {
-  color: oklch(0.78 0.10 160);
-}
-
-.fact-note {
-  margin: 20px 0 0;
-  font-size: 13px;
-  line-height: 1.45;
-  color: var(--fg-3);
+.eco-mini__item {
+  border: 1px solid var(--line);
+  border-radius: 14px;
+  padding: 18px 16px;
   text-align: center;
+  background: color-mix(in oklab, var(--surface) 80%, transparent);
+}
+
+.eco-mini__item strong {
+  display: block;
+  font-family: var(--serif);
+  font-size: var(--fs-md);
+  font-weight: 400;
+  color: var(--fg);
+  margin-bottom: 4px;
+}
+
+.eco-mini__item span {
+  font-size: var(--fs-xs);
+  color: var(--fg-3);
+  font-family: var(--mono);
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.diff-block {
+  max-width: 42ch;
+  margin: 0 auto var(--section-y);
+  text-align: center;
+}
+
+.diff-block p {
+  font-family: var(--serif);
+  font-size: clamp(22px, 2.4vw, 30px);
+  font-weight: 300;
+  line-height: 1.35;
+  color: var(--fg);
+}
+
+.diff-block p strong {
+  color: var(--accent);
+  font-weight: 400;
 }
