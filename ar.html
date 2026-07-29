@@ -161,7 +161,7 @@ html[dir="rtl"] .ns-language-switcher {
 <a href="#stato">الوضع الحالي</a>
 <a href="#accesso">اتصل بنا</a>
 </nav>
-<div class="nav__actions"><div aria-label="اختيار اللغة" class="ns-language-switcher" role="navigation"><a data-language="en" href="index.html">EN</a><a data-language="it" href="it.html">IT</a><a data-language="es" href="es.html">ES</a><a aria-current="page" class="active" data-language="ar" href="ar.html">العربية</a></div>
+<div class="nav__actions"><div aria-label="اختيار اللغة" class="ns-language-switcher" role="navigation"><a data-language="en" href="index.html">EN</a><a data-language="de" href="de.html">DE</a><a data-language="it" href="it.html">IT</a><a data-language="es" href="es.html">ES</a><a aria-current="page" class="active" data-language="ar" href="ar.html">العربية</a></div>
 <button aria-label="تبديل الوضع الفاتح/الداكن" class="mode-toggle" id="mode-toggle"></button>
 
 </div>
@@ -182,9 +182,9 @@ html[dir="rtl"] .ns-language-switcher {
 </div>
 </div>
 <div class="shell hero__meta reveal">
-<div class="hero__meta-col"><span>ركز</span><strong>مرافق الرعاية السكنية لكبار السن · شقق سكنية مدعومة بالرعاية</strong></div>
-<div class="hero__meta-col"><span>طريقة</span><strong>الملاحظة · السياق · الأولوية</strong></div>
-<div class="hero__meta-col"><span>يقترب</span><strong>دعم الرصد والملاحظة· الإشراف البشري</strong></div>
+<div class="hero__meta-col"><span>التركيز</span><strong>مرافق الرعاية السكنية لكبار السن · شقق سكنية مدعومة بالرعاية</strong></div>
+<div class="hero__meta-col"><span>الطريقة</span><strong>الملاحظة · السياق · الأولوية</strong></div>
+<div class="hero__meta-col"><span>النهج</span><strong>دعم الرصد والملاحظة · الإشراف البشري</strong></div>
 <div class="hero__meta-col"><span>الوضع الحالي</span><strong>منصة تشغيلية · تجربة ميدانية جاهزة</strong></div>
 </div>
 </section>
@@ -383,7 +383,7 @@ html[dir="rtl"] .ns-language-switcher {
 <script id="ns-language-script">
 (function(){
   var current="ar";
-  var pages={en:"index.html",it:"it.html",es:"es.html",ar:"ar.html"};
+  var pages={en:"index.html",de:"de.html",it:"it.html",es:"es.html",ar:"ar.html"};
   document.documentElement.lang=current;
   document.documentElement.dir=current==="ar"?"rtl":"ltr";
 
@@ -396,7 +396,7 @@ html[dir="rtl"] .ns-language-switcher {
   var saved=localStorage.getItem("neurosuite-language");
   if(saved && pages[saved] && saved!==current){
     var path=location.pathname;
-    var isLanguagePage=/\/(index|it|es|ar)\.html$/.test(path) || path.endsWith("/");
+    var isLanguagePage=/\/(index|de|it|es|ar)\.html$/.test(path) || path.endsWith("/");
     if(isLanguagePage){
       location.replace(pages[saved]+location.hash);
     }

@@ -161,7 +161,7 @@ html[dir="rtl"] .ns-language-switcher {
 <a href="#stato">Estado actual</a>
 <a href="#accesso">Contacto</a>
 </nav>
-<div class="nav__actions"><div aria-label="Selección de idioma" class="ns-language-switcher" role="navigation"><a data-language="en" href="index.html">EN</a><a data-language="it" href="it.html">IT</a><a aria-current="page" class="active" data-language="es" href="es.html">ES</a><a data-language="ar" href="ar.html">العربية</a></div>
+<div class="nav__actions"><div aria-label="Selección de idioma" class="ns-language-switcher" role="navigation"><a data-language="en" href="index.html">EN</a><a data-language="de" href="de.html">DE</a><a data-language="it" href="it.html">IT</a><a aria-current="page" class="active" data-language="es" href="es.html">ES</a><a data-language="ar" href="ar.html">العربية</a></div>
 <button aria-label="Cambiar modo claro/oscuro" class="mode-toggle" id="mode-toggle"></button>
 
 </div>
@@ -182,9 +182,9 @@ html[dir="rtl"] .ns-language-switcher {
 </div>
 </div>
 <div class="shell hero__meta reveal">
-<div class="hero__meta-col"><span>Enfocar</span><strong>residencias asistenciales para personas mayores · viviendas con apoyo asistencial</strong></div>
+<div class="hero__meta-col"><span>Enfoque</span><strong>residencias asistenciales para personas mayores · viviendas con apoyo asistencial</strong></div>
 <div class="hero__meta-col"><span>Método</span><strong>Observación · contexto · prioridad</strong></div>
-<div class="hero__meta-col"><span>Acercarse</span><strong>apoyo para la observación· supervisión humana</strong></div>
+<div class="hero__meta-col"><span>Enfoque</span><strong>apoyo observacional · supervisión humana</strong></div>
 <div class="hero__meta-col"><span>Estado actual</span><strong>Plataforma operativa · piloto listo</strong></div>
 </div>
 </section>
@@ -301,7 +301,7 @@ html[dir="rtl"] .ns-language-switcher {
 <div class="market-block market-block--lead">
 <div class="market-copy reveal">
 <p>Están en curso actividades organizativas para ensayos o proyectos piloto reales en centros residenciales de atención a personas mayores de alto nivel.</p>
-<p>El proceso está diseñado para verificar la utilidad operativa, la aceptación y la estabilidad técnica, respetando el consentimiento, la privacidad, las autorizaciones y la supervisión humana.</p>
+<p>El recorrido está diseñado para verificar la utilidad operativa, la aceptación y la estabilidad técnica, respetando el consentimiento, la privacidad, las autorizaciones y la supervisión humana.</p>
 </div>
 <div class="status reveal">
 <div class="status-card"><div class="row"><span>Contexto</span><span class="pill"><span class="pulse"></span> Real</span></div><h4>Centros residenciales de alto nivel</h4><p>El primer ámbito de validación comprende centros organizados, con operadores y responsabilidades claramente definidos.</p></div>
@@ -383,7 +383,7 @@ html[dir="rtl"] .ns-language-switcher {
 <script id="ns-language-script">
 (function(){
   var current="es";
-  var pages={en:"index.html",it:"it.html",es:"es.html",ar:"ar.html"};
+  var pages={en:"index.html",de:"de.html",it:"it.html",es:"es.html",ar:"ar.html"};
   document.documentElement.lang=current;
   document.documentElement.dir=current==="ar"?"rtl":"ltr";
 
@@ -396,7 +396,7 @@ html[dir="rtl"] .ns-language-switcher {
   var saved=localStorage.getItem("neurosuite-language");
   if(saved && pages[saved] && saved!==current){
     var path=location.pathname;
-    var isLanguagePage=/\/(index|it|es|ar)\.html$/.test(path) || path.endsWith("/");
+    var isLanguagePage=/\/(index|de|it|es|ar)\.html$/.test(path) || path.endsWith("/");
     if(isLanguagePage){
       location.replace(pages[saved]+location.hash);
     }
