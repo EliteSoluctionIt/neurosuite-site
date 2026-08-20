@@ -5,10 +5,458 @@
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Human Lines — Accesso riservato</title>
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet" />
-  <meta http-equiv="refresh" content="0;url=./" />
+  <style>
+    :root {
+      --bg: #0c1418;
+      --ink: #eef6f4;
+      --muted: #9bb0ab;
+      --line: rgba(232, 244, 240, .14);
+      --accent: #7ec8c4;
+      --gold: #d4b36a;
+      --danger: #c98a8a;
+      --ok: #8fd0ae;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html, body { min-height: 100%; }
+    body {
+      font-family: "Iowan Old Style", Palatino, Georgia, serif;
+      background: #0c1418;
+      color: var(--ink);
+      line-height: 1.55;
+      overflow-x: hidden;
+    }
+    #sky {
+      position: fixed; inset: 0; z-index: 0;
+      background:
+        radial-gradient(1000px 560px at 16% 10%, rgba(70, 140, 150, .18), transparent 58%),
+        radial-gradient(720px 500px at 90% 6%, rgba(160, 185, 195, .08), transparent 52%),
+        radial-gradient(900px 640px at 72% 92%, rgba(25, 70, 80, .22), transparent 58%),
+        linear-gradient(180deg, #080e12 0%, #0a1216 48%, #0c1519 100%);
+    }
+    #hero-canvas { position: fixed; inset: 0; width: 100%; height: 100%; z-index: 1; }
+    .veil {
+      position: fixed; inset: 0; z-index: 2; pointer-events: none;
+      background: linear-gradient(180deg, rgba(12,20,24,.15) 0%, transparent 28%, transparent 62%, rgba(12,20,24,.55) 100%);
+    }
+    .shell {
+      position: relative; z-index: 3;
+      width: min(880px, calc(100% - 28px));
+      margin: 0 auto;
+      padding: 22px 0 90px;
+    }
+    .top {
+      display: flex; justify-content: space-between; align-items: center;
+      gap: 12px; padding: 8px 0 18px;
+    }
+    .brand { font-size: 20px; letter-spacing: .04em; }
+    .brand em { color: var(--accent); font-style: normal; }
+    .tag {
+      font-family: system-ui, sans-serif; font-size: 11px; letter-spacing: .16em;
+      text-transform: uppercase; color: var(--muted);
+    }
+    .hero {
+      min-height: 72vh; display: flex; flex-direction: column; justify-content: flex-end;
+      padding: 8vh 0 4vh;
+    }
+    h1 {
+      font-weight: 400;
+      font-size: clamp(2.3rem, 8vw, 4.4rem);
+      letter-spacing: -.04em;
+      line-height: .98;
+      margin: 0 0 18px;
+      text-wrap: balance;
+      text-shadow: 0 18px 50px rgba(0,0,0,.35);
+    }
+    .lead {
+      font-size: clamp(1.05rem, 2.2vw, 1.28rem);
+      color: #c5d6d2;
+      max-width: 36rem;
+      margin-bottom: 18px;
+    }
+    h2 { font-weight: 500; font-size: 1.28rem; margin: 0 0 10px; }
+    p { margin: 0 0 12px; }
+    .muted { color: var(--muted); font-family: system-ui, sans-serif; font-size: .88rem; }
+    .glass {
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.03));
+      border: 1px solid var(--line);
+      border-radius: 22px;
+      padding: 24px;
+      backdrop-filter: blur(16px);
+      box-shadow: 0 24px 70px rgba(0,0,0,.28);
+      margin: 14px 0;
+    }
+    .note {
+      border-left: 3px solid var(--gold);
+      background: rgba(212,179,106,.08);
+      padding: 13px 15px;
+      border-radius: 0 12px 12px 0;
+      font-family: system-ui, sans-serif; font-size: 14px; margin: 14px 0;
+    }
+    .warn {
+      border-left: 3px solid var(--danger);
+      background: rgba(201,138,138,.1);
+      padding: 13px 15px; border-radius: 0 12px 12px 0;
+      font-family: system-ui, sans-serif; font-size: 14px; margin: 14px 0;
+    }
+    .ok {
+      border-left: 3px solid var(--ok);
+      background: rgba(143,208,174,.1);
+      padding: 13px 15px; border-radius: 0 12px 12px 0;
+      font-family: system-ui, sans-serif; font-size: 14px; margin: 14px 0;
+    }
+    label { display: block; font-family: system-ui, sans-serif; font-size: 13px; font-weight: 600; margin: 12px 0 6px; }
+    input, select, textarea {
+      width: 100%; padding: 11px 12px; border: 1px solid var(--line); border-radius: 10px;
+      font: 15px/1.4 system-ui, sans-serif; background: rgba(8,14,16,.55); color: var(--ink);
+    }
+    textarea { min-height: 96px; resize: vertical; }
+    .grid2 { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+    .actions { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 18px; }
+    button, .btn {
+      font-family: system-ui, sans-serif; border: 0; border-radius: 999px; padding: 13px 20px;
+      cursor: pointer; font-size: 14px; font-weight: 600;
+    }
+    .btn-primary {
+      background: linear-gradient(180deg, #8fd4cf, #5eaea9);
+      color: #0b1416;
+      box-shadow: 0 10px 30px rgba(126,200,196,.25);
+    }
+    .btn-ghost { background: transparent; border: 1px solid var(--line); color: var(--ink); }
+    .btn-spid { background: #16324a; color: #fff; }
+    .hidden { display: none !important; }
+    .steps {
+      display: grid; grid-template-columns: repeat(5, 1fr); gap: 6px; margin-bottom: 10px;
+      font-family: system-ui, sans-serif; font-size: 11px;
+    }
+    .dot {
+      text-align: center; padding: 8px 4px; border-radius: 10px;
+      border: 1px solid var(--line); color: var(--muted); background: rgba(0,0,0,.2);
+    }
+    .dot.on { background: rgba(126,200,196,.2); color: #fff; border-color: var(--accent); }
+    .dot.done { color: var(--ok); }
+    .nda {
+      max-height: 260px; overflow: auto; border: 1px solid var(--line); border-radius: 12px;
+      padding: 16px; background: rgba(0,0,0,.25); font-family: system-ui, sans-serif; font-size: 13.5px;
+    }
+    .nda p { margin: 0 0 10px; }
+    .room { position: relative; overflow: hidden; }
+    .wm { pointer-events: none; position: absolute; inset: 0; z-index: 2; }
+    .wm::after {
+      content: attr(data-wm);
+      position: absolute; left: 50%; top: 45%; transform: translate(-50%,-50%) rotate(-24deg);
+      font-family: system-ui, sans-serif; font-size: clamp(16px, 3vw, 26px); font-weight: 700;
+      color: rgba(255,255,255,.07); white-space: nowrap;
+    }
+    .level { border: 1px solid var(--line); border-radius: 14px; padding: 16px; margin: 12px 0; background: rgba(255,255,255,.03); }
+    .level.locked { opacity: .5; }
+    .receipt {
+      font-family: ui-monospace, Menlo, monospace; font-size: 12px;
+      background: #070c0e; color: #cfe6e1; padding: 14px; border-radius: 12px; overflow: auto;
+    }
+    footer { margin-top: 40px; color: var(--muted); font-family: system-ui, sans-serif; font-size: 12px; }
+    @media (max-width: 720px) {
+      .grid2, .steps { grid-template-columns: 1fr; }
+      .hero { min-height: 62vh; }
+    }
+  </style>
 </head>
 <body>
-<p>Loading…</p>
-<script>location.replace(location.pathname.replace(/\/?$/, '/') + 'app.html');</script>
+  <div id="sky"></div>
+  <canvas id="hero-canvas"></canvas>
+  <div class="veil"></div>
+
+  <div class="shell">
+    <header class="top">
+      <div class="brand">Human <em>Lines</em></div>
+      <div class="tag">Non indicizzato</div>
+    </header>
+    <div id="progress" class="steps"></div>
+
+    <section id="s0" class="panel">
+      <div class="hero">
+        <p class="tag">Accesso su invito · non indicizzato</p>
+        <h1>Vede quello che sta per succedere, prima che succeda.</h1>
+        <p class="lead">Human Lines osserva in continuo i segnali biologici di una persona. E li capisce.</p>
+        <ul class="wow" style="list-style:none;margin:18px 0 20px;padding:0;max-width:36rem;">
+          <li style="margin:0 0 10px;">Analizza il sonno. E capisce cosa sta per rompersi, non solo com’è dormito.</li>
+          <li style="margin:0 0 10px;">Analizza il movimento. E riconosce l’inizio di una deriva, non la caduta già avvenuta.</li>
+          <li style="margin:0 0 10px;">Analizza la voce. E sente quello che la persona non sta dicendo.</li>
+          <li style="margin:0 0 10px;">Analizza il battito. E anticipa, non registra.</li>
+          <li style="margin:0 0 10px;">Analizza settimane di normalità di <em>quella</em> persona. E riconosce l’attimo in cui smette di essere lei.</li>
+          <li style="margin:0 0 10px;">Mette insieme tutto questo. E restituisce una sola cosa: quanto tempo hai ancora per agire.</li>
+        </ul>
+        <p style="color:#c5d6d2;max-width:34rem;margin-bottom:10px;">I sensori li fa già mezzo mercato. Quello che succede dopo il sensore — quello no.</p>
+        <p class="muted" style="margin-bottom:16px;">Se questo ti fa venire una domanda, è la domanda giusta. Non te la spieghiamo qui.</p>
+        <div class="actions">
+          <button class="btn-primary" type="button" onclick="go(1)">Continua</button>
+        </div>
+      </div>
+      <div class="note"><strong>Oltre questo punto:</strong> identità, impegno, poi un primo livello reale. Nulla di più, finché non ha senso per entrambe le parti.</div>
+      <p class="muted">Proseguendo dichiari di avere almeno 18 anni e di agire in proprio o per conto di un’organizzazione con potere di impegnarla. Nessuna informazione sanitaria viene raccolta in questa fase.</p>
+    </section>
+
+    <section id="s1" class="panel hidden">
+      <h1>Prima l’identità</h1>
+      <p class="lead">Senza sapere chi chiede, non si apre nulla.</p>
+      <div class="warn">
+        <strong>Informativa breve (GDPR).</strong> Titolare: Human Lines / NeuroSuite. Dati: identità SPID, email, ruolo, organizzazione, LinkedIn, motivo, accettazione. Finalità: accesso riservato e impegno. Diritti e contatto: info@neurosuite.dev. Nessun dato venduto.
+      </div>
+      <div class="glass">
+        <div class="grid2">
+          <div><label for="simNome">Nome</label><input id="simNome" value="" /></div>
+          <div><label for="simCognome">Cognome</label><input id="simCognome" value="" /></div>
+        </div>
+        <label for="simCf">Codice fiscale</label>
+        <input id="simCf" value="" />
+        <label for="simEmail">Email</label>
+        <input id="simEmail" type="email" value="" />
+        <label class="muted" style="display:flex;gap:10px;align-items:flex-start;font-weight:500;">
+          <input id="privOk" type="checkbox" style="width:auto;margin-top:3px;" />
+          Ho letto l’informativa e proseguo.
+        </label>
+        <div class="actions">
+          <button class="btn-spid" type="button" onclick="fakeSpid()">Entra con SPID</button>
+        </div>
+        <p id="spidOk" class="ok hidden">Identità acquisita. Ogni accettazione è legata a questa persona.</p>
+      </div>
+      <div class="actions">
+        <button class="btn-ghost" type="button" onclick="go(0)">Indietro</button>
+        <button class="btn-primary" type="button" onclick="afterSpid()">Continua</button>
+      </div>
+    </section>
+
+    <section id="s2" class="panel hidden">
+      <h1>Perché chiedi accesso</h1>
+      <div class="glass">
+        <label for="tipo">Natura dell’interesse</label>
+        <select id="tipo">
+          <option>Investimento / valutazione</option>
+          <option>Acceleratore / programma</option>
+          <option>Partnership clinica o assistenziale</option>
+          <option>Ricerca / validazione</option>
+          <option>Collaborazione industriale</option>
+          <option>Altro interesse concreto</option>
+        </select>
+        <label for="motivo">Motivo concreto</label>
+        <textarea id="motivo"></textarea>
+        <label for="linkedin">LinkedIn</label>
+        <input id="linkedin" type="url" />
+        <label for="org">Organizzazione</label>
+        <input id="org" />
+        <label for="conflitto">Conflitti noti</label>
+        <textarea id="conflitto"></textarea>
+      </div>
+      <div class="actions">
+        <button class="btn-ghost" type="button" onclick="go(1)">Indietro</button>
+        <button class="btn-primary" type="button" onclick="go(3)">Continua</button>
+      </div>
+    </section>
+
+    <section id="s3" class="panel hidden">
+      <h1>Impegno di riservatezza</h1>
+      <div class="glass">
+        <div class="nda" id="ndaText">
+          <p><strong>IMPEGNO DI RISERVATEZZA — HUMAN LINES</strong></p>
+          <p>Tra il soggetto identificato via SPID (il «Ricevente») e il titolare del progetto Human Lines / NeuroSuite (il «Divulgatore»).</p>
+          <p>1. Il Ricevente chiede accesso a informazioni non pubbliche sul progetto.</p>
+          <p>2. Si impegna a usarle solo per valutare una collaborazione; a non divulgarle; a non copiarle né farle implementare; a non depositare titoli di PI su quanto appreso.</p>
+          <p>3. Restano escluse le informazioni di pubblico dominio senza violazione.</p>
+          <p>4. Nessuna licenza è concessa.</p>
+          <p>5. Durata: 5 anni; illimitata per i segreti commerciali finché tali.</p>
+          <p>6. Legge italiana. Foro del Divulgatore, salvo norme inderogabili.</p>
+          <p>7. L’accettazione è vincolata all’identità SPID, al testo, alla marca temporale e all’impronta SHA-256.</p>
+        </div>
+        <label class="muted" style="display:flex;gap:10px;align-items:flex-start;margin-top:14px;font-weight:500;">
+          <input id="acc" type="checkbox" style="width:auto;margin-top:3px;" />
+          Ho letto l’impegno e lo accetto senza riserve.
+        </label>
+        <div class="actions">
+          <button class="btn-primary" type="button" onclick="signNda()">Accetto e firmo elettronicamente</button>
+        </div>
+      </div>
+      <div class="actions"><button class="btn-ghost" type="button" onclick="go(2)">Indietro</button></div>
+    </section>
+
+    <section id="s4" class="panel hidden">
+      <h1>Room — livello 1</h1>
+      <div class="glass room">
+        <div class="wm" id="wm" data-wm=""></div>
+        <div style="position:relative;z-index:3;">
+          <p class="ok" id="roomWho"></p>
+          <p>Piattaforma di osservazione. Rende visibili le derive che meritano attenzione. Non formula diagnosi.</p>
+          <div class="level"><strong>Aperto — livello 1</strong><p class="muted" style="margin:6px 0 0;">Problema, posizione, primo campo, stato del percorso. Niente metodi.</p></div>
+          <div class="level locked"><strong>Chiuso — livello 2</strong><p class="muted" style="margin:6px 0 0;">Architettura, criteri, stack, trial nominativi. Solo su tua decisione.</p></div>
+          <div class="level locked"><strong>Chiuso — livello 3</strong><p class="muted" style="margin:6px 0 0;">Dettaglio tecnico e scientifico, numeri, partnership.</p></div>
+          <pre class="receipt" id="receipt"></pre>
+          <div class="actions">
+            <button class="btn-ghost" type="button" onclick="downloadReceipt()">Scarica ricevuta</button>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      Human Lines / NeuroSuite non è un dispositivo diagnostico e non sostituisce un professionista sanitario. Informativa nello step Identità. Legge applicabile: Italia. Pagina non indicizzata.
+    </footer>
+  </div>
+
+  <script>
+    (function () {
+      const canvas = document.getElementById("hero-canvas");
+      const ctx = canvas.getContext("2d");
+      let W = 0, H = 0, DPR = Math.min(devicePixelRatio || 1, 2), nodes = [];
+      let mouse = { x: -9999, y: -9999 };
+      const fixedRel = [
+        [0.42, 0.38], [0.50, 0.40], [0.58, 0.42],
+        [0.36, 0.28], [0.62, 0.30],
+        [0.40, 0.52], [0.56, 0.54],
+        [0.50, 0.48], [0.50, 0.56], [0.49, 0.64]
+      ];
+      const fixedLinks = [[0,1],[1,2],[3,0],[2,4],[0,5],[2,6],[5,6],[1,7],[7,8],[8,9]];
+      let fixed = [];
+      function mapFixed() {
+        fixed = fixedRel.map(function (p, i) {
+          return {
+            x: W * (0.18 + p[0] * 0.64),
+            y: H * (0.12 + p[1] * 0.55),
+            r: (i === 1 ? 2.4 : 1.9),
+            gold: (i === 1 || i === 7),
+            phase: i * 0.7
+          };
+        });
+      }
+      function seed() {
+        nodes = [];
+        const count = Math.max(42, Math.min(120, Math.floor(W * H * 0.00011)));
+        for (let i = 0; i < count; i++) {
+          nodes.push({
+            x: Math.random() * W, y: Math.random() * H,
+            vx: (Math.random() - .5) * .08, vy: (Math.random() - .5) * .08,
+            r: Math.random() * 1.4 + .35, phase: Math.random() * Math.PI * 2
+          });
+        }
+        mapFixed();
+      }
+      function resize() {
+        W = innerWidth; H = innerHeight;
+        canvas.width = W * DPR; canvas.height = H * DPR;
+        canvas.style.width = W + "px"; canvas.style.height = H + "px";
+        ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+        seed();
+      }
+      function nearFixed(x, y) {
+        for (let i = 0; i < fixed.length; i++) {
+          const dx = x - fixed[i].x, dy = y - fixed[i].y;
+          if (dx * dx + dy * dy < 55 * 55) return true;
+        }
+        return false;
+      }
+      function draw(t) {
+        ctx.clearRect(0, 0, W, H);
+        const base = "rgba(220,236,234,";
+        for (let i = 0; i < nodes.length; i++) {
+          const a = nodes[i];
+          for (let j = i + 1; j < nodes.length; j++) {
+            const b = nodes[j];
+            const dx = a.x - b.x, dy = a.y - b.y, d2 = dx * dx + dy * dy;
+            if (d2 < 150 * 150) {
+              const d = Math.sqrt(d2);
+              ctx.strokeStyle = base + ((1 - d / 150) * .14) + ")";
+              ctx.lineWidth = .55;
+              ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+            }
+          }
+          const mdx = a.x - mouse.x, mdy = a.y - mouse.y, md2 = mdx * mdx + mdy * mdy;
+          if (md2 < 42000) {
+            const d = Math.sqrt(md2);
+            let alpha = (1 - d / 205) * .42;
+            if (nearFixed(a.x, a.y)) alpha *= 0.25;
+            ctx.strokeStyle = "rgba(126,200,196," + alpha + ")";
+            ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
+          }
+          const breathe = .55 + .45 * Math.sin(t * .0007 + a.phase);
+          ctx.fillStyle = base + ".65)";
+          ctx.beginPath(); ctx.arc(a.x, a.y, a.r * breathe, 0, Math.PI * 2); ctx.fill();
+          a.x += a.vx; a.y += a.vy;
+          if (a.x < 0 || a.x > W) a.vx *= -1;
+          if (a.y < 0 || a.y > H) a.vy *= -1;
+        }
+        ctx.lineWidth = 0.65;
+        for (let k = 0; k < fixedLinks.length; k++) {
+          const a = fixed[fixedLinks[k][0]], b = fixed[fixedLinks[k][1]];
+          ctx.strokeStyle = "rgba(200,230,226,0.11)";
+          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
+        }
+        for (let i = 0; i < fixed.length; i++) {
+          const s = fixed[i];
+          const br = 0.75 + 0.25 * Math.sin(t * 0.0009 + s.phase);
+          const col = s.gold ? "212,179,106" : "126,200,196";
+          ctx.fillStyle = "rgba(" + col + "," + (0.22 * br) + ")";
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r * 4.2 * br, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = "rgba(" + col + "," + (0.9 * br) + ")";
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r * br, 0, Math.PI * 2); ctx.fill();
+        }
+        requestAnimationFrame(draw);
+      }
+      addEventListener("pointermove", function(e) { mouse.x = e.clientX; mouse.y = e.clientY; }, { passive: true });
+      addEventListener("resize", resize, { passive: true });
+      resize();
+      requestAnimationFrame(draw);
+    })();
+
+    const labels = ["Intro", "SPID", "Interesse", "Firma", "Room"];
+    let step = 0, identity = null, receipt = null;
+    function renderProgress() {
+      document.getElementById("progress").innerHTML = labels.map((l, i) =>
+        '<div class="dot ' + (i === step ? "on" : i < step ? "done" : "") + '">' + (i + 1) + ". " + l + "</div>"
+      ).join("");
+    }
+    function go(n) {
+      document.querySelectorAll(".panel").forEach(function(p) { p.classList.add("hidden"); });
+      document.getElementById("s" + n).classList.remove("hidden");
+      step = n; renderProgress();
+      scrollTo({ top: 0, behavior: "smooth" });
+    }
+    renderProgress();
+
+    function fakeSpid() {
+      if (!document.getElementById("privOk").checked) return alert("Devi accettare l’informativa privacy.");
+      identity = {
+        nome: document.getElementById("simNome").value.trim(),
+        cognome: document.getElementById("simCognome").value.trim(),
+        cf: document.getElementById("simCf").value.trim().toUpperCase(),
+        email: document.getElementById("simEmail").value.trim(),
+        provider: "SPID",
+        at: new Date().toISOString()
+      };
+      document.getElementById("spidOk").classList.remove("hidden");
+    }
+    function afterSpid() { if (!identity) return alert("Prima entra con SPID."); go(2); }
+
+    async function sha256(text) {
+      const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+      return [...new Uint8Array(buf)].map(function(b) { return b.toString(16).padStart(2, "0"); }).join("");
+    }
+    async function signNda() {
+      if (!identity) return alert("Identità mancante.");
+      if (!document.getElementById("acc").checked) return alert("Devi accettare l’impegno.");
+      const nda = document.getElementById("ndaText").innerText;
+      const hash = await sha256(nda);
+      const now = new Date().toISOString();
+      const id = "HL-" + now.slice(0,10).replaceAll("-","") + "-" + hash.slice(0,8).toUpperCase();
+      receipt = { pratica: id, timestamp: now, hash_sha256_impegno: hash, identita: identity };
+      document.getElementById("wm").setAttribute("data-wm", identity.nome + " " + identity.cognome + " · " + id);
+      document.getElementById("roomWho").textContent = "Sessione di " + identity.nome + " " + identity.cognome + ". Pratica " + id + ".";
+      document.getElementById("receipt").textContent = JSON.stringify(receipt, null, 2);
+      go(4);
+    }
+    function downloadReceipt() {
+      if (!receipt) return;
+      const a = document.createElement("a");
+      a.href = URL.createObjectURL(new Blob([JSON.stringify(receipt, null, 2)], { type: "application/json" }));
+      a.download = receipt.pratica + "-ricevuta.json";
+      a.click();
+    }
+  </script>
 </body>
 </html>
