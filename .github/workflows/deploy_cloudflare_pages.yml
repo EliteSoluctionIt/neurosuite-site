@@ -3,10 +3,6 @@ name: Deploy NeuroSuite site to Cloudflare Pages
 on:
   push:
     branches: [ main ]
-    paths:
-      - '**'
-      - '!.github/workflows/deploy_cloudflare_pages.yml'
-      - '.github/workflows/deploy_cloudflare_pages.yml'
   workflow_dispatch:
 
 permissions:
@@ -21,7 +17,7 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Deploy site
+      - name: Deploy site to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
