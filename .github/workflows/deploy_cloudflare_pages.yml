@@ -17,9 +17,25 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Check secrets present (names only, no values)
+        run: |
+          if [ -z "${{ secrets.CLOUDFLARE_API_TOKEN }}${{ secrets.CF_API_TOKEN }}" ]; then
+            echo "::error::No Cloudflare API token secret visible to this repository (tried CLOUDFLARE_API_TOKEN and CF_API_TOKEN)."
+            echo "Secrets exist on other repos do not apply here. Enable org secret for this repo, or add repository secrets on neurosuite-site."
+            exit 1
+          fi
+          if [ -z "${{ secrets.CLOUDFLARE_ACCOUNT_ID }}${{ secrets.CF_ACCOUNT_ID }}" ]; then
+            echo "::error::No Cloudflare Account ID secret visible to this repository (tried CLOUDFLARE_ACCOUNT_ID and CF_ACCOUNT_ID)."
+            exit 1
+          fi
+          echo "Cloudflare secrets are present for this repository (values not printed)."
+
       - name: Deploy site to Cloudflare Pages
         uses: cloudflare/wrangler-action@v3
+        env:
+          CLOUDFLARE_API_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN || secrets.CF_API_TOKEN }}
+          CLOUDFLARE_ACCOUNT_ID: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || secrets.CF_ACCOUNT_ID }}
         with:
-          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
-          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID }}
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN || secrets.CF_API_TOKEN }}
+          accountId: ${{ secrets.CLOUDFLARE_ACCOUNT_ID || secrets.CF_ACCOUNT_ID }}
           command: pages deploy . --project-name=neurosuite-webplaza --branch=production
