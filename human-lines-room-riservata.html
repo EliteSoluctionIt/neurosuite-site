@@ -70,7 +70,7 @@
     .lead {
       font-size: clamp(1.05rem, 2.2vw, 1.28rem);
       color: #c5d6d2;
-      max-width: 28ch;
+      max-width: 34ch;
       margin-bottom: 28px;
     }
     h2 { font-weight: 500; font-size: 1.28rem; margin: 0 0 10px; }
@@ -170,8 +170,8 @@
     </div>
 
     <section class="hero">
-      <h1>La stanza<br>è riservata.</h1>
-      <p class="lead">Qui non si entra per curiosità. Si entra solo dopo identità e impegno.</p>
+      <h1>Vede quello che sta per succedere, prima che succeda.</h1>
+      <p class="lead">Human Lines osserva in continuo i segnali biologici di una persona. E li capisce.</p>
       <div class="row">
         <button class="btn btn-primary" onclick="go(1)">Inizia l’accesso</button>
         <button class="btn btn-ghost" onclick="document.getElementById('info').scrollIntoView({behavior:'smooth'})">Come funziona</button>
@@ -185,9 +185,10 @@
       <p>Questa pagina simula un flusso di accesso protetto con identità digitale e firma di un impegno di riservatezza.</p>
       <div class="pills">
         <span class="pill">1 · Identità</span>
-        <span class="pill">2 · Impegno</span>
-        <span class="pill">3 · Stanza</span>
-        <span class="pill">4 · Ricevuta</span>
+        <span class="pill">2 · Interesse</span>
+        <span class="pill">3 · Firma</span>
+        <span class="pill">4 · Stanza</span>
+        <span class="pill">5 · Ricevuta</span>
       </div>
       <div class="note">Nessun dato viene inviato a server esterni. Tutto resta nel browser di questa sessione.</div>
     </section>
@@ -217,7 +218,18 @@
     </section>
 
     <section id="s2" class="panel glass hidden">
-      <h2>2 · Impegno di riservatezza</h2>
+      <h2>2 · Perché chiedi accesso</h2>
+      <p class="muted">Dicci in due righe il motivo. Serve a chiudere la pratica.</p>
+      <label>Motivo</label>
+      <textarea id="motivo" placeholder="Es. sto valutando una collaborazione / voglio capire se Human Lines può aiutare un familiare..."></textarea>
+      <div class="row">
+        <button class="btn btn-primary" onclick="go(3)">Continua →</button>
+        <button class="btn btn-ghost" onclick="go(1)">Indietro</button>
+      </div>
+    </section>
+
+    <section id="s3" class="panel glass hidden">
+      <h2>3 · Impegno di riservatezza</h2>
       <div id="ndaText" style="max-height:220px; overflow:auto; font-family:system-ui; font-size:14px; line-height:1.5; padding:8px 0">
         <p>Il sottoscritto, identificato digitalmente, si impegna a:</p>
         <p>1) mantenere stretta riservatezza su contenuti, materiali e conversazioni presenti in questa stanza;</p>
@@ -232,27 +244,27 @@
       </div>
       <div class="row">
         <button class="btn btn-primary" onclick="signNda()">Firma e accedi alla stanza</button>
-        <button class="btn btn-ghost" onclick="go(1)">Indietro</button>
-      </div>
-    </section>
-
-    <section id="s3" class="panel glass hidden">
-      <h2>3 · Stanza riservata</h2>
-      <p id="roomWho" class="muted"></p>
-      <p>Benvenuto. Questa è l’area protetta. I contenuti qui sotto sono visibili solo dopo identità e firma.</p>
-      <div class="note">In produzione qui comparirebbero documenti, video o materiali classificate.</div>
-      <div class="row">
-        <button class="btn btn-ghost" onclick="go(4)">Vai alla ricevuta</button>
+        <button class="btn btn-ghost" onclick="go(2)">Indietro</button>
       </div>
     </section>
 
     <section id="s4" class="panel glass hidden">
-      <h2>4 · Ricevuta di accesso</h2>
+      <h2>4 · Stanza riservata</h2>
+      <p id="roomWho" class="muted"></p>
+      <p>Benvenuto. Questa è l’area protetta. I contenuti qui sotto sono visibili solo dopo identità e firma.</p>
+      <div class="note">In produzione qui comparirebbero documenti, video o materiali classificate.</div>
+      <div class="row">
+        <button class="btn btn-ghost" onclick="go(5)">Vai alla ricevuta</button>
+      </div>
+    </section>
+
+    <section id="s5" class="panel glass hidden">
+      <h2>5 · Ricevuta di accesso</h2>
       <p class="muted">Copia locale della pratica. Puoi scaricarla.</p>
       <pre id="receipt"></pre>
       <div class="row">
         <button class="btn btn-primary" onclick="downloadReceipt()">Scarica ricevuta JSON</button>
-        <button class="btn btn-ghost" onclick="go(3)">Torna alla stanza</button>
+        <button class="btn btn-ghost" onclick="go(4)">Torna alla stanza</button>
       </div>
     </section>
 
@@ -267,11 +279,12 @@
       const ctx = canvas.getContext("2d");
       let W = 0, H = 0, DPR = Math.min(devicePixelRatio || 1, 2), nodes = [];
       let mouse = { x: -9999, y: -9999 };
+      // Orion proportions improved for spectacle and balance
       const fixedRel = [
-        [0.42, 0.38], [0.50, 0.40], [0.58, 0.42],
-        [0.36, 0.28], [0.62, 0.30],
-        [0.40, 0.52], [0.56, 0.54],
-        [0.50, 0.48], [0.50, 0.56], [0.49, 0.64]
+        [0.35, 0.32], [0.50, 0.35], [0.65, 0.38], // belt - wider
+        [0.28, 0.18], [0.72, 0.22], // shoulders - wider
+        [0.32, 0.52], [0.68, 0.55], // hips
+        [0.50, 0.42], [0.50, 0.52], [0.48, 0.68] // sword line - longer
       ];
       const fixedLinks = [
         [0,1],[1,2],
@@ -281,11 +294,12 @@
       ];
       let fixed = [];
       function mapFixed() {
+        // Larger, more centered, higher on screen for spectacle
         fixed = fixedRel.map(function (p, i) {
           return {
-            x: W * (0.18 + p[0] * 0.64),
-            y: H * (0.12 + p[1] * 0.55),
-            r: (i === 1 ? 2.4 : 1.9),
+            x: W * (0.12 + p[0] * 0.76),
+            y: H * (0.08 + p[1] * 0.48),
+            r: (i === 1 ? 3.2 : 2.4),
             gold: (i === 1 || i === 7),
             phase: i * 0.7
           };
@@ -293,12 +307,12 @@
       }
       function seed() {
         nodes = [];
-        const count = Math.max(42, Math.min(120, Math.floor(W * H * 0.00011)));
+        const count = Math.max(55, Math.min(160, Math.floor(W * H * 0.00014)));
         for (let i = 0; i < count; i++) {
           nodes.push({
             x: Math.random() * W, y: Math.random() * H,
-            vx: (Math.random() - .5) * .08, vy: (Math.random() - .5) * .08,
-            r: Math.random() * 1.4 + .35, phase: Math.random() * Math.PI * 2
+            vx: (Math.random() - .5) * .07, vy: (Math.random() - .5) * .07,
+            r: Math.random() * 1.6 + .4, phase: Math.random() * Math.PI * 2
           });
         }
         mapFixed();
@@ -310,37 +324,32 @@
         ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
         seed();
       }
-      function nearFixed(x, y) {
-        for (let i = 0; i < fixed.length; i++) {
-          const dx = x - fixed[i].x, dy = y - fixed[i].y;
-          if (dx * dx + dy * dy < 55 * 55) return true;
-        }
-        return false;
-      }
       function draw(t) {
         ctx.clearRect(0, 0, W, H);
         for (let i = 0; i < nodes.length; i++) {
           const a = nodes[i];
           const pulse = 0.55 + 0.45 * Math.sin(t * 0.0012 + a.phase);
-          ctx.fillStyle = "rgba(180,220,215," + (0.18 * pulse) + ")";
+          ctx.fillStyle = "rgba(180,220,215," + (0.22 * pulse) + ")";
           ctx.beginPath(); ctx.arc(a.x, a.y, a.r * pulse, 0, Math.PI * 2); ctx.fill();
           a.x += a.vx; a.y += a.vy;
           if (a.x < 0 || a.x > W) a.vx *= -1;
           if (a.y < 0 || a.y > H) a.vy *= -1;
         }
-        ctx.lineWidth = 0.65;
+        // stronger constellation lines
+        ctx.lineWidth = 0.9;
         for (let k = 0; k < fixedLinks.length; k++) {
           const a = fixed[fixedLinks[k][0]], b = fixed[fixedLinks[k][1]];
-          ctx.strokeStyle = "rgba(200,230,226,0.11)";
+          ctx.strokeStyle = "rgba(200,230,226,0.18)";
           ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
         }
+        // brighter fixed stars with stronger glow
         for (let i = 0; i < fixed.length; i++) {
           const s = fixed[i];
           const br = 0.75 + 0.25 * Math.sin(t * 0.0009 + s.phase);
           const col = s.gold ? "212,179,106" : "126,200,196";
-          ctx.fillStyle = "rgba(" + col + "," + (0.22 * br) + ")";
-          ctx.beginPath(); ctx.arc(s.x, s.y, s.r * 4.2 * br, 0, Math.PI * 2); ctx.fill();
-          ctx.fillStyle = "rgba(" + col + "," + (0.9 * br) + ")";
+          ctx.fillStyle = "rgba(" + col + "," + (0.28 * br) + ")";
+          ctx.beginPath(); ctx.arc(s.x, s.y, s.r * 5.5 * br, 0, Math.PI * 2); ctx.fill();
+          ctx.fillStyle = "rgba(" + col + "," + (0.95 * br) + ")";
           ctx.beginPath(); ctx.arc(s.x, s.y, s.r * br, 0, Math.PI * 2); ctx.fill();
         }
         requestAnimationFrame(draw);
@@ -352,7 +361,7 @@
     })();
 
     let step = 0, identity = null, receipt = null;
-    const labels = ["Identità", "Impegno", "Stanza", "Ricevuta"];
+    const labels = ["Identità", "Interesse", "Firma", "Stanza", "Ricevuta"];
     function renderProgress() {
       document.getElementById("progress").innerHTML = labels.map(function(l, i) {
         return '<div class="' + (i === step ? "on" : i < step ? "done" : "") + '">' + (i + 1) + ". " + l + "</div>";
@@ -395,7 +404,7 @@
       document.getElementById("wm").setAttribute("data-wm", identity.nome + " " + identity.cognome + " · " + id);
       document.getElementById("roomWho").textContent = "Sessione di " + identity.nome + " " + identity.cognome + ". Pratica " + id + ".";
       document.getElementById("receipt").textContent = JSON.stringify(receipt, null, 2);
-      go(4);
+      go(5);
     }
     function downloadReceipt() {
       if (!receipt) return;
