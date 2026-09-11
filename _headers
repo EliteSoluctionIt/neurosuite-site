@@ -13,3 +13,8 @@
   X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
   Cache-Control: private, no-store, max-age=0
   Referrer-Policy: no-referrer
+
+/p/*
+  X-Robots-Tag: noindex, nofollow, noarchive, nosnippet, noimageindex
+  Cache-Control: private, no-store, max-age=0
+  Referrer-Policy: no-referrer
