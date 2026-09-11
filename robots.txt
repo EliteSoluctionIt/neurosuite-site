@@ -1,5 +1,7 @@
 User-agent: *
 Disallow: /accesso/
+Disallow: /p/
+Disallow: /l/
 Allow: /
 
 Sitemap: https://neurosuite.dev/sitemap.xml
