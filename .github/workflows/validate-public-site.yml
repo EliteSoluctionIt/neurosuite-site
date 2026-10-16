@@ -1,0 +1,59 @@
+name: Validate public site
+
+on:
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  static-checks:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check out repository
+        uses: actions/checkout@v4
+
+      - name: Validate JavaScript syntax
+        run: node --check app.js
+
+      - name: Verify required production files
+        shell: bash
+        run: |
+          required=(
+            CNAME
+            index.html
+            it.html
+            app.js
+            styles.css
+            blue-gold.css
+            privacy.html
+            terms.html
+            robots.txt
+            sitemap.xml
+          )
+
+          for path in "${required[@]}"; do
+            test -f "$path" || {
+              echo "Missing required production file: $path"
+              exit 1
+            }
+          done
+
+      - name: Block reserved or personal material
+        shell: bash
+        run: |
+          forbidden=(
+            accesso
+            human-lines-room-riservata.html
+            neurosuite-accesso-test
+            p
+            preview-newsletter-001-8f3a6c.html
+          )
+
+          for path in "${forbidden[@]}"; do
+            if test -e "$path"; then
+              echo "Forbidden public path found: $path"
+              exit 1
+            fi
+          done
