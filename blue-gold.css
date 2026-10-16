@@ -33,3 +33,18 @@ html[data-mode="light"] .eco-card,html[data-mode="light"] .status-card,html[data
 html[data-mode="light"] .flow,html[data-mode="light"] .access{background:#eee9df}
 html[data-mode="light"] .s-head__title em,html[data-mode="light"] .vision__quote em,html[data-mode="light"] .access h2 em{color:#906524}
 @media(max-width:540px){.nav__actions{display:flex;align-items:center;flex-wrap:nowrap}.ns-language-switcher{flex-shrink:0}.hero__title{hyphens:none}.hero__meta-col strong{overflow-wrap:break-word}}
+
+/* Visual ecosystem: compact, richly illustrated network cards */
+.eco{gap:clamp(14px,2vw,24px)}
+.eco-card{min-height:0!important;height:auto;display:flex;flex-direction:column;justify-content:flex-start;gap:18px;padding:clamp(22px,2.5vw,34px);border-radius:24px}
+.eco-card__header{order:0}.eco-card>div:nth-child(2){order:2;min-height:0}.eco-card__footer{order:3;margin-top:auto}
+.eco-card:after{opacity:.38;background:radial-gradient(circle at 65% 30%,rgba(225,185,101,.22),transparent 65%)}
+.eco-card__name{font-size:clamp(26px,2.5vw,38px);line-height:1.14}
+.eco-card__manifesto{max-width:40ch;font-size:clamp(14px,1.2vw,16px);line-height:1.65}
+.eco-card__header:after{content:"";display:block;width:105px;height:85px;flex:0 0 105px;background:radial-gradient(circle at 16% 66%,#ffe2a1 0 3px,transparent 4px),radial-gradient(circle at 50% 15%,#f1bd6b 0 4px,transparent 5px),radial-gradient(circle at 88% 52%,#ffe2a1 0 3px,transparent 4px),radial-gradient(circle at 52% 88%,#d3a45c 0 3px,transparent 4px),linear-gradient(149deg,transparent 39%,rgba(234,188,101,.8) 40%,rgba(234,188,101,.8) 40.7%,transparent 41.7%),linear-gradient(27deg,transparent 47%,rgba(234,188,101,.7) 48%,rgba(234,188,101,.7) 48.7%,transparent 49.7%);filter:drop-shadow(0 0 11px rgba(239,190,100,.38));opacity:.95}
+.eco-card:nth-child(2n) .eco-card__header:after{transform:rotate(27deg)}
+.eco-card:nth-child(3n) .eco-card__header:after{transform:rotate(-31deg)}
+.eco-card__footer{font-size:10px;letter-spacing:.12em}
+@media(min-width:1001px){.eco{grid-template-columns:repeat(3,minmax(0,1fr))}.eco-card{min-height:310px!important}}
+@media(min-width:621px) and (max-width:1000px){.eco{grid-template-columns:repeat(2,minmax(0,1fr))}.eco-card{min-height:280px!important}}
+@media(max-width:620px){.eco{grid-template-columns:minmax(0,1fr);gap:16px}.eco-card{min-height:0!important;padding:22px 24px;gap:16px}.eco-card__header:after{width:92px;height:68px;flex-basis:92px}.eco-card__name{font-size:clamp(26px,7.5vw,34px)}.eco-card__manifesto{font-size:15px}.eco-card__footer{padding-top:14px}.eco-card:hover{transform:none}}
