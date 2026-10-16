@@ -631,3 +631,81 @@
     setTimeout(start, 80);
   }
 })();
+
+// NeuroSuite original soundscape — user-controlled by design.
+(function () {
+  const source = 'assets/neurosuite-constellation-rising.mp3';
+  const language = (document.documentElement.lang || 'en').toLowerCase();
+  const italian = language.startsWith('it');
+  const copy = italian
+    ? {
+        play: 'Avvia la colonna sonora originale',
+        pause: 'Metti in pausa la colonna sonora',
+        loading: 'Caricamento audio',
+        label: 'Colonna sonora',
+        error: 'Audio non disponibile'
+      }
+    : {
+        play: 'Play the original soundtrack',
+        pause: 'Pause the original soundtrack',
+        loading: 'Loading audio',
+        label: 'Soundtrack',
+        error: 'Audio unavailable'
+      };
+
+  const audio = document.createElement('audio');
+  audio.className = 'ns-soundtrack';
+  audio.src = source;
+  audio.loop = true;
+  audio.preload = 'none';
+  audio.volume = 0.38;
+  audio.setAttribute('playsinline', '');
+  audio.setAttribute('aria-hidden', 'true');
+
+  const button = document.createElement('button');
+  button.className = 'sound-toggle';
+  button.type = 'button';
+  button.setAttribute('aria-label', copy.play);
+  button.setAttribute('aria-pressed', 'false');
+  button.innerHTML = [
+    '<span class="sound-toggle__bars" aria-hidden="true">',
+    '<i></i><i></i><i></i><i></i>',
+    '</span>',
+    '<span class="sound-toggle__label">' + copy.label + '</span>'
+  ].join('');
+
+  function setState(state) {
+    button.classList.toggle('is-playing', state === 'playing');
+    button.classList.toggle('is-loading', state === 'loading');
+    button.classList.toggle('has-error', state === 'error');
+    button.setAttribute('aria-pressed', state === 'playing' ? 'true' : 'false');
+    button.setAttribute(
+      'aria-label',
+      state === 'playing' ? copy.pause : state === 'loading' ? copy.loading : state === 'error' ? copy.error : copy.play
+    );
+    button.title = button.getAttribute('aria-label');
+  }
+
+  button.addEventListener('click', async function () {
+    if (!audio.paused) {
+      audio.pause();
+      return;
+    }
+
+    setState('loading');
+    try {
+      await audio.play();
+    } catch (error) {
+      setState('error');
+    }
+  });
+
+  audio.addEventListener('play', function () { setState('playing'); });
+  audio.addEventListener('playing', function () { setState('playing'); });
+  audio.addEventListener('pause', function () { setState('paused'); });
+  audio.addEventListener('waiting', function () { setState('loading'); });
+  audio.addEventListener('error', function () { setState('error'); });
+
+  document.body.append(audio, button);
+  setState('paused');
+})();
