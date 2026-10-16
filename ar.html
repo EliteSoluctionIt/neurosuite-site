@@ -1,42 +1,22 @@
 <!DOCTYPE html>
 
-<html data-accent="warm" data-hero="constellation" data-mode="dark" dir="rtl" lang="ar">
+<html data-accent="warm" data-hero="constellation" data-mode="dark" dir="ltr" lang="en">
 <head>
-<link href="https://neurosuite.dev/" rel="canonical"/>
+<link href="https://neurosuite.dev/ar.html" rel="canonical"/>
 <meta content="index, follow, max-image-preview:large, max-snippet:-1, max-video-preview:-1" name="robots"/>
 <meta content="website" property="og:type"/>
 <meta content="NeuroSuite" property="og:site_name"/>
-<meta content="NeuroSuite — النظام البيئي الرصدي" property="og:title"/>
-<meta content="يقوم NeuroSuite بربط الإشارات والسياق والأولويات التشغيلية في مرافق الرعاية السكنية لكبار السن وشقق سكنية مدعومة بالرعايةوسياقات الرعاية، مع دعم الرصد والملاحظةوالإشراف البشري." property="og:description"/>
-<meta content="https://neurosuite.dev/" property="og:url"/>
+<meta content="NeuroSuite — Reading what changes." property="og:title"/>
+<meta content="I built NeuroSuite to bring continuity to what remains disconnected: signals, context and human attention. One shared engine. Many possible worlds." property="og:description"/>
+<meta content="https://neurosuite.dev/ar.html" property="og:url"/>
 <meta content="summary_large_image" name="twitter:card"/>
-<meta content="NeuroSuite — النظام البيئي الرصدي" name="twitter:title"/>
-<meta content="يقوم NeuroSuite بربط الإشارات والسياق والأولويات التشغيلية في مرافق الرعاية السكنية لكبار السن وشقق سكنية مدعومة بالرعايةوسياقات الرعاية، مع دعم الرصد والملاحظةوالإشراف البشري." name="twitter:description"/>
-<script type="application/ld+json">
-{
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  "name": "NeuroSuite",
-  "url": "https://neurosuite.dev/",
-  "description": "NeuroSuite collega segnali, contesto e priorità operative in مرافق الرعاية السكنية وطويلة الأجل لكبار السن, appartamenti protetti e contesti di cura, con supporto osservativo e supervisione umana.",
-  "founder": {
-    "@type": "Person",
-    "name": "Alessandro Pindilli"
-  },
-  "areaServed": "Europe",
-  "knowsAbout": [
-    "Artificial Intelligence",
-    "Multimodal systems",
-    "Digital health",
-    "Assisted living",
-    "Observational intelligence"
-  ]
-}
-</script>
+<meta content="NeuroSuite — Reading what changes." name="twitter:title"/>
+<meta content="I built NeuroSuite to bring continuity to what remains disconnected: signals, context and human attention. One shared engine. Many possible worlds." name="twitter:description"/>
+
 <meta charset="utf-8"/>
 <meta content="width=device-width,initial-scale=1,viewport-fit=cover" name="viewport"/>
-<title>NeuroSuite — النظام البيئي الرصدي</title>
-<meta content="يقوم NeuroSuite بربط الإشارات والسياق والأولويات التشغيلية في مرافق الرعاية السكنية لكبار السن وشقق سكنية مدعومة بالرعايةوسياقات الرعاية، مع دعم الرصد والملاحظةوالإشراف البشري." name="description"/>
+<title>NeuroSuite — Reading what changes.</title>
+<meta content="I built NeuroSuite to bring continuity to what remains disconnected: signals, context and human attention. One shared engine. Many possible worlds." name="description"/>
 <meta content="#0a0a0c" name="theme-color"/>
 <link href="styles.css" rel="stylesheet"/>
 <style id="ns-language-style">
@@ -141,244 +121,7 @@ html[dir="rtl"] .ns-language-switcher {
   }
 }
 </style></head>
-<body>
-<header class="nav" role="banner">
-<a aria-label="منزل نيوروسويت" class="nav__brand" href="#top">
-<span aria-hidden="true" class="mark">
-<svg height="22" viewbox="0 0 22 22" width="22">
-<circle cx="11" cy="11" fill="none" r="9" stroke="currentColor" stroke-width="1"></circle>
-<circle cx="11" cy="11" fill="currentColor" r="3"></circle>
-<circle cx="11" cy="2" fill="currentColor" r="1.4"></circle>
-<circle cx="20" cy="11" fill="currentColor" r="1.4"></circle>
-<circle cx="11" cy="20" fill="currentColor" r="1.4"></circle>
-<circle cx="2" cy="11" fill="currentColor" r="1.4"></circle>
-</svg>
-</span>
-<span>NeuroSuite</span>
-</a>
-<nav aria-label="الأقسام" class="nav__links">
-<a href="#perche">النشأة</a>
-<a href="#trial">التجربة الميدانية</a>
-
-<a href="#funziona">النظام</a>
-<a href="#confronto">المقارنة</a>
-<a href="#stato">الوضع الحالي</a>
-<a href="#accesso">اتصل بنا</a>
-</nav>
-<div class="nav__actions"><div aria-label="اختيار اللغة" class="ns-language-switcher" role="navigation"><a data-language="en" href="index.html">EN</a><a data-language="it" href="it.html">IT</a><a data-language="es" href="es.html">ES</a><a aria-current="page" class="active" data-language="ar" href="ar.html">العربية</a></div>
-<button aria-label="تبديل الوضع الفاتح/الداكن" class="mode-toggle" id="mode-toggle"></button>
-<a class="nav__cta" href="privato.html">المنطقة الخاصة <span aria-hidden="true">→</span></a>
-</div>
-</header>
-<section class="hero" id="top">
-<canvas aria-hidden="true" class="hero__canvas" id="hero-canvas"></canvas>
-<div class="shell hero__content">
-<span class="eyebrow reveal">مختبر NeuroSuite · المراقبة التشغيلية · مرافق الرعاية السكنية لكبار السن وسياقات الرعاية</span>
-<h1 class="hero__title reveal" id="hero-title">من الإشارات <em>إلى فهمٍ تشغيلي.</em></h1>
-<p class="hero__sub reveal">
-      تم إنشاء NeuroSuite لربط الإشارات التي تظل اليوم منفصلة: البيئات، والأحداث،
- العادات اليومية والأولويات التشغيلية والأجهزة الموجودة عندما تكون مفيدة.
- يتعلق التطبيق الملموس الأول بـ مرافق الرعاية السكنية لكبار السن وشقق سكنية مدعومة بالرعاية ودعم الأشخاص في حالات الهشاشة.
-    </p>
-<div class="reveal hero__buttons">
-<a class="btn btn--primary" href="#funziona">كيف يعمل <span class="arrow"></span></a>
-<a class="btn" href="#perche">لماذا وُجد</a>
-</div>
-</div>
-<div class="shell hero__meta reveal">
-<div class="hero__meta-col"><span>ركز</span><strong>مرافق الرعاية السكنية لكبار السن · شقق سكنية مدعومة بالرعاية</strong></div>
-<div class="hero__meta-col"><span>طريقة</span><strong>الملاحظة · السياق · الأولوية</strong></div>
-<div class="hero__meta-col"><span>يقترب</span><strong>دعم الرصد والملاحظة· الإشراف البشري</strong></div>
-<div class="hero__meta-col"><span>الوضع الحالي</span><strong>النموذج الأولي والطريق التجريبي</strong></div>
-</div>
-</section>
-<div class="shell"><div class="gradient-line"></div></div>
-<section class="shell" id="perche">
-<div class="s-head">
-<div class="s-head__index"><span>01</span> لماذا أُنشئ</div>
-<h2 class="s-head__title">NeuroSuite يجلب النظام <em>في الإشارات المتاحة.</em></h2>
-</div>
-<div class="why-grid">
-<p class="why-lede reveal">
-      في سياقات الرعاية الصحية هناك العديد من الأحداث. القراءة المنتظمة مطلوبة
- مستمر وقابل للمشاركة لما يحدث مع مرور الوقت.
-    </p>
-<div class="why-body reveal">
-<p>يقوم NeuroSuite بربط الإشارات البيئية والعادات والمتطلبات التشغيلية وتغيرات السياق في قراءات بسيطة يمكن التحقق منها وخاضعة للإشراف.</p>
-<p>يعمل NeuroSuite كنظام دعم للرصد والملاحظة: يجمع المعلومات المفيدة وينظمها، ويشير إلى التغيرات المهمة المحتملة، ويجعلها متاحة للأشخاص المعنيين. ويظل التقييم السريري حصراً من اختصاص المهنيين الصحيين المخوّلين، بينما تبقى القرارات في أيدي المسؤولين عن الرعاية والمساعدة.</p>
-<p>الهدف هو دعم المشغلين ومقدمي الرعاية في عملهم اليومي، وجعل الإشارات والتغييرات والأولويات التي تستحق الاهتمام أكثر وضوحًا.</p>
-</div>
-</div>
-<div aria-label="مبادئ النظام" class="fragments reveal">
-<div class="fragments__cell"><span class="label">إشارات</span><span class="num">01</span><span class="desc">أجهزة الاستشعار والأحداث البيئية والمدخلات التشغيلية والأجهزة المعتمدة</span></div>
-<div class="fragments__cell"><span class="label">سياق</span><span class="num">02</span><span class="desc">المكان والوقت والتواتر والتكرار والروتين</span></div>
-<div class="fragments__cell"><span class="label">قراءة</span><span class="num">03</span><span class="desc">يجب التحقق من الاختلافات والشذوذات والأولويات التشغيلية</span></div>
-<div class="fragments__cell"><span class="label">فعل</span><span class="num">04</span><span class="desc">الدعم البشري والتحقق والتوثيق والتحسين</span></div>
-</div>
-</section>
-<section class="shell" id="ecosistema">
-<div class="s-head">
-<div class="s-head__index"><span>03</span> النطاقات</div>
-<h2 class="s-head__title">خيار أول واضح. <em>الامتدادات المستقبلية المحتملة.</em></h2>
-</div>
-<p class="reveal intro-copy">
-    يحتفظ الاتصال العام باتجاه رئيسي واحد: مرافق الرعاية السكنية لكبار السن/ شقق سكنية مدعومة بالرعاية/ دعم الأشخاص في حالات الهشاشة.
- ويمكن تقييم السياقات الأخرى لاحقًا كامتدادات لنفس محرك المراقبة، فقط في حالة وجود بيانات معتمدة واحتياجات تشغيلية حقيقية وإشراف بشري.
-  </p>
-<div class="eco">
-<article class="eco-card reveal" style="--card-accent: oklch(0.78 0.10 160 / 0.40); --card-accent-solid: oklch(0.78 0.10 160);">
-<div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span> النطاق · 01</span><span>الاختيار الأول</span></div>
-<div>
-<div class="eco-glyph"><svg preserveaspectratio="none" viewbox="0 0 240 84"><path d="M0,42 L60,42 L72,20 L86,64 L100,42 L240,42" fill="none" opacity="0.75" stroke="oklch(0.78 0.10 160)" stroke-width="1.2"></path></svg></div>
-<h3 class="eco-card__name">مرافق الرعاية السكنية لكبار السن وشقق سكنية مدعومة بالرعاية</h3>
-<p class="eco-card__manifesto">دعم الرصد والملاحظة، الأولويات التشغيلية واستمرارية أعمال الرعاية.</p>
-</div>
-<div class="eco-card__footer"><span class="powered">مدعوم من NeuroSuite</span><a class="link" href="mailto:info@neurosuite.dev?subject=Contatto%20NeuroSuite">الاتصال المباشر →</a></div>
-</article>
-<article class="eco-card reveal" style="--card-accent: oklch(0.78 0.09 250 / 0.34); --card-accent-solid: oklch(0.78 0.09 250);">
-<div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span> النطاق · 02</span><span>امتداد طبيعي</span></div>
-<div>
-<div class="eco-glyph"><svg preserveaspectratio="none" viewbox="0 0 240 84"><path d="M16,58 C48,22 78,22 112,48 S178,68 224,26" fill="none" opacity="0.75" stroke="oklch(0.78 0.09 250)" stroke-width="1.2"></path></svg></div>
-<h3 class="eco-card__name">المنزل ومقدم الرعاية</h3>
-<p class="eco-card__manifesto">يمكن لنفس منطق المراقبة أن يصاحب الأسرة والرعاية المنزلية والشبكات المعتمدة.</p>
-</div>
-<div class="eco-card__footer"><span class="powered">مدعوم من NeuroSuite</span></div>
-</article>
-<article class="eco-card reveal" style="--card-accent: oklch(0.82 0.08 75 / 0.34); --card-accent-solid: oklch(0.82 0.08 75);">
-<div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span> النطاق · 03</span><span>مستقبل يمكن التحقق منه</span></div>
-<div>
-<div class="eco-glyph"><svg preserveaspectratio="none" viewbox="0 0 240 84"><path d="M24,42 H78 M78,42 C96,18 126,18 144,42 S192,66 216,42" fill="none" opacity="0.75" stroke="oklch(0.82 0.08 75)" stroke-width="1.2"></path></svg></div>
-<h3 class="eco-card__name">مجالات مستقبلية</h3>
-<p class="eco-card__manifesto">يمكن للسياقات الأخرى استخدام نفس المحرك بعد التحقق من البيانات والمنفعة الواقعية والإشراف البشري.</p>
-</div>
-<div class="eco-card__footer"><span class="powered">مدعوم من NeuroSuite</span><a class="link" href="#confronto">مقارنة →</a></div>
-</article>
-</div>
-</section>
-<section class="flow" id="funziona">
-<div class="shell">
-<div class="s-head" style="padding-block: 0 clamp(40px, 5vw, 72px);">
-<div class="s-head__index"><span>04</span> كيف يعمل</div>
-<h2 class="s-head__title">الإشارات المتاحة. <em>القراءة ضمن منطق تشغيلي واحد.</em></h2>
-</div>
-<div class="flow__steps reveal">
-<div class="flow__step"><span class="flow__num">01 · الإدخال</span><h4 class="flow__title">الإشارات المعتمدة</h4><p class="flow__desc">يبدأ النظام من المعلومات المتاحة والمعتمدة: أجهزة الاستشعار البيئية، الأحداث الرقمية، المدخلات التشغيلية أو الأجهزة الموجودة عند الاقتضاء.</p><div class="flow__viz"><svg preserveaspectratio="none" viewbox="0 0 200 60"><g opacity="0.4" stroke="currentColor" stroke-width="0.6"><line x1="10" x2="190" y1="30" y2="30"></line></g><g fill="var(--accent)" opacity="0.85"><circle cx="20" cy="30" r="1.6"></circle><circle cx="50" cy="30" r="1.6"></circle><circle cx="78" cy="30" r="1.6"></circle><circle cx="112" cy="30" r="1.6"></circle><circle cx="148" cy="30" r="1.6"></circle><circle cx="180" cy="30" r="1.6"></circle></g></svg></div></div>
-<div class="flow__step"><span class="flow__num">02 · السياق</span><h4 class="flow__title">القراءة في السياق</h4><p class="flow__desc">تتم قراءة كل إشارة مع الإشارات الأخرى: المكان واللحظة والتردد والتكرار والقرب والروتين اليومي.</p><div class="flow__viz"><svg preserveaspectratio="none" viewbox="0 0 200 60"><g opacity="0.3" stroke="currentColor" stroke-width="0.6"><rect fill="none" height="16" rx="2" width="40" x="20" y="22"></rect><rect fill="none" height="16" rx="2" width="40" x="80" y="22"></rect><rect fill="none" height="16" rx="2" width="40" x="140" y="22"></rect></g><g fill="var(--accent)" opacity="0.7"><circle cx="40" cy="30" r="2"></circle><circle cx="100" cy="30" r="2"></circle><circle cx="160" cy="30" r="2"></circle></g></svg></div></div>
-<div class="flow__step"><span class="flow__num">03 · الاختلافات</span><h4 class="flow__title">ما يتغير مع مرور الوقت</h4><p class="flow__desc">يسلط NeuroSuite الضوء على الاختلافات والأحداث والمجموعات التي قد تستحق التحقق البشري.</p><div class="flow__viz"><svg preserveaspectratio="none" viewbox="0 0 200 60"><path d="M0,48 Q50,40 100,30 T200,12" fill="none" opacity="0.85" stroke="var(--accent)" stroke-width="1.2"></path><path d="M0,52 Q50,46 100,38 T200,22" fill="none" opacity="0.3" stroke="currentColor" stroke-width="0.6"></path></svg></div></div>
-<div class="flow__step"><span class="flow__num">04 · الأولوية</span><h4 class="flow__title">أولويات قابلة للقراءة</h4><p class="flow__desc">وتبقى القرارات في أيدي المسؤولين. يلفت NeuroSuite انتباه أولئك الذين يعملون إلى ما يستحق المشاهدة.</p><div class="flow__viz"><svg preserveaspectratio="none" viewbox="0 0 200 60"><g opacity="0.3" stroke="currentColor" stroke-width="0.6"><line x1="20" x2="20" y1="48" y2="12"></line><line x1="60" x2="60" y1="48" y2="28"></line><line x1="100" x2="100" y1="48" y2="20"></line><line x1="140" x2="140" y1="48" y2="36"></line><line x1="180" x2="180" y1="48" y2="40"></line></g><g fill="var(--accent)" opacity="0.85"><circle cx="20" cy="12" r="2.4"></circle><circle cx="100" cy="20" r="2"></circle></g></svg></div></div>
-<div class="flow__step"><span class="flow__num">05 · العمل</span><h4 class="flow__title">دعم العمل الحقيقي</h4><p class="flow__desc">المعلومات في الوقت المناسب والتوثيق المنظم ودعم الإشراف البشري، جنبًا إلى جنب مع المشغلين ومقدمي الرعاية.</p><div class="flow__viz"><svg preserveaspectratio="none" viewbox="0 0 200 60"><g fill="none" opacity="0.85" stroke="var(--accent)" stroke-width="1"><circle cx="100" cy="30" r="14"></circle><line x1="86" x2="60" y1="30" y2="30"></line><line x1="114" x2="140" y1="30" y2="30"></line></g><circle cx="100" cy="30" fill="var(--accent)" r="3"></circle></svg></div></div>
-</div>
-</div>
-</section>
-<section class="shell market" id="trial">
-<div class="s-head">
-<div class="s-head__index"><span>05</span> التجربة التشغيلية</div>
-<h2 class="s-head__title">أنشطة تنظيمية قيد التنفيذ. <em>تحقق في بيئات واقعية.</em></h2>
-</div>
-<div class="market-block market-block--lead">
-<div class="market-copy reveal">
-<p>تجري أنشطة تنظيمية لإعداد تجارب أو مشروعات تجريبية واقعية في مرافق رعاية سكنية رفيعة المستوى لكبار السن.</p>
-<p>صُمم المسار للتحقق من الفائدة التشغيلية والقبول والاستقرار التقني، مع احترام الموافقة والخصوصية والتصاريح والإشراف البشري.</p>
-</div>
-<div class="status reveal">
-<div class="status-card"><div class="row"><span>السياق</span><span class="pill"><span class="pulse"></span> واقعي</span></div><h4>مرافق رعاية سكنية رفيعة المستوى</h4><p>يشمل نطاق التحقق الأول مرافق منظمة تضم مشغلين ومسؤوليات محددة بوضوح.</p></div>
-<div class="status-card"><div class="row"><span>المنهج</span><span class="pill"><span class="pulse"></span> خاضع للإشراف</span></div><h4>تجارب ومشروعات تجريبية مضبوطة</h4><p>تُحدد الأهداف والبيانات المصرح بها ومعايير التحقق والنتائج بالتعاون مع المرافق المشاركة.</p></div>
-</div>
-</div>
-</section>
-<section class="shell" id="evidenze">
-<div class="s-head">
-<div class="s-head__index"><span>06</span> الأساس العلمي</div>
-<h2 class="s-head__title">الإشارات الرقمية والوظيفية العصبية. <em>خط بحث نشط بالفعل.</em></h2>
-</div>
-<p class="reveal intro-copy">NeuroSuite هو جزء من خط علمي يدرس الإشارات الفيزيولوجية العصبية واللغوية والحركية والرقمية. يستخدمها النظام كعناصر مراقبة وسياقية ضمن مسار خاضع للإشراف.</p>
-<div class="evidence-grid reveal">
-<article class="evidence-card"><span>ما الذي يفعله NEUROSUITE</span><h3>موصل تخطيط دماغ محمول وتشغيلي</h3><p>يلتقط NeuroSuite الأثر ويخزنه فورًا بتخطيط كهربية دماغ محمول جاف وغير تدخلي، جاهز في نحو ثلاث ثوانٍ. وتدعم جلسة التسع دقائق التحليل وخط الأساس الفردي والمراقبة الطولية، من دون أغراض تشخيصية.</p></article>
-<article class="evidence-card"><span>تخطيط محمول · المنهج</span><h3><a href="https://pubmed.ncbi.nlm.nih.gov/28344546/" target="_blank" rel="noopener noreferrer">Krigolson وآخرون (2017)</a></h3><p>تحققت الدراسة من نظام محمول محدد منخفض التكلفة لأبحاث الجهود المرتبطة بالأحداث. وهي تدعم الجدوى المنهجية، ولا تعتمد NeuroSuite أو التشخيص السريري.</p></article>
-<article class="evidence-card"><span>تخطيط الراحة · مراجعة</span><h3><a href="https://pubmed.ncbi.nlm.nih.gov/30405860/" target="_blank" rel="noopener noreferrer">Cassani وآخرون (2018)</a></h3><p>تبحث المراجعة المنهجية تخطيط الدماغ في حالة الراحة ضمن تشخيص مرض الزهايمر وتطوره. ويمنع اختلاف المناهج نقل النتائج مباشرة إلى NeuroSuite.</p></article>
-<article class="evidence-card"><span>باركنسون · التخطيط الكمي</span><h3><a href="https://pubmed.ncbi.nlm.nih.gov/26518336/" target="_blank" rel="noopener noreferrer">Caviness وآخرون (2016)</a></h3><p>تورد الدراسة فروقًا كمية في التخطيط ضمن طيف معرفي باركنسوني محدد. وهي تدعم الصلة البحثية، لا التنبؤ الفردي بواسطة NeuroSuite.</p></article>
-<article class="evidence-card"><span>اللغة السردية</span><h3><a href="https://pubmed.ncbi.nlm.nih.gov/26484921/" target="_blank" rel="noopener noreferrer">Fraser وMeltzer وRudzicz (2016)</a></h3><p>ميّزت الخصائص الحاسوبية عينات كلام ضمن مجموعة بيانات بحثية محددة. وهذا سياق علمي، وليس دليلًا على أن NeuroSuite يشخّص مرضًا معرفيًا.</p></article>
-<article class="evidence-card"><span>المشية · الخطر الطولي</span><h3><a href="https://pubmed.ncbi.nlm.nih.gov/12456852/" target="_blank" rel="noopener noreferrer">Verghese وآخرون (2002)</a></h3><p>في مجموعة مستقبلية من كبار السن، ارتبطت اضطرابات المشية العصبية لاحقًا بخرف غير ألزهايمري. ولا يثبت الارتباط التشخيص أو السببية.</p></article>
-</div>
-</section>
-<section class="shell market" id="confronto">
-<div class="s-head"><div class="s-head__index"><span>07</span> مقارنة الابتكار</div><h2 class="s-head__title">ليس مجرد اكتشاف الحدث. <em>بل فهم المسار الذي قد يسبقه.</em></h2></div>
-<p class="intro-copy reveal">يربط NeuroSuite الإشارات البيئية والسلوكية والفسيولوجية والصوتية والعصبية الوظيفية لمراقبة التغيرات الدقيقة والانحرافات عن خط الأساس الفردي والأنماط البادرية المحتملة مع مرور الوقت. ولا يقدم تشخيصًا، بل يجعل التغيرات المهمة مرئية للتحقق البشري في الوقت المناسب.</p>
-<div class="battle-wrap reveal"><table class="battle-table"><thead><tr><th style="text-align:left">قدرة مميزة</th><th>NeuroSuite</th><th>أنظمة السلامة المتمحورة حول الحدث</th><th>المراقبة المعتمدة على الأجهزة القابلة للارتداء</th><th>أنظمة المراقبة البيئية</th><th>المساعدات الصوتية</th></tr></thead><tbody><tr><td>المسار السابق لحدث حرج</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark no">×</span></td></tr><tr><td>الوضعية والمشي وتطور خطر السقوط</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark no">×</span></td></tr><tr><td>خط أساس فردي طولي</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark no">×</span></td></tr><tr><td>الانحرافات والأنماط البادرية المحتملة</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark no">×</span></td></tr><tr><td>شبكة متعددة الوسائط: البيئة والسلوك والفسيولوجيا والسياق</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark no">×</span></td></tr><tr><td>موصل لتخطيط كهربية الدماغ المحمول الجاف وغير التدخلي</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark no">×</span></td></tr><tr><td>Nina: تفاعل صوتي وتحقق سياقي</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark yes">✅</span></td></tr><tr><td>تنبيهات سياقية وتقارير وإشراف بشري</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark part">◐</span></td></tr><tr><td>محرك أفقي قابل لإعادة الاستخدام في مجالات متعددة</td><td><span class="battle-mark yes">✅</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark no">×</span></td><td><span class="battle-mark part">◐</span></td><td><span class="battle-mark part">◐</span></td></tr></tbody></table></div>
-<div class="battle-legend reveal"><span>✅ موجود</span><span>◐ موجود جزئيًا</span><span>× غائب أو غير محدد في النطاق العام</span></div>
-</section>
-<section class="shell market" id="verticali-potenziali"><div class="s-head"><div class="s-head__index"><span>08</span> مجالات تطبيق محتملة</div><h2 class="s-head__title">محرك مراقبة واحد. <em>أربعة سياقات مترابطة.</em></h2></div><p class="intro-copy reveal">تبقى مرافق الرعاية والمنزل المجال العام الأول. ويمكن تكييف البنية الرصدية نفسها، بعد تحقق خاص بكل سياق، مع مجالات أخرى تكون فيها الإشارات الضعيفة وخطوط الأساس الفردية والمراقبة غير التدخلية مهمة.</p><div class="evidence-grid reveal">
-<article class="evidence-card"><span>01 · الطيران والنقل</span><h3>الإجهاد المعرفي في غرف التحكم والطيران</h3><p>مراقبة خاضعة للإشراف لتغيرات اليقظة في الأنشطة التي تتطلب الانتباه والاستمرارية.</p></article><article class="evidence-card"><span>02 · الأساطيل والقيادة</span><h3>النوم الخاطف وانخفاض الانتباه</h3><p>دمج الإشارات السلوكية والبيئية والفسيولوجية لإبراز التغيرات التي تتطلب التحقق.</p></article><article class="evidence-card"><span>03 · الدفاع والأمن</span><h3>الإجهاد التشغيلي المطول</h3><p>قراءة سياقية خاضعة للإشراف للإرهاق والضغط والتغيرات التشغيلية.</p></article><article class="evidence-card"><span>04 · الرياضة عالية الأداء</span><h3>الحمل المعرفي والتعافي</h3><p>مراقبة طولية للحمل والتعافي عبر خطوط أساس فردية وإشارات متعددة الوسائط.</p></article></div></div></section>
-<section class="shell" id="stato">
-<div class="s-head">
-<div class="s-head__index"><span>09</span> الوضع الحالي</div>
-<h2 class="s-head__title">طريق ملموس <em>من التحقق من الصحة.</em></h2>
-</div>
-<p class="reveal intro-copy">المرحلة الحالية ملموسة ولكنها تقدمية: النطاق عبر الإنترنت، ومواد العرض، والنماذج الأولية، والمسار التجريبي قيد الإعداد. الأولوية هي التحقق من الفائدة التشغيلية في السياق المختار الأول.</p>
-<div class="status">
-<div class="status-card reveal"><div class="row"><span>مرافق الرعاية السكنية لكبار السن · شقق سكنية مدعومة بالرعاية</span><span class="pill"><span class="pulse"></span> الاختيار الأول</span></div><h4>المراقبة المستمرة عندما يكون وقت التشغيل مهمًا.</h4><p>دعم الرصد والملاحظة لجعل الإشارات والاختلافات والأولويات أكثر قابلية للقراءة في سياقات الرعاية.</p><div class="meta"><div><span>اتصل بنا</span><br/><strong><a href="mailto:info@neurosuite.dev?subject=Contatto%20NeuroSuite">info@neurosuite.dev</a></strong></div><div><span>مرحلة</span><br/><strong>مشروع تجريبي</strong></div><div><span>ملحوظة</span><br/><strong>إشراف بشري مباشر</strong></div></div></div>
-<div class="status-card reveal"><div class="row"><span>الامتدادات المستقبلية</span><span class="pill" style="border-color: var(--line);"><span class="pulse" style="background: var(--fg-3); box-shadow: none;"></span> قيد التقييم</span></div><h4>يمكن لمحرك المراقبة نفسه التكيف مع سياقات أخرى.</h4><p>يتطلب كل ملحق التحقق من السياق، وإذن البيانات، والفائدة العملية، والإشراف البشري.</p><div class="meta"><div><span>الوضع الحالي</span><br/><strong>المرحلة القادمة</strong></div><div><span>طريقة</span><br/><strong>تقييم كل حالة على حدة</strong></div><div><span>حد</span><br/><strong>تم التحقق من السياق</strong></div></div></div>
-</div>
-</section>
-<section class="vision" id="visione">
-<div class="shell">
-<div class="s-head" style="padding-block: 0 clamp(32px, 4vw, 56px);">
-<div class="s-head__index"><span>10</span> الرؤية</div>
-<h2 class="s-head__title" style="display:none;">.</h2>
-</div>
-<p class="vision__quote reveal">الأنظمة المهمة تجعلها قابلة للقراءة<br/><em>ما كان هناك بالفعل،</em> لكنه ظل مفقودا.</p>
-<p class="vision__caption reveal">يقوم NeuroSuite بتقييم ما هو موجود، ودمج ما هو مفقود عند الحاجة، وإنشاء فهم تشغيلي أكثر وضوحًا. والهدف هو تقليل الضوضاء، وجعل الإشارات ذات الصلة مرئية، وتقديم معلومات في الوقت المناسب ويمكن التحقق منها وتحت الإشراف للناس.</p>
-</div>
-</section>
-
-
-
-<section class="access" id="accesso">
-<div class="shell access__inner access__inner--single">
-<div class="reveal">
-<div class="s-head__index" style="margin-bottom: 22px;"><span>11</span> وصول</div>
-<h3>أول اتجاه واضح. <em>اتصال مباشر.</em></h3>
-<p>تبدأ المقارنة من منطقة مرافق الرعاية السكنية لكبار السن/ شقق سكنية مدعومة بالرعاية/ دعم الأشخاص في حالات الهشاشة. لا يمكن مناقشة السياقات الأخرى إلا كامتدادات مستقبلية محتملة.</p>
-<div class="streams">
-<a class="streams__row" href="mailto:info@neurosuite.dev?subject=Contatto%20NeuroSuite"><span class="tag">مرافق الرعاية السكنية لكبار السن</span><span class="desc">مرافق الرعاية السكنية لكبار السن، شقق سكنية مدعومة بالرعاية، البيئات المساعدة</span><span class="when">اتصل بنا</span></a>
-</div>
-</div>
-</div>
-</section>
-<footer class="footer">
-<div class="shell">
-<div class="footer__inner">
-<div><div class="footer__brand">NeuroSuite</div><p class="footer__caption">النظام البيئي للمراقبة المعيارية. التطبيق الأول: مرافق الرعاية السكنية لكبار السن وسياقات الرعاية.</p></div>
-<div class="footer__col"><h5>النطاقات</h5><a href="mailto:info@neurosuite.dev?subject=Contatto%20NeuroSuite">مرافق الرعاية السكنية لكبار السن</a><a href="#ecosistema">الامتدادات المستقبلية المحتملة</a></div>
-<div class="footer__col"><h5>النظام</h5><a href="#funziona">كيف يعمل</a><a href="#stato">الوضع الحالي</a><a href="#visione">الرؤية</a><a href="privato.html">المنطقة الخاصة</a></div>
-<div class="footer__col"><h5>اتصل بنا</h5><a href="mailto:info@neurosuite.dev?subject=Contatto%20NeuroSuite">info@neurosuite.dev</a><a href="privato.html">المنطقة الخاصة</a></div>
-</div>
-<div class="footer__base"><span>© 2026 نيوروسويت</span><span>دعم المراقبة · إشراف بشري مباشر · الخصوصية حسب التصميم</span></div>
-</div>
-</footer>
-<script src="app.js"></script>
-<script id="ns-language-script">
-(function(){
-  var current="ar";
-  var pages={en:"index.html",it:"it.html",es:"es.html",ar:"ar.html"};
-  document.documentElement.lang=current;
-  document.documentElement.dir=current==="ar"?"rtl":"ltr";
-
-  document.querySelectorAll("[data-language]").forEach(function(link){
-    link.addEventListener("click",function(){
-      localStorage.setItem("neurosuite-language",this.getAttribute("data-language"));
-    });
-  });
-
-  var saved=localStorage.getItem("neurosuite-language");
-  if(saved && pages[saved] && saved!==current){
-    var path=location.pathname;
-    var isLanguagePage=/\/(index|it|es|ar)\.html$/.test(path) || path.endsWith("/");
-    if(isLanguagePage){
-      location.replace(pages[saved]+location.hash);
-    }
-  }
-})();
-</script>
-</body>
-</html>
+<noscript><style>.reveal{opacity:1!important;transform:none!important}</style></noscript><body><header class="nav"><a class="nav__brand" href="#top"><span class="mark" aria-hidden="true">◉</span>NeuroSuite</a><nav class="nav__links" aria-label="Navigation"><a href="#perche">Idea</a><a href="#ecosistema">Ecosystem</a><a href="#funziona">Method</a><a href="#stato">Progress</a><a href="#accesso">Contact</a></nav><div class="nav__actions"><div class="ns-language-switcher"><a href="it.html" lang="it">IT</a><a href="index.html" lang="en">EN</a></div><button class="mode-toggle" id="mode-toggle" aria-label="Light / dark"></button><a class="nav__cta" href="https://www.linkedin.com/in/alessandro-pindilli-37b9b140b/">LinkedIn ↗</a></div></header>
+<section class="hero" id="top"><canvas class="hero__canvas" id="hero-canvas" aria-hidden="true"></canvas><div class="shell hero__content"><span class="eyebrow reveal">NeuroSuite · understanding change</span><h1 class="hero__title reveal">Before it becomes obvious,<br><em>something changes.</em></h1><p class="hero__sub reveal">I built NeuroSuite to bring continuity to what remains disconnected: signals, context and human attention. One shared engine. Many possible worlds.</p><div class="hero__buttons reveal"><a class="btn btn--primary" href="#perche">Idea <span class="arrow"></span></a><a class="btn" href="https://www.linkedin.com/in/alessandro-pindilli-37b9b140b/">LinkedIn ↗</a></div></div><div class="shell hero__meta reveal"><div class="hero__meta-col"><span>NeuroSuite</span><strong>Private prototypes · development and validation</strong></div><div class="hero__meta-col"><span>Core</span><strong>Signals · Context · Human attention</strong></div></div></section><main><div class="shell"><div class="gradient-line"></div></div>
+<section class="shell" id="perche"><div class="s-head"><div class="s-head__index"><span>01</span> Idea</div><h2 class="s-head__title">Beyond a single signal.<br><em>The relationships between things.</em></h2></div><div class="why-grid"><p class="why-lede reveal">A person. A place. A process. Every context has its own patterns of change.</p><div class="why-body reveal"><p>NeuroSuite is a multimodal, multi-domain ecosystem. It connects authorised information over time, develops context-appropriate references and brings meaningful changes to the right person’s attention.</p><p>Nina and other interfaces make this understanding accessible. Behind them is a broader engine: a shared approach, adapted to distinct contexts with independent boundaries and responsibilities.</p></div></div></section>
+<section class="shell" id="ecosistema"><div class="s-head"><div class="s-head__index"><span>02</span> Ecosystem</div><h2 class="s-head__title">One shared core.<br><em>Different horizons.</em></h2></div><p class="intro-copy reveal">These are areas of the project at different stages of maturity, not a catalogue of available products.</p><div class="eco"><article class="eco-card reveal" style="--card-accent:oklch(0.82 0.08 75 / .25);--card-accent-solid:oklch(0.82 0.08 75)"><div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span>01</span></div><div><h3 class="eco-card__name">Person & home</h3><p class="eco-card__manifesto">Personal continuity, habits, everyday environments and wellbeing.</p></div><div class="eco-card__footer"><span class="powered">NeuroSuite · ecosystem</span></div></article><article class="eco-card reveal" style="--card-accent:oklch(0.82 0.08 75 / .25);--card-accent-solid:oklch(0.82 0.08 75)"><div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span>02</span></div><div><h3 class="eco-card__name">Care & research</h3><p class="eco-card__manifesto">Observational support and professional tools. Clinical uses require dedicated validation.</p></div><div class="eco-card__footer"><span class="powered">NeuroSuite · ecosystem</span></div></article><article class="eco-card reveal" style="--card-accent:oklch(0.82 0.08 75 / .25);--card-accent-solid:oklch(0.82 0.08 75)"><div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span>03</span></div><div><h3 class="eco-card__name">Work & industry</h3><p class="eco-card__manifesto">Operational context, environments and process continuity.</p></div><div class="eco-card__footer"><span class="powered">NeuroSuite · ecosystem</span></div></article><article class="eco-card reveal" style="--card-accent:oklch(0.82 0.08 75 / .25);--card-accent-solid:oklch(0.82 0.08 75)"><div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span>04</span></div><div><h3 class="eco-card__name">Mobility & spaces</h3><p class="eco-card__manifesto">Understanding changes in places, journeys and connected environments.</p></div><div class="eco-card__footer"><span class="powered">NeuroSuite · ecosystem</span></div></article><article class="eco-card reveal" style="--card-accent:oklch(0.82 0.08 75 / .25);--card-accent-solid:oklch(0.82 0.08 75)"><div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span>05</span></div><div><h3 class="eco-card__name">Sport & animals</h3><p class="eco-card__manifesto">Specific contexts and references for performance, learning and animal wellbeing.</p></div><div class="eco-card__footer"><span class="powered">NeuroSuite · ecosystem</span></div></article><article class="eco-card reveal" style="--card-accent:oklch(0.82 0.08 75 / .25);--card-accent-solid:oklch(0.82 0.08 75)"><div class="eco-card__header"><span class="eco-card__index"><span class="eco-card__dot"></span>06</span></div><div><h3 class="eco-card__name">Retail & production</h3><p class="eco-card__manifesto">Potential applications to spaces, flows and processes, with their own data and rules.</p></div><div class="eco-card__footer"><span class="powered">NeuroSuite · ecosystem</span></div></article></div></section><section class="flow" id="funziona"><div class="shell"><div class="s-head"><div class="s-head__index"><span>03</span> Method</div><h2 class="s-head__title">From signals<br><em>to meaningful attention.</em></h2></div><div class="flow__steps reveal"><div class="flow__step"><span class="flow__num">01</span><h3 class="flow__title">Observe</h3><p class="flow__desc">Available, relevant and authorised information.</p></div><div class="flow__step"><span class="flow__num">02</span><h3 class="flow__title">Contextualise</h3><p class="flow__desc">A view over time, with suitable references where data permits.</p></div><div class="flow__step"><span class="flow__num">03</span><h3 class="flow__title">Recognise</h3><p class="flow__desc">Persistent changes and converging signals that warrant review.</p></div><div class="flow__step"><span class="flow__num">04</span><h3 class="flow__title">Route</h3><p class="flow__desc">An understandable indication for the responsible person. Decisions remain human.</p></div></div></div></section><section class="shell" id="stato"><div class="s-head"><div class="s-head__index"><span>04</span> Progress</div><h2 class="s-head__title">Built, being tested.<br><em>A clear direction.</em></h2></div><div class="status"><article class="status-card reveal"><h3>Working prototypes</h3><p>Personal applications and engine components have been developed and undergo technical checks. AgainHere is in private testing.</p></article><article class="status-card reveal"><h3>Context-specific development</h3><p>Each application needs its own connectors, rules, permissions and evidence. A shared architecture does not make every domain operational.</p></article><article class="status-card reveal"><h3>Research & validation</h3><p>Research hypotheses remain distinct from demonstrated functions. No claims of diagnosis or clinical prediction.</p></article></div></section><section class="shell" id="confini"><div class="s-head"><div class="s-head__index"><span>05</span> Privacy</div><h2 class="s-head__title">Connected in approach.<br><em>Separate in data.</em></h2></div><p class="intro-copy reveal">My Lifeline and AgainHere personal data remain separate from other domains. They do not feed care institutions, employers, retail or other verticals. Each context maintains its own purposes, permissions and access.</p></section><section class="vision shell" id="visione"><p class="vision__quote reveal">The value is not knowing everything.<br><em>It is making what matters visible.</em></p></section><section class="access" id="accesso"><div class="shell access__inner access__inner--single"><div><h2>Some things become clear<br><em>through conversation.</em></h2><p>I am building NeuroSuite. Follow the journey or start a focused conversation on LinkedIn.</p><div class="hero__buttons"><a class="btn btn--primary" href="https://www.linkedin.com/in/alessandro-pindilli-37b9b140b/">Alessandro on LinkedIn ↗</a><a class="btn" href="mailto:info@neurosuite.dev">Get in touch</a></div></div></div></section></main><footer class="footer"><div class="shell"><div class="footer__inner"><div><div class="footer__brand">NeuroSuite</div><p class="footer__caption">An engine for understanding change. Multiple contexts. Human responsibility.</p></div><div class="footer__col"><h3>Contact</h3><a href="https://www.linkedin.com/in/alessandro-pindilli-37b9b140b/">LinkedIn</a><a href="mailto:info@neurosuite.dev">info@neurosuite.dev</a></div><div class="footer__col"><h3>Info</h3><a href="privacy.html">Privacy</a><a href="terms.html">Terms</a></div></div><div class="footer__base"><span>© 2026 NeuroSuite</span><span>Human attention. By design.</span></div></div></footer><script src="app.js"></script></body></html>
