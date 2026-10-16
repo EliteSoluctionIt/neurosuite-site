@@ -634,7 +634,7 @@
 
 // NeuroSuite original soundscape — user-controlled by design.
 (function () {
-  const source = 'assets/neurosuite-constellation-rising.mp3';
+  const source = 'https://commons.wikimedia.org/wiki/Special:Redirect/file/Tchaikovsky_Violin_Concerto_Sniped_MuseSounds.ogg';
   const language = (document.documentElement.lang || 'en').toLowerCase();
   const italian = language.startsWith('it');
   const copy = italian
@@ -646,8 +646,8 @@
         error: 'Audio non disponibile'
       }
     : {
-        play: 'Play the original soundtrack',
-        pause: 'Pause the original soundtrack',
+        play: 'Play Tchaikovsky violin concerto',
+        pause: 'Pause Tchaikovsky violin concerto',
         loading: 'Loading audio',
         label: 'Soundtrack',
         error: 'Audio unavailable'
