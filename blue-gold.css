@@ -48,3 +48,27 @@ html[data-mode="light"] .s-head__title em,html[data-mode="light"] .vision__quote
 @media(min-width:1001px){.eco{grid-template-columns:repeat(3,minmax(0,1fr))}.eco-card{min-height:310px!important}}
 @media(min-width:621px) and (max-width:1000px){.eco{grid-template-columns:repeat(2,minmax(0,1fr))}.eco-card{min-height:280px!important}}
 @media(max-width:620px){.eco{grid-template-columns:minmax(0,1fr);gap:16px}.eco-card{min-height:0!important;padding:22px 24px;gap:16px}.eco-card__header:after{width:92px;height:68px;flex-basis:92px}.eco-card__name{font-size:clamp(26px,7.5vw,34px)}.eco-card__manifesto{font-size:15px}.eco-card__footer{padding-top:14px}.eco-card:hover{transform:none}}
+
+/* Editorial density: remove excessive whitespace across the full landing */
+:root{--section-y:clamp(42px,6vw,84px)}
+.s-head{padding-block:clamp(42px,6vw,86px) clamp(20px,3vw,40px)}
+.why-grid{padding-bottom:clamp(36px,5vw,76px)}
+.eco{padding-bottom:clamp(40px,5vw,72px)}
+.flow{padding-block:clamp(34px,5vw,70px)}
+.status{padding-bottom:clamp(35px,5vw,70px)}
+.hero{min-height:min(860px,100svh);padding-bottom:clamp(24px,4vh,50px)}
+.hero__content{gap:clamp(17px,2.4vw,30px)}
+.vision{padding-block:clamp(55px,7vw,110px)}
+.access{padding-block:clamp(44px,6vw,90px)}
+@media(max-width:620px){
+ :root{--section-y:44px}
+ .s-head{padding-block:46px 24px;gap:12px}
+ .hero{min-height:92svh;padding-top:105px;padding-bottom:24px}
+ .hero__content{gap:20px}
+ .why-grid{padding-bottom:42px}
+ .eco{padding-bottom:42px}
+ .flow{padding-block:40px}
+ .vision{padding-block:65px}
+ .status{padding-bottom:45px}
+ .eco-card{min-height:0!important}
+}
