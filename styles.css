@@ -1773,3 +1773,23 @@ html.nsd-on .nav {
     padding: 8px 11px;
   }
 }
+
+/* Public landing: allow grid content to shrink to the phone viewport. */
+.hero { grid-template-columns: minmax(0, 1fr); }
+.hero__content { min-width: 0; grid-template-columns: minmax(0, 1fr); }
+.hero__content > *, .hero__meta > *, .why-grid > *, .eco > *,
+.status > *, .access__inner > *, .footer__inner > * { min-width: 0; }
+.hero__title, .hero__sub, .eyebrow, .s-head__title,
+.eco-card__name, .status-card, .footer__caption {
+  overflow-wrap: anywhere;
+}
+.eyebrow { max-width: 100%; white-space: normal; line-height: 1.6; }
+.eyebrow::before { flex: 0 0 18px; }
+.hero__meta { display: grid; width: 100%; }
+@media (max-width: 680px) {
+  .hero__title { font-size: clamp(40px, 12vw, 64px); max-width: 100%; }
+  .hero__title em { display: block; margin-top: .12em; }
+  .hero__meta { grid-template-columns: minmax(0, 1fr) !important; }
+  .hero__meta-col { width: 100%; }
+  .eyebrow { font-size: 10px; letter-spacing: .10em; }
+}
