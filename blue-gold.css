@@ -21,3 +21,15 @@ body{background:radial-gradient(ellipse 70vw 65vw at 82% 10%,rgba(21,67,112,.45)
 @media(max-width:390px){.nav__brand{font-size:16px}.nav__cta{font-size:10px;padding:7px}.hero__title{font-size:clamp(35px,10vw,44px)}}
 @media(prefers-reduced-motion:reduce){.hero:before{opacity:.25}}
 [data-mode="light"]{--bg:#f5f3ee;--bg-2:#efece5;--bg-3:#e8e4dc;--surface:#faf8f3;--surface-2:#f1ede4;--fg:#16140e;--fg-2:#3b3830;--fg-3:#6a665c;--accent:#a7762f}
+
+/* Accessible contrast and consistent theme switching */
+html[data-mode="light"] body{background:linear-gradient(145deg,#f5f3ee,#e8e5db)}
+html[data-mode="light"] .nav{background:rgba(248,246,239,.94);border-bottom-color:rgba(90,67,31,.18)}
+html[data-mode="light"] .hero{background:radial-gradient(ellipse 55% 60% at 72% 45%,rgba(197,171,111,.12),transparent 85%)}
+html[data-mode="light"] .hero__canvas{mix-blend-mode:multiply;opacity:.48}
+html[data-mode="light"] .hero__sub{color:#3b3830}
+html[data-mode="light"] .eyebrow{color:#76501d}
+html[data-mode="light"] .eco-card,html[data-mode="light"] .status-card,html[data-mode="light"] .flow__step{background:#faf8f3;border-color:rgba(95,73,36,.18);box-shadow:0 12px 35px rgba(48,36,15,.06)}
+html[data-mode="light"] .flow,html[data-mode="light"] .access{background:#eee9df}
+html[data-mode="light"] .s-head__title em,html[data-mode="light"] .vision__quote em,html[data-mode="light"] .access h2 em{color:#906524}
+@media(max-width:540px){.nav__actions{display:flex;align-items:center;flex-wrap:nowrap}.ns-language-switcher{flex-shrink:0}.hero__title{hyphens:none}.hero__meta-col strong{overflow-wrap:break-word}}
