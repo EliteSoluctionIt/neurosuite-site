@@ -1,4 +1,539 @@
-// NeuroSuite Ã¢â‚¬â€ constellation hero canvas
+// NeuroSuite Ã¢â‚¬â€ accelerated local-sky planetarium.
+// The viewer stays at their own latitude and longitude while 24 hours of sun,
+// twilight, stars and constellations unfold in a three-minute cycle.
+
+const NeuroPlanetarium = (() => {
+  const cycleMs = 180000;
+  const dayMs = 86400000;
+  const rad = Math.PI / 180;
+  const startEpoch = Date.now();
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
+  const zoneLocations = {
+    'Europe/Rome': ['Milano', 45.4642, 9.19],
+    'Europe/London': ['London', 51.5072, -.1276],
+    'Europe/Paris': ['Paris', 48.8566, 2.3522],
+    'Europe/Berlin': ['Berlin', 52.52, 13.405],
+    'Europe/Madrid': ['Madrid', 40.4168, -3.7038],
+    'Europe/Lisbon': ['Lisbon', 38.7223, -9.1393],
+    'Europe/Athens': ['Athens', 37.9838, 23.7275],
+    'Europe/Moscow': ['Moscow', 55.7558, 37.6173],
+    'America/Los_Angeles': ['Los Angeles', 34.0522, -118.2437],
+    'America/Vancouver': ['Vancouver', 49.2827, -123.1207],
+    'America/Denver': ['Denver', 39.7392, -104.9903],
+    'America/Chicago': ['Chicago', 41.8781, -87.6298],
+    'America/New_York': ['New York', 40.7128, -74.006],
+    'America/Toronto': ['Toronto', 43.6532, -79.3832],
+    'America/Mexico_City': ['Ciudad de México', 19.4326, -99.1332],
+    'America/Sao_Paulo': ['São Paulo', -23.5505, -46.6333],
+    'America/Argentina/Buenos_Aires': ['Buenos Aires', -34.6037, -58.3816],
+    'Asia/Tokyo': ['Tokyo', 35.6762, 139.6503],
+    'Asia/Hong_Kong': ['Hong Kong', 22.3193, 114.1694],
+    'Asia/Shanghai': ['Shanghai', 31.2304, 121.4737],
+    'Asia/Seoul': ['Seoul', 37.5665, 126.978],
+    'Asia/Singapore': ['Singapore', 1.3521, 103.8198],
+    'Asia/Kolkata': ['Kolkata', 22.5726, 88.3639],
+    'Asia/Bangkok': ['Bangkok', 13.7563, 100.5018],
+    'Asia/Dubai': ['Dubai', 25.2048, 55.2708],
+    'Australia/Sydney': ['Sydney', -33.8688, 151.2093],
+    'Australia/Melbourne': ['Melbourne', -37.8136, 144.9631],
+    'Australia/Perth': ['Perth', -31.9523, 115.8613],
+    'Pacific/Auckland': ['Auckland', -36.8509, 174.7645],
+    'Africa/Cairo': ['Cairo', 30.0444, 31.2357],
+    'Africa/Nairobi': ['Nairobi', -1.2921, 36.8219],
+    'Africa/Johannesburg': ['Johannesburg', -26.2041, 28.0473]
+  };
+
+  const estimated = zoneLocations[timeZone] || [
+    timeZone.split('/').pop().replaceAll('_', ' '),
+    0,
+    Math.max(-180, Math.min(180, -new Date().getTimezoneOffset() / 4))
+  ];
+  let observer = {
+    label: estimated[0], latitude: estimated[1], longitude: estimated[2],
+    precise: false, timeZone
+  };
+
+  const constellations = [
+    { name: 'Ursa Major', stars: [[165.93,61.75,1.8],[165.46,56.38,2.4],[178.46,53.69,2.4],[183.86,57.03,3.3],[193.51,55.96,1.8],[200.98,54.93,2.2],[206.89,49.31,1.9]], edges: [[0,1],[1,2],[2,3],[3,0],[3,4],[4,5],[5,6]] },
+    { name: 'Cassiopeia', stars: [[2.29,59.15,2.3],[10.13,56.54,2.2],[14.18,60.72,2.5],[21.45,60.24,2.7],[28.6,63.67,3.3]], edges: [[0,1],[1,2],[2,3],[3,4]] },
+    { name: 'Orion', stars: [[88.79,7.41,.5],[81.28,6.35,1.6],[85.19,-1.94,1.8],[84.05,-1.2,1.7],[83,-.3,2.2],[86.94,-9.67,2.1],[78.63,-8.2,.1]], edges: [[0,2],[1,4],[2,3],[3,4],[2,5],[4,6]] },
+    { name: 'Taurus', stars: [[68.98,16.51,.9],[81.57,28.61,1.7],[56.87,24.11,2.9],[64.95,15.63,3.5],[67.15,15.87,3.4]], edges: [[2,3],[3,0],[0,4],[0,1]] },
+    { name: 'Leo', stars: [[152.09,11.97,1.4],[154.99,19.84,2.0],[168.53,20.52,2.6],[177.26,14.57,2.1],[168.56,15.43,3.3]], edges: [[0,1],[1,2],[2,3],[3,4],[4,0]] },
+    { name: 'Cygnus', stars: [[310.36,45.28,1.3],[305.56,40.26,2.2],[292.68,27.96,3.1],[296.24,45.13,2.9],[311.55,33.97,2.5]], edges: [[0,1],[1,2],[3,1],[1,4]] },
+    { name: 'Scorpius', stars: [[241.36,-19.81,2.6],[240.08,-22.62,2.3],[247.35,-26.43,1.1],[252.54,-34.29,2.3],[263.4,-37.1,1.6],[262.69,-37.3,2.7]], edges: [[0,1],[1,2],[2,3],[3,4],[4,5]] },
+    { name: 'Crux', stars: [[186.65,-63.1,.8],[191.93,-59.69,1.3],[187.79,-57.11,1.6],[183.79,-58.75,2.8]], edges: [[0,2],[1,3]] },
+    { name: 'Sagittarius', stars: [[276.04,-34.38,1.8],[275.25,-29.83,2.7],[276.99,-25.42,2.8],[283.82,-26.3,2.1],[285.65,-29.88,2.6]], edges: [[0,1],[1,2],[2,3],[3,4],[4,0]] }
+  ];
+  const constellationNamesIt = {
+    'Ursa Major': 'Orsa Maggiore', Cassiopeia: 'Cassiopea', Orion: 'Orione',
+    Taurus: 'Toro', Leo: 'Leone', Cygnus: 'Cigno', Scorpius: 'Scorpione',
+    Crux: 'Croce del Sud', Sagittarius: 'Sagittario'
+  };
+
+  const brightStars = [
+    [101.29,-16.72,-1.46],[95.99,-52.7,-.74],[213.92,19.18,-.05],[279.23,38.78,.03],
+    [79.17,45.99,.08],[78.63,-8.2,.13],[114.83,5.23,.34],[24.43,-57.24,.46],
+    [88.79,7.41,.5],[297.7,8.87,.76],[186.65,-63.1,.77],[68.98,16.51,.86],
+    [247.35,-26.43,1.06],[201.3,-11.16,.98],[116.33,28.03,1.14],[310.36,45.28,1.25],
+    [152.09,11.97,1.35],[344.41,-29.62,1.16],[104.66,-28.97,1.5],[263.4,-37.1,1.62]
+  ];
+
+  const normalise = value => ((value % 360) + 360) % 360;
+  const julianDate = date => date.getTime() / dayMs + 2440587.5;
+
+  function sunEquatorial(date) {
+    const days = julianDate(date) - 2451545;
+    const meanLongitude = normalise(280.46 + .9856474 * days);
+    const anomaly = normalise(357.528 + .9856003 * days) * rad;
+    const longitude = (meanLongitude + 1.915 * Math.sin(anomaly) + .02 * Math.sin(2 * anomaly)) * rad;
+    const obliquity = (23.439 - .0000004 * days) * rad;
+    return {
+      ra: normalise(Math.atan2(Math.cos(obliquity) * Math.sin(longitude), Math.cos(longitude)) / rad),
+      dec: Math.asin(Math.sin(obliquity) * Math.sin(longitude)) / rad
+    };
+  }
+
+  function siderealTime(date, longitude) {
+    const jd = julianDate(date);
+    const centuries = (jd - 2451545) / 36525;
+    const greenwich = 280.46061837 + 360.98564736629 * (jd - 2451545)
+      + .000387933 * centuries * centuries - centuries * centuries * centuries / 38710000;
+    return normalise(greenwich + longitude);
+  }
+
+  function horizontal(ra, dec, latitude, lst) {
+    const hour = normalise(lst - ra + 180) - 180;
+    const h = hour * rad;
+    const d = dec * rad;
+    const lat = latitude * rad;
+    const sinAltitude = Math.sin(d) * Math.sin(lat) + Math.cos(d) * Math.cos(lat) * Math.cos(h);
+    const altitude = Math.asin(Math.max(-1, Math.min(1, sinAltitude)));
+    const cosAltitude = Math.max(.000001, Math.cos(altitude));
+    const sinAzimuth = -Math.sin(h) * Math.cos(d) / cosAltitude;
+    const cosAzimuth = (Math.sin(d) - Math.sin(altitude) * Math.sin(lat))
+      / Math.max(.000001, cosAltitude * Math.cos(lat));
+    return { altitude, azimuth: normalise(Math.atan2(sinAzimuth, cosAzimuth) / rad) * rad };
+  }
+
+  function state(time) {
+    const phase = ((((time || 0) % cycleMs) + cycleMs) % cycleMs) / cycleMs;
+    const date = new Date(startEpoch + phase * dayMs);
+    const lst = siderealTime(date, observer.longitude);
+    const sun = sunEquatorial(date);
+    const sunHorizontal = horizontal(sun.ra, sun.dec, observer.latitude, lst);
+    const future = new Date(date.getTime() + 10 * 60000);
+    const futureSun = sunEquatorial(future);
+    const futureAltitude = horizontal(
+      futureSun.ra, futureSun.dec, observer.latitude,
+      siderealTime(future, observer.longitude)
+    ).altitude;
+    return {
+      phase,
+      date,
+      latitude: observer.latitude,
+      longitude: observer.longitude,
+      label: observer.label,
+      precise: observer.precise,
+      timeZone: observer.timeZone,
+      hemisphere: observer.latitude < 0 ? -1 : 1,
+      lst,
+      sun: sunHorizontal,
+      sunAltitude: sunHorizontal.altitude / rad,
+      sunRising: futureAltitude > sunHorizontal.altitude
+    };
+  }
+
+  function coordinate(value, positive, negative) {
+    return `${Math.abs(value).toFixed(2)}° ${value < 0 ? negative : positive}`;
+  }
+
+  let hud = null;
+  let hudName = null;
+  let hudCoords = null;
+  let hudTime = null;
+  let hudSource = null;
+  let hudProgress = null;
+  let hudLocate = null;
+  let lastHudTick = -1;
+  let locating = false;
+
+  function mountHud() {
+    if (hud || !document.body) return;
+    const style = document.createElement('style');
+    style.id = 'ns-planetarium-hud-style';
+    style.textContent = `
+      .planetarium-hud {
+        position: fixed;
+        top: 88px;
+        right: var(--gutter, 24px);
+        z-index: 4;
+        width: min(256px, calc(100vw - 32px));
+        padding: 11px 13px 12px;
+        border-left: 1px solid var(--accent-line);
+        color: var(--fg-3);
+        background: linear-gradient(90deg, rgba(4,15,35,.58), rgba(4,15,35,.1));
+        backdrop-filter: blur(10px);
+        -webkit-backdrop-filter: blur(10px);
+        pointer-events: none;
+        transition: opacity .4s ease, visibility .4s ease;
+      }
+      .planetarium-hud__eyebrow,
+      .planetarium-hud__coords,
+      .planetarium-hud__time,
+      .planetarium-hud__source,
+      .planetarium-hud__locate {
+        font-family: var(--mono);
+        text-transform: uppercase;
+        letter-spacing: .12em;
+      }
+      .planetarium-hud__eyebrow { font-size: 9px; color: var(--accent); }
+      .planetarium-hud__name {
+        margin-top: 5px;
+        font-family: var(--serif);
+        font-size: 18px;
+        line-height: 1.1;
+        color: var(--fg);
+      }
+      .planetarium-hud__coords { margin-top: 5px; font-size: 9px; line-height: 1.45; }
+      .planetarium-hud__time { margin-top: 3px; font-size: 8px; opacity: .82; }
+      .planetarium-hud__track {
+        height: 1px;
+        margin-top: 9px;
+        background: rgba(215,188,128,.18);
+        overflow: hidden;
+      }
+      .planetarium-hud__progress {
+        display: block;
+        width: 100%;
+        height: 100%;
+        transform: scaleX(0);
+        transform-origin: left center;
+        background: linear-gradient(90deg, #9acbfa, var(--accent));
+      }
+      .planetarium-hud__source { margin-top: 7px; font-size: 8px; opacity: .62; }
+      .planetarium-hud__locate {
+        margin-top: 8px;
+        padding: 5px 8px;
+        border: 1px solid rgba(231,191,111,.28);
+        border-radius: 999px;
+        color: var(--fg-2);
+        background: rgba(5,18,40,.34);
+        font-size: 8px;
+        line-height: 1.2;
+        pointer-events: auto;
+        cursor: pointer;
+      }
+      .planetarium-hud__locate:hover,
+      .planetarium-hud__locate:focus-visible { color: var(--fg); border-color: var(--accent-line); }
+      html[data-mode="light"] .planetarium-hud { opacity: 0; visibility: hidden; }
+      @media (max-width: 620px) {
+        .planetarium-hud {
+          top: 70px;
+          right: 12px;
+          width: 174px;
+          padding: 8px 10px 9px;
+          background: linear-gradient(90deg, rgba(4,15,35,.48), rgba(4,15,35,.08));
+        }
+        .planetarium-hud__name { font-size: 14px; }
+        .planetarium-hud__source { display: none; }
+        .planetarium-hud__locate { margin-top: 6px; padding: 4px 7px; }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .planetarium-hud__progress { transform: scaleX(0) !important; }
+      }
+    `;
+    document.head.appendChild(style);
+
+    hud = document.createElement('aside');
+    hud.className = 'planetarium-hud';
+    hud.innerHTML = `
+      <div class="planetarium-hud__eyebrow">Cielo locale · 24h/03:00</div>
+      <div class="planetarium-hud__name"></div>
+      <div class="planetarium-hud__coords"></div>
+      <div class="planetarium-hud__time"></div>
+      <div class="planetarium-hud__track"><span class="planetarium-hud__progress"></span></div>
+      <div class="planetarium-hud__source"></div>
+      <button class="planetarium-hud__locate" type="button">Usa posizione precisa</button>
+    `;
+    document.body.appendChild(hud);
+    hudName = hud.querySelector('.planetarium-hud__name');
+    hudCoords = hud.querySelector('.planetarium-hud__coords');
+    hudTime = hud.querySelector('.planetarium-hud__time');
+    hudSource = hud.querySelector('.planetarium-hud__source');
+    hudProgress = hud.querySelector('.planetarium-hud__progress');
+    hudLocate = hud.querySelector('.planetarium-hud__locate');
+    hudLocate.addEventListener('click', () => requestPreciseLocation(false));
+
+    if (navigator.permissions?.query && navigator.geolocation) {
+      navigator.permissions.query({ name: 'geolocation' }).then(permission => {
+        if (permission.state === 'granted') requestPreciseLocation(true);
+      }).catch(() => {});
+    }
+  }
+
+  function requestPreciseLocation(silent) {
+    if (!navigator.geolocation) return;
+    const language = document.documentElement.lang?.toLowerCase().startsWith('it') ? 'it' : 'en';
+    locating = true;
+    if (!silent && hudLocate) hudLocate.textContent = language === 'it' ? 'Richiesta posizione…' : 'Requesting location…';
+    navigator.geolocation.getCurrentPosition(position => {
+      observer = {
+        ...observer,
+        latitude: position.coords.latitude,
+        longitude: position.coords.longitude,
+        precise: true
+      };
+      locating = false;
+      lastHudTick = -1;
+      if (hudLocate) hudLocate.textContent = language === 'it' ? 'Posizione precisa attiva' : 'Precise location active';
+    }, () => {
+      locating = false;
+      if (hudLocate) hudLocate.textContent = language === 'it' ? 'Usa posizione precisa' : 'Use precise location';
+    }, { enableHighAccuracy: false, timeout: 9000, maximumAge: 3600000 });
+  }
+
+  function skyMoment(current, language) {
+    const altitude = current.sunAltitude;
+    if (altitude > 5) return language === 'it' ? 'GIORNO' : 'DAY';
+    if (altitude > -8) {
+      if (current.sunRising) return language === 'it' ? 'ALBA' : 'DAWN';
+      return language === 'it' ? 'TRAMONTO' : 'SUNSET';
+    }
+    if (altitude > -18) return language === 'it' ? 'ORA BLU' : 'BLUE HOUR';
+    return language === 'it' ? 'NOTTE' : 'NIGHT';
+  }
+
+  function updateHud(time, current) {
+    mountHud();
+    if (!hud) return;
+    const tick = Math.floor((time || 0) / 180);
+    if (tick === lastHudTick) return;
+    lastHudTick = tick;
+    const language = document.documentElement.lang?.toLowerCase().startsWith('it') ? 'it' : 'en';
+    const eyebrow = hud.querySelector('.planetarium-hud__eyebrow');
+    if (eyebrow) eyebrow.textContent = language === 'it' ? 'Cielo locale · 24h/03:00' : 'Local sky · 24h/03:00';
+    hudName.textContent = current.label;
+    hudCoords.textContent = `${coordinate(current.latitude, 'N', 'S')} · ${coordinate(current.longitude, 'E', 'W')}`;
+    let clock = '';
+    try {
+      clock = new Intl.DateTimeFormat(language === 'it' ? 'it-IT' : 'en-GB', {
+        hour: '2-digit', minute: '2-digit', hour12: false, timeZone: current.timeZone
+      }).format(current.date);
+    } catch {
+      clock = current.date.toISOString().slice(11, 16);
+    }
+    hudTime.textContent = `${skyMoment(current, language)} · ${clock} · ×480`;
+    hudSource.textContent = current.precise
+      ? (language === 'it' ? 'Posizione precisa · solo su questo dispositivo' : 'Precise location · this device only')
+      : (language === 'it' ? `Stima automatica · ${current.timeZone}` : `Automatic estimate · ${current.timeZone}`);
+    hudLocate.textContent = locating
+      ? (language === 'it' ? 'Richiesta posizione…' : 'Requesting location…')
+      : current.precise
+        ? (language === 'it' ? 'Posizione precisa attiva' : 'Precise location active')
+        : (language === 'it' ? 'Usa posizione precisa' : 'Use precise location');
+    hudProgress.style.transform = `scaleX(${current.phase})`;
+  }
+
+  const clamp = (value, minimum, maximum) => Math.max(minimum, Math.min(maximum, value));
+  const smoothstep = (minimum, maximum, value) => {
+    const amount = clamp((value - minimum) / (maximum - minimum), 0, 1);
+    return amount * amount * (3 - 2 * amount);
+  };
+
+  function projectHorizontal(position, centerX, centerY, radiusX, radiusY) {
+    const altitude = position.altitude;
+    const altitudeDegrees = altitude / rad;
+    if (altitudeDegrees < -8) return null;
+    const distance = 1 - clamp(altitude / (Math.PI / 2), -.09, 1);
+    return {
+      x: centerX + Math.sin(position.azimuth) * radiusX * distance,
+      y: centerY - Math.cos(position.azimuth) * radiusY * distance,
+      alpha: smoothstep(-8, 2, altitudeDegrees),
+      altitude: altitudeDegrees
+    };
+  }
+
+  function project(ra, dec, current, centerX, centerY, radiusX, radiusY) {
+    return projectHorizontal(
+      horizontal(ra, dec, current.latitude, current.lst),
+      centerX, centerY, radiusX, radiusY
+    );
+  }
+
+  function drawAtmosphere(ctx, width, top, stageHeight, current, isLight) {
+    const altitude = current.sunAltitude;
+    const day = smoothstep(-6, 9, altitude);
+    const twilight = clamp(1 - Math.abs(altitude + 4) / 15, 0, 1);
+    const night = 1 - smoothstep(-15, 1, altitude);
+    const centerX = width * .5;
+    const centerY = top + stageHeight * .56;
+    const radiusX = width * (width < 620 ? .61 : .52);
+    const radiusY = stageHeight * .43;
+    const sunX = centerX + Math.sin(current.sun.azimuth) * radiusX * .88;
+    const sunY = centerY - Math.cos(current.sun.azimuth) * radiusY * .88;
+    const opacity = isLight ? .42 : 1;
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    const sky = ctx.createLinearGradient(0, top, 0, top + stageHeight);
+    sky.addColorStop(0, `rgba(35,102,166,${day * .16 * opacity + twilight * .035})`);
+    sky.addColorStop(.56, `rgba(48,119,177,${day * .12 * opacity + twilight * .05})`);
+    sky.addColorStop(1, `rgba(92,142,174,${day * .075 * opacity})`);
+    ctx.fillStyle = sky;
+    ctx.fillRect(0, top, width, stageHeight);
+
+    if (twilight > .015) {
+      const dawn = current.sunRising;
+      const glow = ctx.createRadialGradient(sunX, sunY, 0, sunX, sunY, Math.max(width, stageHeight) * .58);
+      glow.addColorStop(0, dawn
+        ? `rgba(255,190,128,${twilight * .32 * opacity})`
+        : `rgba(255,139,82,${twilight * .36 * opacity})`);
+      glow.addColorStop(.28, dawn
+        ? `rgba(222,139,170,${twilight * .18 * opacity})`
+        : `rgba(211,91,137,${twilight * .2 * opacity})`);
+      glow.addColorStop(.64, `rgba(87,78,153,${twilight * .105 * opacity})`);
+      glow.addColorStop(1, 'rgba(0,0,0,0)');
+      ctx.fillStyle = glow;
+      ctx.fillRect(0, top, width, stageHeight);
+    }
+    ctx.restore();
+    return night;
+  }
+
+  function drawGrid(ctx, width, top, stageHeight, current, isLight) {
+    if (!width || !stageHeight) return;
+    const centerX = width * .5;
+    const centerY = top + stageHeight * .56;
+    const radiusX = width * (width < 620 ? .61 : .52);
+    const radiusY = stageHeight * .43;
+    const night = drawAtmosphere(ctx, width, top, stageHeight, current, isLight);
+    const visibility = .035 + night * .965;
+    const grid = isLight ? 'rgba(40,50,64,.1)' : `rgba(144,199,249,${.045 + night * .08})`;
+    const horizon = isLight ? 'rgba(130,92,42,.14)' : `rgba(231,193,113,${.095 + night * .09})`;
+
+    ctx.save();
+    ctx.lineWidth = .55;
+    ctx.setLineDash([3, 13]);
+    ctx.strokeStyle = grid;
+    ctx.beginPath();
+    ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(centerX, centerY, radiusX * .5, radiusY, current.lst * rad * .025, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.ellipse(centerX, centerY, radiusX, radiusY * .5, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+    ctx.strokeStyle = horizon;
+    ctx.lineWidth = .72;
+    ctx.beginPath();
+    ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.globalCompositeOperation = 'screen';
+
+    const projectedConstellations = constellations.map(constellation => ({
+      ...constellation,
+      projected: constellation.stars.map(star => project(
+        star[0], star[1], current, centerX, centerY, radiusX, radiusY
+      ))
+    }));
+
+    for (const constellation of projectedConstellations) {
+      ctx.lineWidth = .68;
+      for (const edge of constellation.edges) {
+        const a = constellation.projected[edge[0]];
+        const b = constellation.projected[edge[1]];
+        if (!a || !b) continue;
+        const alpha = Math.min(a.alpha, b.alpha) * visibility * .36;
+        if (alpha < .012) continue;
+        const line = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+        line.addColorStop(0, `rgba(140,203,255,${alpha})`);
+        line.addColorStop(1, `rgba(242,199,111,${alpha * .9})`);
+        ctx.strokeStyle = line;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+
+      let labelX = 0;
+      let labelY = 0;
+      let visiblePoints = 0;
+      constellation.projected.forEach((point, index) => {
+        if (!point) return;
+        const magnitude = constellation.stars[index][2];
+        const alpha = point.alpha * visibility * clamp(1.05 - magnitude * .08, .42, 1);
+        const radius = clamp(2.35 - magnitude * .34, .58, 2.2);
+        ctx.shadowColor = index % 3 === 0 ? 'rgba(244,202,118,.72)' : 'rgba(154,211,255,.68)';
+        ctx.shadowBlur = 4 + radius * 3;
+        ctx.fillStyle = index % 3 === 0
+          ? `rgba(255,222,151,${alpha})`
+          : `rgba(208,235,255,${alpha})`;
+        ctx.beginPath();
+        ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
+        ctx.fill();
+        labelX += point.x;
+        labelY += point.y;
+        visiblePoints++;
+      });
+      if (visiblePoints >= 3 && visibility > .28) {
+        ctx.shadowBlur = 0;
+        ctx.font = `8px ${getComputedStyle(document.documentElement).getPropertyValue('--mono') || 'monospace'}`;
+        ctx.textAlign = 'center';
+        ctx.fillStyle = `rgba(171,198,224,${visibility * .24})`;
+        const label = document.documentElement.lang?.toLowerCase().startsWith('it')
+          ? constellationNamesIt[constellation.name] || constellation.name
+          : constellation.name;
+        ctx.fillText(label.toUpperCase(), labelX / visiblePoints, labelY / visiblePoints + 14);
+      }
+    }
+
+    for (const star of brightStars) {
+      const point = project(star[0], star[1], current, centerX, centerY, radiusX, radiusY);
+      if (!point) continue;
+      const alpha = point.alpha * visibility * clamp(1.12 - star[2] * .08, .5, 1);
+      const radius = clamp(2.45 - star[2] * .42, .7, 3.2);
+      ctx.shadowColor = 'rgba(177,218,255,.72)';
+      ctx.shadowBlur = 5 + radius * 3;
+      ctx.fillStyle = `rgba(222,240,255,${alpha})`;
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    const sunPoint = projectHorizontal(current.sun, centerX, centerY, radiusX, radiusY);
+    if (sunPoint && current.sunAltitude > -8) {
+      const sunVisibility = smoothstep(-8, 1, current.sunAltitude);
+      ctx.shadowColor = 'rgba(255,199,102,.9)';
+      ctx.shadowBlur = 24;
+      ctx.fillStyle = `rgba(255,218,145,${.38 + sunVisibility * .5})`;
+      ctx.beginPath();
+      ctx.arc(sunPoint.x, sunPoint.y, 3 + sunVisibility * 4.5, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.restore();
+
+    ctx.save();
+    ctx.font = `9px ${getComputedStyle(document.documentElement).getPropertyValue('--mono') || 'monospace'}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = horizon;
+    ctx.fillText('N', centerX, centerY - radiusY * .96);
+    ctx.fillText('E', centerX + radiusX * .94, centerY);
+    ctx.fillText('S', centerX, centerY + radiusY * .96);
+    ctx.fillText('W', centerX - radiusX * .94, centerY);
+    ctx.restore();
+  }
+
+  return { cycleMs, state, updateHud, drawGrid };
+})();
+
 // Quiet, premium nodes-and-edges field
 
 (function () {
@@ -11,26 +546,10 @@
 
   let W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
   let nodes = [];
-  let heroConstellations = [];
   let mouse = { x: -9999, y: -9999 };
   let raf = null;
   let mode = document.documentElement.getAttribute('data-mode') || 'dark';
   let variant = document.documentElement.getAttribute('data-hero') || 'constellation';
-
-  const heroPatterns = [
-    {
-      points: [[-.5,.08],[-.32,-.12],[-.12,.02],[.08,-.2],[.28,-.08],[.5,-.3],[.36,.18],[.12,.3],[-.18,.22]],
-      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[4,6],[6,7],[7,8],[8,2]]
-    },
-    {
-      points: [[-.52,-.16],[-.36,.04],[-.18,.18],[.02,.02],[.2,-.22],[.4,-.04],[.54,.2],[.26,.28],[-.06,.34]],
-      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[3,7],[7,8],[8,2]]
-    },
-    {
-      points: [[-.52,.22],[-.34,.02],[-.14,-.08],[.04,.08],[.2,-.16],[.38,-.3],[.52,-.08],[.34,.16],[.12,.3],[-.16,.24]],
-      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[4,6],[6,7],[7,8],[8,9],[9,3]]
-    }
-  ];
 
   function getAccent() {
     const s = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
@@ -60,91 +579,19 @@
       });
     }
 
-    const mobile = W < 620;
-    const centers = mobile
-      ? [[.46,.14], [.56,.5], [.44,.84]]
-      : [[.17,.16], [.78,.32], [.74,.72]];
-    const longAxis = Math.min(W * (mobile ? .92 : .43), mobile ? 410 : 620);
-    const shortAxis = Math.min(H * (mobile ? .19 : .24), mobile ? 155 : 230);
-    heroConstellations = heroPatterns.map((pattern, index) => ({
-      ...pattern,
-      x: centers[index][0] * W,
-      y: centers[index][1] * H,
-      width: longAxis * (.9 + index * .06),
-      height: shortAxis * (1 - index * .05),
-      baseRotation: [-.32,.24,-.18][index],
-      direction: index % 2 ? 1 : -1,
-      rotationSpeed: [.000024,.000019,.000022][index],
-      phase: index * 2.17 + .4
-    }));
-  }
-
-  function drawHeroConstellation(cluster, time, baseColor, accent, isLight) {
-    const rotation = cluster.baseRotation
-      + time * cluster.rotationSpeed * cluster.direction
-      + Math.sin(time * .000012 + cluster.phase) * .08;
-    const swayX = Math.sin(time * .000016 + cluster.phase) * (W < 620 ? 8 : 18);
-    const swayY = Math.cos(time * .000013 + cluster.phase) * (W < 620 ? 6 : 13);
-
-    ctx.save();
-    ctx.translate(cluster.x + swayX, cluster.y + swayY);
-    ctx.rotate(rotation);
-
-    ctx.save();
-    ctx.scale(1.65, .62);
-    const halo = ctx.createRadialGradient(0, 0, 0, 0, 0, cluster.width * .46);
-    halo.addColorStop(0, isLight ? 'rgba(92,116,145,.045)' : 'rgba(28,105,192,.085)');
-    halo.addColorStop(.55, isLight ? 'rgba(92,116,145,.025)' : 'rgba(13,67,143,.042)');
-    halo.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = halo;
-    ctx.beginPath();
-    ctx.arc(0, 0, cluster.width * .46, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-
-    for (const edge of cluster.edges) {
-      const a = cluster.points[edge[0]];
-      const b = cluster.points[edge[1]];
-      const gradient = ctx.createLinearGradient(
-        a[0] * cluster.width, a[1] * cluster.height,
-        b[0] * cluster.width, b[1] * cluster.height
-      );
-      gradient.addColorStop(0, baseColor + (isLight ? '.14)' : '.17)'));
-      gradient.addColorStop(.62, baseColor + (isLight ? '.19)' : '.235)'));
-      gradient.addColorStop(1, isLight ? 'rgba(124,84,32,.19)' : 'rgba(239,198,112,.29)');
-      ctx.strokeStyle = gradient;
-      ctx.lineWidth = .86;
-      ctx.beginPath();
-      ctx.moveTo(a[0] * cluster.width, a[1] * cluster.height);
-      ctx.lineTo(b[0] * cluster.width, b[1] * cluster.height);
-      ctx.stroke();
-    }
-
-    cluster.points.forEach((point, index) => {
-      const breathe = .72 + .28 * Math.sin(time * .00024 + cluster.phase + index * .73);
-      const x = point[0] * cluster.width;
-      const y = point[1] * cluster.height;
-      ctx.shadowColor = index % 4 === 0 ? accent : (isLight ? 'rgba(64,82,104,.38)' : 'rgba(137,202,255,.58)');
-      ctx.shadowBlur = 6 + breathe * 7;
-      ctx.fillStyle = index % 4 === 0 ? accent : baseColor + (isLight ? '.52)' : '.66)');
-      ctx.globalAlpha = .68 + breathe * .27;
-      ctx.beginPath();
-      ctx.arc(x, y, (.75 + (index % 3) * .28) * breathe, 0, Math.PI * 2);
-      ctx.fill();
-    });
-    ctx.globalAlpha = 1;
-    ctx.shadowBlur = 0;
-    ctx.restore();
   }
 
   function draw(t) {
     ctx.clearRect(0, 0, W, H);
     const accent = getAccent();
     const isLight = mode === 'light';
+    const sky = NeuroPlanetarium.state(t);
+    const ambientVisibility = Math.max(.045, Math.min(1, (-sky.sunAltitude + 5) / 18));
     const baseColor = isLight ? 'rgba(20,18,12,' : 'rgba(244,243,238,';
     const lineMax = variant === 'flow' ? 160 : 130;
 
-    heroConstellations.forEach(cluster => drawHeroConstellation(cluster, t, baseColor, accent, isLight));
+    NeuroPlanetarium.updateHud(t, sky);
+    NeuroPlanetarium.drawGrid(ctx, W, 0, H, sky, isLight);
 
     // edges
     for (let i = 0; i < nodes.length; i++) {
@@ -155,7 +602,7 @@
         const d2 = dx*dx + dy*dy;
         if (d2 < lineMax*lineMax) {
           const d = Math.sqrt(d2);
-          const alpha = (1 - d / lineMax) * (isLight ? 0.18 : 0.14);
+          const alpha = (1 - d / lineMax) * (isLight ? 0.18 : 0.14) * ambientVisibility;
           ctx.strokeStyle = baseColor + alpha + ')';
           ctx.lineWidth = 0.6;
           ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
@@ -176,7 +623,7 @@
     // nodes
     for (const n of nodes) {
       const breathe = 0.6 + 0.4 * Math.sin(t * 0.00028 + n.phase);
-      ctx.fillStyle = baseColor + (isLight ? 0.55 : 0.7) + ')';
+      ctx.fillStyle = baseColor + ((isLight ? 0.55 : 0.7) * ambientVisibility) + ')';
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r * breathe, 0, Math.PI * 2);
       ctx.fill();
@@ -184,7 +631,7 @@
       // occasional accent node
       if ((n.phase * 31 | 0) % 11 === 0) {
         ctx.fillStyle = accent;
-        ctx.globalAlpha = 0.35 * breathe;
+        ctx.globalAlpha = 0.35 * breathe * ambientVisibility;
         ctx.beginPath();
         ctx.arc(n.x, n.y, n.r * 1.6 * breathe, 0, Math.PI * 2);
         ctx.fill();
@@ -225,7 +672,7 @@
   loop();
 })();
 
-// NeuroSuite — living neural constellations below the hero.
+// NeuroSuite — the same local planetarium continues below the hero.
 // The CSS blue-black sky remains underneath as a permanent fallback.
 (function () {
   const main = document.querySelector('main');
@@ -291,60 +738,11 @@
   let dpr = 1;
   let mainTop = 0;
   let ambientStars = [];
-  let constellations = [];
   let dust = [];
   let raf = null;
   let lastFrame = 0;
   let inView = false;
   let resizeTimer = null;
-
-  const patterns = [
-    {
-      family: 'taurus', x: .72, y: .09, strength: 1.12, phase: .08,
-      points: [[.08,.54,.68],[.29,.49,.9],[.47,.57,1],[.64,.43,.82],[.86,.22,.72],[.67,.68,.66],[.93,.79,.58]],
-      edges: [[0,1],[1,2],[2,3],[3,4],[2,5],[5,6]]
-    },
-    {
-      family: 'leo', x: .23, y: .25, strength: .88, phase: .24,
-      points: [[.08,.63,.6],[.25,.45,.86],[.43,.34,1],[.52,.14,.72],[.66,.31,.78],[.58,.58,.9],[.78,.69,.66],[.94,.57,.58]],
-      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,2],[5,6],[6,7]]
-    },
-    {
-      family: 'scorpius', x: .72, y: .42, strength: 1.03, phase: .41,
-      points: [[.08,.19,.58],[.23,.31,.7],[.35,.49,.92],[.49,.65,1],[.64,.72,.82],[.79,.66,.72],[.9,.51,.85],[.83,.35,.64],[.95,.24,.7]],
-      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8]]
-    },
-    {
-      family: 'gemini', x: .28, y: .58, strength: .78, phase: .57,
-      points: [[.22,.09,.92],[.31,.31,.72],[.27,.58,.66],[.16,.86,.56],[.67,.13,1],[.62,.35,.76],[.69,.61,.69],[.84,.86,.58],[.31,.31,.72],[.62,.35,.76],[.27,.58,.64],[.69,.61,.64]],
-      edges: [[0,1],[1,2],[2,3],[4,5],[5,6],[6,7],[8,9],[10,11]]
-    },
-    {
-      family: 'aquarius', x: .69, y: .75, strength: .92, phase: .73,
-      points: [[.05,.36,.58],[.2,.22,.72],[.36,.4,.9],[.51,.24,.68],[.67,.43,1],[.82,.28,.72],[.95,.47,.62],[.23,.67,.55],[.42,.79,.66],[.62,.69,.58],[.83,.84,.54]],
-      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[2,7],[7,8],[8,9],[9,10]]
-    },
-    {
-      family: 'pisces', x: .34, y: .91, strength: .82, phase: .89,
-      points: [[.05,.42,.58],[.17,.26,.68],[.32,.28,.86],[.4,.45,.72],[.31,.62,.62],[.15,.65,.55],[.57,.51,1],[.69,.34,.72],[.84,.31,.68],[.95,.46,.56],[.83,.62,.62],[.68,.66,.7]],
-      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[3,6],[6,7],[7,8],[8,9],[9,10],[10,11],[11,6]]
-    },
-    {
-      family: 'cygnus', x: .5, y: .5, strength: .9, phase: .17,
-      points: [[.03,.51,.54],[.18,.45,.68],[.35,.48,.82],[.52,.42,1],[.7,.47,.78],[.97,.38,.62],[.49,.08,.72],[.54,.72,.69],[.66,.91,.56]],
-      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[3,6],[3,7],[7,8]]
-    },
-    {
-      family: 'orion', x: .5, y: .5, strength: 1.04, phase: .36,
-      points: [[.05,.72,.58],[.19,.36,.73],[.37,.5,.92],[.5,.46,1],[.63,.42,.88],[.82,.2,.69],[.96,.57,.61],[.42,.14,.67],[.6,.82,.72]],
-      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[4,6],[2,7],[3,8]]
-    },
-    {
-      family: 'auriga', x: .5, y: .5, strength: .84, phase: .64,
-      points: [[.02,.4,.56],[.16,.21,.7],[.34,.32,.85],[.5,.14,.72],[.68,.29,1],[.84,.2,.68],[.98,.42,.58],[.78,.62,.74],[.55,.78,.66],[.3,.67,.72],[.13,.82,.54]],
-      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[4,7],[7,8],[8,9],[9,10],[9,2]]
-    }
-  ];
 
   function hash(value) {
     const x = Math.sin(value * 127.1 + 311.7) * 43758.5453123;
@@ -368,59 +766,14 @@
       gold: hash(index + 111.91) > .76
     }));
 
-    const mobile = width < 620;
-    const viewportSpan = Math.max(560, window.innerHeight || 720);
-    const verticalStep = viewportSpan / 3;
-    const clusterCount = Math.max(5, Math.ceil(height / verticalStep) + 2);
-    const lanes = mobile ? [.3, .7, .5] : [.19, .53, .82];
-    const baseWidth = Math.min(width * (mobile ? .88 : .44), mobile ? 420 : 690);
-
-    constellations = Array.from({ length: clusterCount }, (_, clusterIndex) => {
-      const pattern = patterns[clusterIndex % patterns.length];
-      const lane = clusterIndex % lanes.length;
-      const xJitter = (hash(clusterIndex * 19.7 + 4.2) - .5) * (mobile ? .08 : .07);
-      const centerX = Math.max(width * .08, Math.min(width * .92, (lanes[lane] + xJitter) * width));
-      const centerY = (clusterIndex + .14) * verticalStep;
-      const clusterWidth = baseWidth * (.88 + hash(clusterIndex * 23.1 + 8.4) * .22);
-      const clusterHeight = Math.max(118, Math.min(mobile ? 190 : 270, clusterWidth * (.36 + hash(clusterIndex + 12.7) * .1)));
-      const points = pattern.points.map((point, pointIndex) => ({
-        x: centerX + (point[0] - .5) * clusterWidth,
-        y: centerY + (point[1] - .5) * clusterHeight,
-        importance: point[2],
-        phase: hash(clusterIndex * 37 + pointIndex * 11.3) * Math.PI * 2,
-        speed: .00014 + hash(clusterIndex * 53 + pointIndex * 7.9) * .00028,
-        planet: (clusterIndex * 3 + pointIndex) % 13 === 0
-      }));
-      return {
-        ...pattern,
-        strength: pattern.strength * (.78 + hash(clusterIndex * 31.4 + 2.9) * .27),
-        phase: hash(clusterIndex * 41.3 + 6.7),
-        centerX,
-        centerY,
-        points,
-        baseRotation: (hash(clusterIndex * 17.9 + 1.4) - .5) * 1.05,
-        direction: clusterIndex % 2 === 0 ? 1 : -1,
-        rotationSpeed: .000016 + hash(clusterIndex * 29.2 + 9.1) * .000013,
-        driftX: (mobile ? 8 : 18) + hash(clusterIndex * 13.6 + 4.4) * (mobile ? 10 : 24),
-        driftY: 5 + hash(clusterIndex * 21.8 + 7.3) * (mobile ? 7 : 12)
-      };
-    });
-
-    dust = [];
-    constellations.forEach((cluster, clusterIndex) => {
-      const amount = mobile ? 18 : 26;
-      for (let i = 0; i < amount; i++) {
-        const angle = hash(clusterIndex * 89 + i * 3.7) * Math.PI * 2;
-        const distance = 18 + hash(clusterIndex * 71 + i * 5.1) * (mobile ? 125 : 220);
-        dust.push({
-          x: cluster.centerX + Math.cos(angle) * distance * 1.55,
-          y: cluster.centerY + Math.sin(angle) * distance * .62,
-          radius: .25 + hash(clusterIndex * 47 + i * 9.3) * 1.05,
-          alpha: .08 + hash(clusterIndex * 101 + i * 4.9) * .28,
-          phase: hash(clusterIndex * 59 + i * 12.7) * Math.PI * 2
-        });
-      }
-    });
+    const dustCount = Math.max(120, Math.min(520, Math.round(area / 24000)));
+    dust = Array.from({ length: dustCount }, (_, index) => ({
+      x: hash(index * 19.7 + 4.2) * width,
+      y: hash(index * 31.4 + 8.6) * height,
+      radius: .25 + hash(index * 47.3 + 3.1) * 1.05,
+      alpha: .07 + hash(index * 67.1 + 9.7) * .24,
+      phase: hash(index * 83.9 + 2.4) * Math.PI * 2
+    }));
   }
 
   function resize() {
@@ -443,35 +796,20 @@
   }
 
   function visibleBand() {
-    const top = Math.max(0, window.scrollY - mainTop - 180);
-    const bottom = Math.min(height, window.scrollY - mainTop + window.innerHeight + 180);
-    return { top, bottom, bandHeight: Math.max(0, bottom - top) };
+    const viewTop = Math.max(0, window.scrollY - mainTop);
+    const viewportHeight = Math.min(window.innerHeight, Math.max(0, height - viewTop));
+    const top = Math.max(0, viewTop - 180);
+    const bottom = Math.min(height, viewTop + viewportHeight + 180);
+    return { top, bottom, bandHeight: Math.max(0, bottom - top), viewTop, viewportHeight };
   }
 
-  function drawNebula(cluster) {
-    const radius = width < 620 ? Math.min(width * .78, 360) : Math.min(width * .34, 520);
-    ctx.save();
-    ctx.translate(cluster.centerX, cluster.centerY);
-    ctx.scale(1.72, .64);
-    const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, radius);
-    glow.addColorStop(0, rgba(23, 110, 205, .105 * cluster.strength));
-    glow.addColorStop(.34, rgba(13, 75, 157, .072 * cluster.strength));
-    glow.addColorStop(.7, rgba(5, 35, 91, .038 * cluster.strength));
-    glow.addColorStop(1, 'rgba(0,0,0,0)');
-    ctx.fillStyle = glow;
-    ctx.beginPath();
-    ctx.arc(0, 0, radius, 0, Math.PI * 2);
-    ctx.fill();
-    ctx.restore();
-  }
-
-  function drawAmbient(time, band) {
+  function drawAmbient(time, band, visibility) {
     for (const star of ambientStars) {
       if (star.y < band.top || star.y > band.bottom) continue;
       const twinkle = .62 + .38 * Math.sin(time * star.speed + star.phase);
       ctx.fillStyle = star.gold
-        ? rgba(248, 214, 139, star.alpha * twinkle)
-        : rgba(177, 218, 255, star.alpha * twinkle);
+        ? rgba(248, 214, 139, star.alpha * twinkle * visibility)
+        : rgba(177, 218, 255, star.alpha * twinkle * visibility);
       ctx.beginPath();
       ctx.arc(star.x, star.y, star.radius * (.72 + twinkle * .35), 0, Math.PI * 2);
       ctx.fill();
@@ -480,139 +818,29 @@
     for (const mote of dust) {
       if (mote.y < band.top || mote.y > band.bottom) continue;
       const shimmer = .58 + .42 * Math.sin(time * .00018 + mote.phase);
-      ctx.fillStyle = rgba(237, 193, 105, mote.alpha * shimmer);
+      ctx.fillStyle = rgba(237, 193, 105, mote.alpha * shimmer * visibility);
       ctx.beginPath();
       ctx.arc(mote.x, mote.y, mote.radius * (.75 + shimmer * .4), 0, Math.PI * 2);
       ctx.fill();
     }
   }
 
-  function drawConnection(cluster, a, b, alpha) {
-    const gradient = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
-    gradient.addColorStop(0, rgba(108, 184, 255, alpha * .8));
-    gradient.addColorStop(.58, rgba(154, 207, 255, alpha));
-    gradient.addColorStop(1, rgba(235, 191, 103, alpha * .9));
-    ctx.strokeStyle = gradient;
-    ctx.lineWidth = .62 + cluster.strength * .34;
-    ctx.beginPath();
-    ctx.moveTo(a.x, a.y);
-    ctx.lineTo(b.x, b.y);
-    ctx.stroke();
-  }
-
-  function drawPulse(cluster, a, b, progress, edgeIndex) {
-    for (let trail = 0; trail < 7; trail++) {
-      const p = progress - trail * .018;
-      if (p < 0 || p > 1) continue;
-      const x = a.x + (b.x - a.x) * p;
-      const y = a.y + (b.y - a.y) * p;
-      const alpha = (1 - trail / 7) * .68 * cluster.strength;
-      const radius = 1.05 + (1 - trail / 7) * 1.45;
-      ctx.shadowColor = rgba(242, 202, 118, alpha);
-      ctx.shadowBlur = 9;
-      ctx.fillStyle = rgba(250, 220, 151, alpha);
-      ctx.beginPath();
-      ctx.arc(x, y, radius, 0, Math.PI * 2);
-      ctx.fill();
-    }
-    ctx.shadowBlur = 0;
-
-    if (progress < .82) return;
-    const dissolve = (progress - .82) / .18;
-    for (let mote = 0; mote < 8; mote++) {
-      const seed = edgeIndex * 29 + mote * 13 + cluster.phase * 100;
-      const angle = hash(seed) * Math.PI * 2;
-      const distance = dissolve * (7 + hash(seed + 8.3) * 20);
-      const x = b.x + Math.cos(angle) * distance;
-      const y = b.y + Math.sin(angle) * distance * .65;
-      const alpha = (1 - dissolve) * (.2 + hash(seed + 17.2) * .62);
-      ctx.fillStyle = rgba(247, 206, 119, alpha);
-      ctx.beginPath();
-      ctx.arc(x, y, .35 + hash(seed + 23.1) * 1.05, 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  function drawStar(point, cluster, time, pointIndex) {
-    const breathe = .68 + .32 * Math.sin(time * point.speed + point.phase);
-    const core = (.72 + point.importance * 1.35) * (.82 + breathe * .28);
-    const halo = 4 + point.importance * 8;
-
-    ctx.save();
-    ctx.shadowColor = pointIndex % 4 === 0 ? 'rgba(247,206,125,.8)' : 'rgba(143,202,255,.76)';
-    ctx.shadowBlur = halo * breathe * cluster.strength;
-    ctx.fillStyle = pointIndex % 4 === 0
-      ? rgba(255, 226, 160, .66 + breathe * .3)
-      : rgba(207, 232, 255, .6 + breathe * .34);
-    ctx.beginPath();
-    ctx.arc(point.x, point.y, core, 0, Math.PI * 2);
-    ctx.fill();
-
-    if (point.importance > .82) {
-      const ray = 3.5 + point.importance * 4.5 * breathe;
-      ctx.strokeStyle = rgba(240, 216, 164, .18 + breathe * .2);
-      ctx.lineWidth = .55;
-      ctx.beginPath();
-      ctx.moveTo(point.x - ray, point.y);
-      ctx.lineTo(point.x + ray, point.y);
-      ctx.moveTo(point.x, point.y - ray);
-      ctx.lineTo(point.x, point.y + ray);
-      ctx.stroke();
-    }
-
-    if (point.planet) {
-      ctx.shadowBlur = 0;
-      ctx.strokeStyle = rgba(232, 197, 127, .34);
-      ctx.lineWidth = .55;
-      ctx.beginPath();
-      ctx.ellipse(point.x, point.y, core * 2.9, core * 1.05, -.35, 0, Math.PI * 2);
-      ctx.stroke();
-    }
-    ctx.restore();
-  }
-
   function draw(time, force) {
     if (!width || !height || mode !== 'dark') return;
     const band = visibleBand();
     if (!band.bandHeight) return;
+    const sky = NeuroPlanetarium.state(time);
+    const ambientVisibility = Math.max(.035, Math.min(1, (-sky.sunAltitude + 5) / 18));
 
     ctx.clearRect(0, band.top, width, band.bandHeight);
     ctx.save();
     ctx.beginPath();
     ctx.rect(0, band.top, width, band.bandHeight);
     ctx.clip();
+    NeuroPlanetarium.updateHud(time, sky);
+    NeuroPlanetarium.drawGrid(ctx, width, band.viewTop, band.viewportHeight, sky, false);
     ctx.globalCompositeOperation = 'screen';
-
-    constellations.forEach((cluster, clusterIndex) => {
-      const margin = width < 620 ? 300 : 560;
-      if (cluster.centerY < band.top - margin || cluster.centerY > band.bottom + margin) return;
-
-      const swayX = reduceMotion ? 0 : Math.sin(time * .000018 + cluster.phase * Math.PI * 2) * cluster.driftX;
-      const swayY = reduceMotion ? 0 : Math.cos(time * .000014 + cluster.phase * Math.PI * 2) * cluster.driftY;
-      const rotation = cluster.baseRotation + (reduceMotion ? 0 : time * cluster.rotationSpeed * cluster.direction)
-        + (reduceMotion ? 0 : Math.sin(time * .000009 + cluster.phase * Math.PI * 2) * .075);
-
-      ctx.save();
-      ctx.translate(cluster.centerX + swayX, cluster.centerY + swayY);
-      ctx.rotate(rotation);
-      ctx.translate(-cluster.centerX, -cluster.centerY);
-      drawNebula(cluster);
-      cluster.edges.forEach((edge, edgeIndex) => {
-        const a = cluster.points[edge[0]];
-        const b = cluster.points[edge[1]];
-        const lineBreath = .72 + .28 * Math.sin(time * .00012 + cluster.phase * Math.PI * 2 + edgeIndex);
-        drawConnection(cluster, a, b, (.12 + cluster.strength * .105) * lineBreath);
-
-        if (!reduceMotion && (edgeIndex + clusterIndex) % 2 === 0) {
-          const progress = (time * (.000018 + cluster.strength * .000004) + edgeIndex * .17 + cluster.phase) % 1;
-          drawPulse(cluster, a, b, progress, clusterIndex * 20 + edgeIndex);
-        }
-      });
-      cluster.points.forEach((point, pointIndex) => drawStar(point, cluster, time, pointIndex));
-      ctx.restore();
-    });
-
-    drawAmbient(time, band);
+    drawAmbient(time, band, ambientVisibility);
     ctx.restore();
 
     if (force && reduceMotion) canvas.dataset.static = 'true';
