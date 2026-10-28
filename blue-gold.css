@@ -72,3 +72,35 @@ html[data-mode="light"] .s-head__title em,html[data-mode="light"] .vision__quote
  .status{padding-bottom:45px}
  .eco-card{min-height:0!important}
 }
+
+/* Continuous blue-black depth below the hero; cards keep their own surfaces. */
+html[data-mode="dark"] main{
+ background-color:#030816;
+ background-image:
+  radial-gradient(circle,rgba(244,215,151,.38) 0 .7px,transparent 1.35px),
+  radial-gradient(circle,rgba(171,207,241,.28) 0 .6px,transparent 1.25px),
+  radial-gradient(ellipse 82vw 58rem at 94% 7%,rgba(20,70,121,.46),transparent 72%),
+  radial-gradient(ellipse 86vw 64rem at 2% 34%,rgba(8,45,93,.42),transparent 74%),
+  radial-gradient(ellipse 78vw 60rem at 96% 62%,rgba(16,59,108,.38),transparent 74%),
+  radial-gradient(ellipse 90vw 64rem at 4% 89%,rgba(9,42,86,.36),transparent 73%),
+  linear-gradient(180deg,#06152b 0%,#020713 22%,#071a35 44%,#020611 67%,#081a35 86%,#020611 100%);
+ background-size:137px 131px,211px 197px,auto,auto,auto,auto,auto;
+ background-position:11px 23px,83px 61px,0 0,0 0,0 0,0 0,0 0;
+}
+html[data-mode="dark"] .flow,
+html[data-mode="dark"] .access{
+ background:linear-gradient(180deg,rgba(3,10,24,.26),rgba(7,29,59,.42),rgba(3,9,21,.28));
+}
+@media(max-width:620px){
+ html[data-mode="dark"] main{
+  background-image:
+   radial-gradient(circle,rgba(244,215,151,.32) 0 .65px,transparent 1.25px),
+   radial-gradient(circle,rgba(171,207,241,.24) 0 .55px,transparent 1.15px),
+   radial-gradient(ellipse 120vw 42rem at 96% 8%,rgba(20,70,121,.42),transparent 74%),
+   radial-gradient(ellipse 130vw 48rem at 0% 39%,rgba(8,45,93,.38),transparent 76%),
+   radial-gradient(ellipse 120vw 46rem at 100% 72%,rgba(16,59,108,.34),transparent 76%),
+   linear-gradient(180deg,#06152b 0%,#020713 27%,#071a35 53%,#020611 76%,#07172f 100%);
+  background-size:149px 143px,229px 211px,auto,auto,auto,auto;
+  background-position:9px 17px,71px 53px,0 0,0 0,0 0,0 0;
+ }
+}
