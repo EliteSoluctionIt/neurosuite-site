@@ -87,6 +87,18 @@
     ctx.translate(cluster.x + swayX, cluster.y + swayY);
     ctx.rotate(rotation);
 
+    ctx.save();
+    ctx.scale(1.65, .62);
+    const halo = ctx.createRadialGradient(0, 0, 0, 0, 0, cluster.width * .46);
+    halo.addColorStop(0, isLight ? 'rgba(92,116,145,.045)' : 'rgba(28,105,192,.085)');
+    halo.addColorStop(.55, isLight ? 'rgba(92,116,145,.025)' : 'rgba(13,67,143,.042)');
+    halo.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = halo;
+    ctx.beginPath();
+    ctx.arc(0, 0, cluster.width * .46, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+
     for (const edge of cluster.edges) {
       const a = cluster.points[edge[0]];
       const b = cluster.points[edge[1]];
@@ -94,11 +106,11 @@
         a[0] * cluster.width, a[1] * cluster.height,
         b[0] * cluster.width, b[1] * cluster.height
       );
-      gradient.addColorStop(0, baseColor + (isLight ? '.12)' : '.105)'));
-      gradient.addColorStop(.62, baseColor + (isLight ? '.17)' : '.16)'));
-      gradient.addColorStop(1, isLight ? 'rgba(124,84,32,.16)' : 'rgba(239,198,112,.2)');
+      gradient.addColorStop(0, baseColor + (isLight ? '.14)' : '.17)'));
+      gradient.addColorStop(.62, baseColor + (isLight ? '.19)' : '.235)'));
+      gradient.addColorStop(1, isLight ? 'rgba(124,84,32,.19)' : 'rgba(239,198,112,.29)');
       ctx.strokeStyle = gradient;
-      ctx.lineWidth = .72;
+      ctx.lineWidth = .86;
       ctx.beginPath();
       ctx.moveTo(a[0] * cluster.width, a[1] * cluster.height);
       ctx.lineTo(b[0] * cluster.width, b[1] * cluster.height);
@@ -112,7 +124,7 @@
       ctx.shadowColor = index % 4 === 0 ? accent : (isLight ? 'rgba(64,82,104,.38)' : 'rgba(137,202,255,.58)');
       ctx.shadowBlur = 6 + breathe * 7;
       ctx.fillStyle = index % 4 === 0 ? accent : baseColor + (isLight ? '.52)' : '.66)');
-      ctx.globalAlpha = .58 + breathe * .3;
+      ctx.globalAlpha = .68 + breathe * .27;
       ctx.beginPath();
       ctx.arc(x, y, (.75 + (index % 3) * .28) * breathe, 0, Math.PI * 2);
       ctx.fill();
@@ -478,7 +490,7 @@
     gradient.addColorStop(.58, rgba(154, 207, 255, alpha));
     gradient.addColorStop(1, rgba(235, 191, 103, alpha * .9));
     ctx.strokeStyle = gradient;
-    ctx.lineWidth = .48 + cluster.strength * .24;
+    ctx.lineWidth = .62 + cluster.strength * .34;
     ctx.beginPath();
     ctx.moveTo(a.x, a.y);
     ctx.lineTo(b.x, b.y);
@@ -586,7 +598,7 @@
         const a = cluster.points[edge[0]];
         const b = cluster.points[edge[1]];
         const lineBreath = .72 + .28 * Math.sin(time * .00012 + cluster.phase * Math.PI * 2 + edgeIndex);
-        drawConnection(cluster, a, b, (.072 + cluster.strength * .07) * lineBreath);
+        drawConnection(cluster, a, b, (.12 + cluster.strength * .105) * lineBreath);
 
         if (!reduceMotion && (edgeIndex + clusterIndex) % 2 === 0) {
           const progress = (time * (.000018 + cluster.strength * .000004) + edgeIndex * .17 + cluster.phase) % 1;
