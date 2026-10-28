@@ -308,7 +308,7 @@
     canvas.style.height = `${height}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     buildScene();
-    draw(reduceMotion ? 0 : performance.now(), true);
+    if (inView) draw(reduceMotion ? 0 : performance.now(), true);
   }
 
   function visibleBand() {
@@ -516,7 +516,7 @@
     } else {
       stop();
     }
-  }, { rootMargin: '180px 0px' });
+  }, { rootMargin: '0px 0px -35% 0px' });
   visibilityObserver.observe(main);
 
   const themeObserver = new MutationObserver(() => {
