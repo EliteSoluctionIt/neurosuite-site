@@ -128,6 +128,435 @@
   loop();
 })();
 
+// NeuroSuite — living neural constellations below the hero.
+// The CSS blue-black sky remains underneath as a permanent fallback.
+(function () {
+  const main = document.querySelector('main');
+  const hasBlueGoldTheme = document.querySelector('link[href*="blue-gold.css"]');
+  if (!main || !hasBlueGoldTheme) return;
+
+  const style = document.createElement('style');
+  style.id = 'ns-cosmic-background-style';
+  style.textContent = `
+    html[data-mode="dark"] main.cosmic-enhanced {
+      position: relative;
+      isolation: isolate;
+    }
+    html[data-mode="dark"] main.cosmic-enhanced > .cosmic-background {
+      position: absolute;
+      inset: 0;
+      z-index: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      opacity: .96;
+      mix-blend-mode: screen;
+    }
+    html[data-mode="dark"] main.cosmic-enhanced > :not(.cosmic-background) {
+      position: relative;
+      z-index: 1;
+    }
+    html[data-mode="light"] .cosmic-background {
+      display: none;
+    }
+    @media (max-width: 620px) {
+      html[data-mode="dark"] main.cosmic-enhanced > .cosmic-background {
+        opacity: .9;
+      }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      html[data-mode="dark"] main.cosmic-enhanced > .cosmic-background {
+        opacity: .78;
+      }
+    }
+  `;
+  document.head.appendChild(style);
+
+  const canvas = document.createElement('canvas');
+  canvas.className = 'cosmic-background';
+  canvas.setAttribute('aria-hidden', 'true');
+  main.prepend(canvas);
+
+  const ctx = canvas.getContext('2d', { alpha: true });
+  if (!ctx) {
+    canvas.remove();
+    style.remove();
+    return;
+  }
+
+  main.classList.add('cosmic-enhanced');
+
+  const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
+  let reduceMotion = motionQuery.matches;
+  let mode = document.documentElement.getAttribute('data-mode') || 'dark';
+  let width = 0;
+  let height = 0;
+  let dpr = 1;
+  let mainTop = 0;
+  let ambientStars = [];
+  let constellations = [];
+  let dust = [];
+  let raf = null;
+  let lastFrame = 0;
+  let inView = false;
+  let resizeTimer = null;
+
+  const patterns = [
+    {
+      family: 'taurus', x: .72, y: .09, strength: 1.12, phase: .08,
+      points: [[.08,.54,.68],[.29,.49,.9],[.47,.57,1],[.64,.43,.82],[.86,.22,.72],[.67,.68,.66],[.93,.79,.58]],
+      edges: [[0,1],[1,2],[2,3],[3,4],[2,5],[5,6]]
+    },
+    {
+      family: 'leo', x: .23, y: .25, strength: .88, phase: .24,
+      points: [[.08,.63,.6],[.25,.45,.86],[.43,.34,1],[.52,.14,.72],[.66,.31,.78],[.58,.58,.9],[.78,.69,.66],[.94,.57,.58]],
+      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,2],[5,6],[6,7]]
+    },
+    {
+      family: 'scorpius', x: .72, y: .42, strength: 1.03, phase: .41,
+      points: [[.08,.19,.58],[.23,.31,.7],[.35,.49,.92],[.49,.65,1],[.64,.72,.82],[.79,.66,.72],[.9,.51,.85],[.83,.35,.64],[.95,.24,.7]],
+      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,8]]
+    },
+    {
+      family: 'gemini', x: .28, y: .58, strength: .78, phase: .57,
+      points: [[.22,.09,.92],[.31,.31,.72],[.27,.58,.66],[.16,.86,.56],[.67,.13,1],[.62,.35,.76],[.69,.61,.69],[.84,.86,.58],[.31,.31,.72],[.62,.35,.76],[.27,.58,.64],[.69,.61,.64]],
+      edges: [[0,1],[1,2],[2,3],[4,5],[5,6],[6,7],[8,9],[10,11]]
+    },
+    {
+      family: 'aquarius', x: .69, y: .75, strength: .92, phase: .73,
+      points: [[.05,.36,.58],[.2,.22,.72],[.36,.4,.9],[.51,.24,.68],[.67,.43,1],[.82,.28,.72],[.95,.47,.62],[.23,.67,.55],[.42,.79,.66],[.62,.69,.58],[.83,.84,.54]],
+      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[2,7],[7,8],[8,9],[9,10]]
+    },
+    {
+      family: 'pisces', x: .34, y: .91, strength: .82, phase: .89,
+      points: [[.05,.42,.58],[.17,.26,.68],[.32,.28,.86],[.4,.45,.72],[.31,.62,.62],[.15,.65,.55],[.57,.51,1],[.69,.34,.72],[.84,.31,.68],[.95,.46,.56],[.83,.62,.62],[.68,.66,.7]],
+      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[3,6],[6,7],[7,8],[8,9],[9,10],[10,11],[11,6]]
+    }
+  ];
+
+  function hash(value) {
+    const x = Math.sin(value * 127.1 + 311.7) * 43758.5453123;
+    return x - Math.floor(x);
+  }
+
+  function rgba(r, g, b, alpha) {
+    return `rgba(${r},${g},${b},${Math.max(0, Math.min(1, alpha))})`;
+  }
+
+  function buildScene() {
+    const area = width * height;
+    const starCount = Math.max(90, Math.min(260, Math.round(area / 42000)));
+    ambientStars = Array.from({ length: starCount }, (_, index) => ({
+      x: hash(index + 1.13) * width,
+      y: hash(index + 17.81) * height,
+      radius: .28 + hash(index + 31.47) * 1.15,
+      alpha: .2 + hash(index + 49.03) * .55,
+      phase: hash(index + 71.17) * Math.PI * 2,
+      speed: .00035 + hash(index + 91.53) * .0012,
+      gold: hash(index + 111.91) > .76
+    }));
+
+    const responsiveScale = Math.max(.68, Math.min(1.18, width / 1120));
+    const clusterWidth = Math.min(width * (width < 620 ? .7 : .34), 430) * responsiveScale;
+    const clusterHeight = Math.max(130, Math.min(245, clusterWidth * .58));
+
+    constellations = patterns.map((pattern, clusterIndex) => {
+      const mobileX = clusterIndex % 2 === 0 ? .6 : .4;
+      const centerX = width < 620 ? mobileX * width : pattern.x * width;
+      const centerY = pattern.y * height;
+      const points = pattern.points.map((point, pointIndex) => ({
+        x: centerX + (point[0] - .5) * clusterWidth,
+        y: centerY + (point[1] - .5) * clusterHeight,
+        importance: point[2],
+        phase: hash(clusterIndex * 37 + pointIndex * 11.3) * Math.PI * 2,
+        speed: .00055 + hash(clusterIndex * 53 + pointIndex * 7.9) * .00115,
+        planet: (clusterIndex * 3 + pointIndex) % 13 === 0
+      }));
+      return { ...pattern, centerX, centerY, points };
+    });
+
+    dust = [];
+    constellations.forEach((cluster, clusterIndex) => {
+      const amount = width < 620 ? 22 : 36;
+      for (let i = 0; i < amount; i++) {
+        const angle = hash(clusterIndex * 89 + i * 3.7) * Math.PI * 2;
+        const distance = 18 + hash(clusterIndex * 71 + i * 5.1) * (width < 620 ? 115 : 190);
+        dust.push({
+          x: cluster.centerX + Math.cos(angle) * distance * 1.55,
+          y: cluster.centerY + Math.sin(angle) * distance * .62,
+          radius: .25 + hash(clusterIndex * 47 + i * 9.3) * 1.05,
+          alpha: .08 + hash(clusterIndex * 101 + i * 4.9) * .28,
+          phase: hash(clusterIndex * 59 + i * 12.7) * Math.PI * 2
+        });
+      }
+    });
+  }
+
+  function resize() {
+    const rect = main.getBoundingClientRect();
+    width = Math.max(1, Math.round(rect.width));
+    height = Math.max(1, Math.round(main.scrollHeight));
+    mainTop = rect.top + window.scrollY;
+
+    const preferred = Math.min(window.devicePixelRatio || 1, width < 620 ? 1.15 : 1.35);
+    const maxPixels = width < 620 ? 5200000 : 10500000;
+    dpr = Math.max(.72, Math.min(preferred, Math.sqrt(maxPixels / (width * height))));
+
+    canvas.width = Math.max(1, Math.round(width * dpr));
+    canvas.height = Math.max(1, Math.round(height * dpr));
+    canvas.style.width = `${width}px`;
+    canvas.style.height = `${height}px`;
+    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    buildScene();
+    draw(reduceMotion ? 0 : performance.now(), true);
+  }
+
+  function visibleBand() {
+    const top = Math.max(0, window.scrollY - mainTop - 180);
+    const bottom = Math.min(height, window.scrollY - mainTop + window.innerHeight + 180);
+    return { top, bottom, bandHeight: Math.max(0, bottom - top) };
+  }
+
+  function drawNebula(cluster) {
+    const radius = width < 620 ? Math.min(width * .72, 330) : Math.min(width * .31, 430);
+    ctx.save();
+    ctx.translate(cluster.centerX, cluster.centerY);
+    ctx.scale(1.55, .82);
+    const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, radius);
+    glow.addColorStop(0, rgba(23, 110, 205, .15 * cluster.strength));
+    glow.addColorStop(.34, rgba(13, 75, 157, .105 * cluster.strength));
+    glow.addColorStop(.7, rgba(5, 35, 91, .055 * cluster.strength));
+    glow.addColorStop(1, 'rgba(0,0,0,0)');
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(0, 0, radius, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.restore();
+  }
+
+  function drawAmbient(time, band) {
+    for (const star of ambientStars) {
+      if (star.y < band.top || star.y > band.bottom) continue;
+      const twinkle = .62 + .38 * Math.sin(time * star.speed + star.phase);
+      ctx.fillStyle = star.gold
+        ? rgba(248, 214, 139, star.alpha * twinkle)
+        : rgba(177, 218, 255, star.alpha * twinkle);
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius * (.72 + twinkle * .35), 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    for (const mote of dust) {
+      if (mote.y < band.top || mote.y > band.bottom) continue;
+      const shimmer = .58 + .42 * Math.sin(time * .00075 + mote.phase);
+      ctx.fillStyle = rgba(237, 193, 105, mote.alpha * shimmer);
+      ctx.beginPath();
+      ctx.arc(mote.x, mote.y, mote.radius * (.75 + shimmer * .4), 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function drawConnection(cluster, a, b, alpha) {
+    const gradient = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+    gradient.addColorStop(0, rgba(108, 184, 255, alpha * .8));
+    gradient.addColorStop(.58, rgba(154, 207, 255, alpha));
+    gradient.addColorStop(1, rgba(235, 191, 103, alpha * .9));
+    ctx.strokeStyle = gradient;
+    ctx.lineWidth = .48 + cluster.strength * .24;
+    ctx.beginPath();
+    ctx.moveTo(a.x, a.y);
+    ctx.lineTo(b.x, b.y);
+    ctx.stroke();
+  }
+
+  function drawPulse(cluster, a, b, progress, edgeIndex) {
+    for (let trail = 0; trail < 7; trail++) {
+      const p = progress - trail * .018;
+      if (p < 0 || p > 1) continue;
+      const x = a.x + (b.x - a.x) * p;
+      const y = a.y + (b.y - a.y) * p;
+      const alpha = (1 - trail / 7) * .68 * cluster.strength;
+      const radius = 1.05 + (1 - trail / 7) * 1.45;
+      ctx.shadowColor = rgba(242, 202, 118, alpha);
+      ctx.shadowBlur = 9;
+      ctx.fillStyle = rgba(250, 220, 151, alpha);
+      ctx.beginPath();
+      ctx.arc(x, y, radius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.shadowBlur = 0;
+
+    if (progress < .82) return;
+    const dissolve = (progress - .82) / .18;
+    for (let mote = 0; mote < 8; mote++) {
+      const seed = edgeIndex * 29 + mote * 13 + cluster.phase * 100;
+      const angle = hash(seed) * Math.PI * 2;
+      const distance = dissolve * (7 + hash(seed + 8.3) * 20);
+      const x = b.x + Math.cos(angle) * distance;
+      const y = b.y + Math.sin(angle) * distance * .65;
+      const alpha = (1 - dissolve) * (.2 + hash(seed + 17.2) * .62);
+      ctx.fillStyle = rgba(247, 206, 119, alpha);
+      ctx.beginPath();
+      ctx.arc(x, y, .35 + hash(seed + 23.1) * 1.05, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function drawStar(point, cluster, time, pointIndex) {
+    const breathe = .68 + .32 * Math.sin(time * point.speed + point.phase);
+    const core = (.72 + point.importance * 1.35) * (.82 + breathe * .28);
+    const halo = 4 + point.importance * 8;
+
+    ctx.save();
+    ctx.shadowColor = pointIndex % 4 === 0 ? 'rgba(247,206,125,.8)' : 'rgba(143,202,255,.76)';
+    ctx.shadowBlur = halo * breathe * cluster.strength;
+    ctx.fillStyle = pointIndex % 4 === 0
+      ? rgba(255, 226, 160, .66 + breathe * .3)
+      : rgba(207, 232, 255, .6 + breathe * .34);
+    ctx.beginPath();
+    ctx.arc(point.x, point.y, core, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (point.importance > .82) {
+      const ray = 3.5 + point.importance * 4.5 * breathe;
+      ctx.strokeStyle = rgba(240, 216, 164, .18 + breathe * .2);
+      ctx.lineWidth = .55;
+      ctx.beginPath();
+      ctx.moveTo(point.x - ray, point.y);
+      ctx.lineTo(point.x + ray, point.y);
+      ctx.moveTo(point.x, point.y - ray);
+      ctx.lineTo(point.x, point.y + ray);
+      ctx.stroke();
+    }
+
+    if (point.planet) {
+      ctx.shadowBlur = 0;
+      ctx.strokeStyle = rgba(232, 197, 127, .34);
+      ctx.lineWidth = .55;
+      ctx.beginPath();
+      ctx.ellipse(point.x, point.y, core * 2.9, core * 1.05, -.35, 0, Math.PI * 2);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function draw(time, force) {
+    if (!width || !height || mode !== 'dark') return;
+    const band = visibleBand();
+    if (!band.bandHeight) return;
+
+    ctx.clearRect(0, band.top, width, band.bandHeight);
+    ctx.save();
+    ctx.beginPath();
+    ctx.rect(0, band.top, width, band.bandHeight);
+    ctx.clip();
+    ctx.globalCompositeOperation = 'screen';
+
+    constellations.forEach((cluster, clusterIndex) => {
+      const margin = width < 620 ? 270 : 390;
+      if (cluster.centerY < band.top - margin || cluster.centerY > band.bottom + margin) return;
+      drawNebula(cluster);
+      cluster.edges.forEach((edge, edgeIndex) => {
+        const a = cluster.points[edge[0]];
+        const b = cluster.points[edge[1]];
+        const lineBreath = .72 + .28 * Math.sin(time * .00042 + cluster.phase * Math.PI * 2 + edgeIndex);
+        drawConnection(cluster, a, b, (.1 + cluster.strength * .085) * lineBreath);
+
+        if (!reduceMotion && (edgeIndex + clusterIndex) % 2 === 0) {
+          const progress = (time * (.000055 + cluster.strength * .000014) + edgeIndex * .17 + cluster.phase) % 1;
+          drawPulse(cluster, a, b, progress, clusterIndex * 20 + edgeIndex);
+        }
+      });
+      cluster.points.forEach((point, pointIndex) => drawStar(point, cluster, time, pointIndex));
+    });
+
+    drawAmbient(time, band);
+    ctx.restore();
+
+    if (force && reduceMotion) canvas.dataset.static = 'true';
+  }
+
+  function loop(time) {
+    raf = null;
+    if (!inView || document.hidden || mode !== 'dark' || reduceMotion) return;
+    if (time - lastFrame >= 34) {
+      draw(time, false);
+      lastFrame = time;
+    }
+    raf = requestAnimationFrame(loop);
+  }
+
+  function start() {
+    if (raf || !inView || document.hidden || mode !== 'dark' || reduceMotion) return;
+    raf = requestAnimationFrame(loop);
+  }
+
+  function stop() {
+    if (!raf) return;
+    cancelAnimationFrame(raf);
+    raf = null;
+  }
+
+  function refreshMotion() {
+    reduceMotion = motionQuery.matches;
+    if (reduceMotion) {
+      stop();
+      draw(0, true);
+    } else {
+      canvas.removeAttribute('data-static');
+      start();
+    }
+  }
+
+  const visibilityObserver = new IntersectionObserver((entries) => {
+    inView = entries.some(entry => entry.isIntersecting);
+    if (inView) {
+      draw(reduceMotion ? 0 : performance.now(), true);
+      start();
+    } else {
+      stop();
+    }
+  }, { rootMargin: '180px 0px' });
+  visibilityObserver.observe(main);
+
+  const themeObserver = new MutationObserver(() => {
+    mode = document.documentElement.getAttribute('data-mode') || 'dark';
+    if (mode === 'dark') {
+      draw(reduceMotion ? 0 : performance.now(), true);
+      start();
+    } else {
+      stop();
+    }
+  });
+  themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-mode'] });
+
+  const requestResize = () => {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(resize, 140);
+  };
+
+  window.addEventListener('resize', requestResize, { passive: true });
+  window.addEventListener('scroll', () => {
+    if (reduceMotion && mode === 'dark') draw(0, true);
+  }, { passive: true });
+  document.addEventListener('visibilitychange', () => {
+    if (document.hidden) stop(); else start();
+  });
+  if (motionQuery.addEventListener) motionQuery.addEventListener('change', refreshMotion);
+
+  if ('ResizeObserver' in window) {
+    const sizeObserver = new ResizeObserver(entries => {
+      const nextHeight = Math.round(entries[0].contentRect.height);
+      const nextWidth = Math.round(entries[0].contentRect.width);
+      if (Math.abs(nextHeight - height) > 2 || Math.abs(nextWidth - width) > 2) requestResize();
+    });
+    sizeObserver.observe(main);
+  }
+
+  resize();
+  refreshMotion();
+})();
+
 // Reveal on scroll
 (function(){
   const els = document.querySelectorAll('.reveal');
