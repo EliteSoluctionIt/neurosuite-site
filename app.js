@@ -59,8 +59,8 @@
 
     const mobile = W < 620;
     const centers = mobile
-      ? [[.58,.22], [.38,.52], [.62,.8]]
-      : [[.22,.26], [.7,.48], [.4,.78]];
+      ? [[.46,.14], [.56,.5], [.44,.84]]
+      : [[.17,.16], [.78,.32], [.74,.72]];
     const longAxis = Math.min(W * (mobile ? .92 : .43), mobile ? 410 : 620);
     const shortAxis = Math.min(H * (mobile ? .19 : .24), mobile ? 155 : 230);
     heroConstellations = heroPatterns.map((pattern, index) => ({
