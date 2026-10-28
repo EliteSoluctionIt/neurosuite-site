@@ -8,10 +8,26 @@
 
   let W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
   let nodes = [];
+  let heroConstellations = [];
   let mouse = { x: -9999, y: -9999 };
   let raf = null;
   let mode = document.documentElement.getAttribute('data-mode') || 'dark';
   let variant = document.documentElement.getAttribute('data-hero') || 'constellation';
+
+  const heroPatterns = [
+    {
+      points: [[-.5,.08],[-.32,-.12],[-.12,.02],[.08,-.2],[.28,-.08],[.5,-.3],[.36,.18],[.12,.3],[-.18,.22]],
+      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[4,6],[6,7],[7,8],[8,2]]
+    },
+    {
+      points: [[-.52,-.16],[-.36,.04],[-.18,.18],[.02,.02],[.2,-.22],[.4,-.04],[.54,.2],[.26,.28],[-.06,.34]],
+      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[3,7],[7,8],[8,2]]
+    },
+    {
+      points: [[-.52,.22],[-.34,.02],[-.14,-.08],[.04,.08],[.2,-.16],[.38,-.3],[.52,-.08],[.34,.16],[.12,.3],[-.16,.24]],
+      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[4,6],[6,7],[7,8],[8,9],[9,3]]
+    }
+  ];
 
   function getAccent() {
     const s = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
@@ -28,18 +44,82 @@
 
   function seed() {
     nodes = [];
-    const density = variant === 'flow' ? 0.00009 : 0.00010;
+    const density = variant === 'flow' ? 0.000075 : 0.000082;
     const count = Math.max(36, Math.min(110, Math.floor(W * H * density)));
     for (let i = 0; i < count; i++) {
       nodes.push({
         x: Math.random() * W,
         y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.10,
-        vy: (Math.random() - 0.5) * 0.10,
+        vx: (Math.random() - 0.5) * 0.045,
+        vy: (Math.random() - 0.5) * 0.045,
         r: Math.random() * 1.2 + 0.4,
         phase: Math.random() * Math.PI * 2,
       });
     }
+
+    const mobile = W < 620;
+    const centers = mobile
+      ? [[.58,.22], [.38,.52], [.62,.8]]
+      : [[.22,.26], [.7,.48], [.4,.78]];
+    const longAxis = Math.min(W * (mobile ? .92 : .43), mobile ? 410 : 620);
+    const shortAxis = Math.min(H * (mobile ? .19 : .24), mobile ? 155 : 230);
+    heroConstellations = heroPatterns.map((pattern, index) => ({
+      ...pattern,
+      x: centers[index][0] * W,
+      y: centers[index][1] * H,
+      width: longAxis * (.9 + index * .06),
+      height: shortAxis * (1 - index * .05),
+      baseRotation: [-.32,.24,-.18][index],
+      direction: index % 2 ? 1 : -1,
+      rotationSpeed: [.000024,.000019,.000022][index],
+      phase: index * 2.17 + .4
+    }));
+  }
+
+  function drawHeroConstellation(cluster, time, baseColor, accent, isLight) {
+    const rotation = cluster.baseRotation
+      + time * cluster.rotationSpeed * cluster.direction
+      + Math.sin(time * .000012 + cluster.phase) * .08;
+    const swayX = Math.sin(time * .000016 + cluster.phase) * (W < 620 ? 8 : 18);
+    const swayY = Math.cos(time * .000013 + cluster.phase) * (W < 620 ? 6 : 13);
+
+    ctx.save();
+    ctx.translate(cluster.x + swayX, cluster.y + swayY);
+    ctx.rotate(rotation);
+
+    for (const edge of cluster.edges) {
+      const a = cluster.points[edge[0]];
+      const b = cluster.points[edge[1]];
+      const gradient = ctx.createLinearGradient(
+        a[0] * cluster.width, a[1] * cluster.height,
+        b[0] * cluster.width, b[1] * cluster.height
+      );
+      gradient.addColorStop(0, baseColor + (isLight ? '.12)' : '.105)'));
+      gradient.addColorStop(.62, baseColor + (isLight ? '.17)' : '.16)'));
+      gradient.addColorStop(1, isLight ? 'rgba(124,84,32,.16)' : 'rgba(239,198,112,.2)');
+      ctx.strokeStyle = gradient;
+      ctx.lineWidth = .72;
+      ctx.beginPath();
+      ctx.moveTo(a[0] * cluster.width, a[1] * cluster.height);
+      ctx.lineTo(b[0] * cluster.width, b[1] * cluster.height);
+      ctx.stroke();
+    }
+
+    cluster.points.forEach((point, index) => {
+      const breathe = .72 + .28 * Math.sin(time * .00024 + cluster.phase + index * .73);
+      const x = point[0] * cluster.width;
+      const y = point[1] * cluster.height;
+      ctx.shadowColor = index % 4 === 0 ? accent : (isLight ? 'rgba(64,82,104,.38)' : 'rgba(137,202,255,.58)');
+      ctx.shadowBlur = 6 + breathe * 7;
+      ctx.fillStyle = index % 4 === 0 ? accent : baseColor + (isLight ? '.52)' : '.66)');
+      ctx.globalAlpha = .58 + breathe * .3;
+      ctx.beginPath();
+      ctx.arc(x, y, (.75 + (index % 3) * .28) * breathe, 0, Math.PI * 2);
+      ctx.fill();
+    });
+    ctx.globalAlpha = 1;
+    ctx.shadowBlur = 0;
+    ctx.restore();
   }
 
   function draw(t) {
@@ -48,6 +128,8 @@
     const isLight = mode === 'light';
     const baseColor = isLight ? 'rgba(20,18,12,' : 'rgba(244,243,238,';
     const lineMax = variant === 'flow' ? 160 : 130;
+
+    heroConstellations.forEach(cluster => drawHeroConstellation(cluster, t, baseColor, accent, isLight));
 
     // edges
     for (let i = 0; i < nodes.length; i++) {
@@ -78,7 +160,7 @@
 
     // nodes
     for (const n of nodes) {
-      const breathe = 0.6 + 0.4 * Math.sin(t * 0.0008 + n.phase);
+      const breathe = 0.6 + 0.4 * Math.sin(t * 0.00028 + n.phase);
       ctx.fillStyle = baseColor + (isLight ? 0.55 : 0.7) + ')';
       ctx.beginPath();
       ctx.arc(n.x, n.y, n.r * breathe, 0, Math.PI * 2);
@@ -231,6 +313,21 @@
       family: 'pisces', x: .34, y: .91, strength: .82, phase: .89,
       points: [[.05,.42,.58],[.17,.26,.68],[.32,.28,.86],[.4,.45,.72],[.31,.62,.62],[.15,.65,.55],[.57,.51,1],[.69,.34,.72],[.84,.31,.68],[.95,.46,.56],[.83,.62,.62],[.68,.66,.7]],
       edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,0],[3,6],[6,7],[7,8],[8,9],[9,10],[10,11],[11,6]]
+    },
+    {
+      family: 'cygnus', x: .5, y: .5, strength: .9, phase: .17,
+      points: [[.03,.51,.54],[.18,.45,.68],[.35,.48,.82],[.52,.42,1],[.7,.47,.78],[.97,.38,.62],[.49,.08,.72],[.54,.72,.69],[.66,.91,.56]],
+      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[3,6],[3,7],[7,8]]
+    },
+    {
+      family: 'orion', x: .5, y: .5, strength: 1.04, phase: .36,
+      points: [[.05,.72,.58],[.19,.36,.73],[.37,.5,.92],[.5,.46,1],[.63,.42,.88],[.82,.2,.69],[.96,.57,.61],[.42,.14,.67],[.6,.82,.72]],
+      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[4,6],[2,7],[3,8]]
+    },
+    {
+      family: 'auriga', x: .5, y: .5, strength: .84, phase: .64,
+      points: [[.02,.4,.56],[.16,.21,.7],[.34,.32,.85],[.5,.14,.72],[.68,.29,1],[.84,.2,.68],[.98,.42,.58],[.78,.62,.74],[.55,.78,.66],[.3,.67,.72],[.13,.82,.54]],
+      edges: [[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[4,7],[7,8],[8,9],[9,10],[9,2]]
     }
   ];
 
@@ -245,42 +342,61 @@
 
   function buildScene() {
     const area = width * height;
-    const starCount = Math.max(90, Math.min(260, Math.round(area / 42000)));
+    const starCount = Math.max(180, Math.min(640, Math.round(area / 18000)));
     ambientStars = Array.from({ length: starCount }, (_, index) => ({
       x: hash(index + 1.13) * width,
       y: hash(index + 17.81) * height,
       radius: .28 + hash(index + 31.47) * 1.15,
       alpha: .2 + hash(index + 49.03) * .55,
       phase: hash(index + 71.17) * Math.PI * 2,
-      speed: .00035 + hash(index + 91.53) * .0012,
+      speed: .00008 + hash(index + 91.53) * .00024,
       gold: hash(index + 111.91) > .76
     }));
 
-    const responsiveScale = Math.max(.68, Math.min(1.18, width / 1120));
-    const clusterWidth = Math.min(width * (width < 620 ? .7 : .34), 430) * responsiveScale;
-    const clusterHeight = Math.max(130, Math.min(245, clusterWidth * .58));
+    const mobile = width < 620;
+    const viewportSpan = Math.max(560, window.innerHeight || 720);
+    const verticalStep = viewportSpan / 3;
+    const clusterCount = Math.max(5, Math.ceil(height / verticalStep) + 2);
+    const lanes = mobile ? [.3, .7, .5] : [.19, .53, .82];
+    const baseWidth = Math.min(width * (mobile ? .88 : .44), mobile ? 420 : 690);
 
-    constellations = patterns.map((pattern, clusterIndex) => {
-      const mobileX = clusterIndex % 2 === 0 ? .6 : .4;
-      const centerX = width < 620 ? mobileX * width : pattern.x * width;
-      const centerY = pattern.y * height;
+    constellations = Array.from({ length: clusterCount }, (_, clusterIndex) => {
+      const pattern = patterns[clusterIndex % patterns.length];
+      const lane = clusterIndex % lanes.length;
+      const xJitter = (hash(clusterIndex * 19.7 + 4.2) - .5) * (mobile ? .08 : .07);
+      const centerX = Math.max(width * .08, Math.min(width * .92, (lanes[lane] + xJitter) * width));
+      const centerY = (clusterIndex + .14) * verticalStep;
+      const clusterWidth = baseWidth * (.88 + hash(clusterIndex * 23.1 + 8.4) * .22);
+      const clusterHeight = Math.max(118, Math.min(mobile ? 190 : 270, clusterWidth * (.36 + hash(clusterIndex + 12.7) * .1)));
       const points = pattern.points.map((point, pointIndex) => ({
         x: centerX + (point[0] - .5) * clusterWidth,
         y: centerY + (point[1] - .5) * clusterHeight,
         importance: point[2],
         phase: hash(clusterIndex * 37 + pointIndex * 11.3) * Math.PI * 2,
-        speed: .00055 + hash(clusterIndex * 53 + pointIndex * 7.9) * .00115,
+        speed: .00014 + hash(clusterIndex * 53 + pointIndex * 7.9) * .00028,
         planet: (clusterIndex * 3 + pointIndex) % 13 === 0
       }));
-      return { ...pattern, centerX, centerY, points };
+      return {
+        ...pattern,
+        strength: pattern.strength * (.78 + hash(clusterIndex * 31.4 + 2.9) * .27),
+        phase: hash(clusterIndex * 41.3 + 6.7),
+        centerX,
+        centerY,
+        points,
+        baseRotation: (hash(clusterIndex * 17.9 + 1.4) - .5) * 1.05,
+        direction: clusterIndex % 2 === 0 ? 1 : -1,
+        rotationSpeed: .000016 + hash(clusterIndex * 29.2 + 9.1) * .000013,
+        driftX: (mobile ? 8 : 18) + hash(clusterIndex * 13.6 + 4.4) * (mobile ? 10 : 24),
+        driftY: 5 + hash(clusterIndex * 21.8 + 7.3) * (mobile ? 7 : 12)
+      };
     });
 
     dust = [];
     constellations.forEach((cluster, clusterIndex) => {
-      const amount = width < 620 ? 22 : 36;
+      const amount = mobile ? 18 : 26;
       for (let i = 0; i < amount; i++) {
         const angle = hash(clusterIndex * 89 + i * 3.7) * Math.PI * 2;
-        const distance = 18 + hash(clusterIndex * 71 + i * 5.1) * (width < 620 ? 115 : 190);
+        const distance = 18 + hash(clusterIndex * 71 + i * 5.1) * (mobile ? 125 : 220);
         dust.push({
           x: cluster.centerX + Math.cos(angle) * distance * 1.55,
           y: cluster.centerY + Math.sin(angle) * distance * .62,
@@ -318,14 +434,14 @@
   }
 
   function drawNebula(cluster) {
-    const radius = width < 620 ? Math.min(width * .72, 330) : Math.min(width * .31, 430);
+    const radius = width < 620 ? Math.min(width * .78, 360) : Math.min(width * .34, 520);
     ctx.save();
     ctx.translate(cluster.centerX, cluster.centerY);
-    ctx.scale(1.55, .82);
+    ctx.scale(1.72, .64);
     const glow = ctx.createRadialGradient(0, 0, 0, 0, 0, radius);
-    glow.addColorStop(0, rgba(23, 110, 205, .15 * cluster.strength));
-    glow.addColorStop(.34, rgba(13, 75, 157, .105 * cluster.strength));
-    glow.addColorStop(.7, rgba(5, 35, 91, .055 * cluster.strength));
+    glow.addColorStop(0, rgba(23, 110, 205, .105 * cluster.strength));
+    glow.addColorStop(.34, rgba(13, 75, 157, .072 * cluster.strength));
+    glow.addColorStop(.7, rgba(5, 35, 91, .038 * cluster.strength));
     glow.addColorStop(1, 'rgba(0,0,0,0)');
     ctx.fillStyle = glow;
     ctx.beginPath();
@@ -348,7 +464,7 @@
 
     for (const mote of dust) {
       if (mote.y < band.top || mote.y > band.bottom) continue;
-      const shimmer = .58 + .42 * Math.sin(time * .00075 + mote.phase);
+      const shimmer = .58 + .42 * Math.sin(time * .00018 + mote.phase);
       ctx.fillStyle = rgba(237, 193, 105, mote.alpha * shimmer);
       ctx.beginPath();
       ctx.arc(mote.x, mote.y, mote.radius * (.75 + shimmer * .4), 0, Math.PI * 2);
@@ -453,21 +569,32 @@
     ctx.globalCompositeOperation = 'screen';
 
     constellations.forEach((cluster, clusterIndex) => {
-      const margin = width < 620 ? 270 : 390;
+      const margin = width < 620 ? 300 : 560;
       if (cluster.centerY < band.top - margin || cluster.centerY > band.bottom + margin) return;
+
+      const swayX = reduceMotion ? 0 : Math.sin(time * .000018 + cluster.phase * Math.PI * 2) * cluster.driftX;
+      const swayY = reduceMotion ? 0 : Math.cos(time * .000014 + cluster.phase * Math.PI * 2) * cluster.driftY;
+      const rotation = cluster.baseRotation + (reduceMotion ? 0 : time * cluster.rotationSpeed * cluster.direction)
+        + (reduceMotion ? 0 : Math.sin(time * .000009 + cluster.phase * Math.PI * 2) * .075);
+
+      ctx.save();
+      ctx.translate(cluster.centerX + swayX, cluster.centerY + swayY);
+      ctx.rotate(rotation);
+      ctx.translate(-cluster.centerX, -cluster.centerY);
       drawNebula(cluster);
       cluster.edges.forEach((edge, edgeIndex) => {
         const a = cluster.points[edge[0]];
         const b = cluster.points[edge[1]];
-        const lineBreath = .72 + .28 * Math.sin(time * .00042 + cluster.phase * Math.PI * 2 + edgeIndex);
-        drawConnection(cluster, a, b, (.1 + cluster.strength * .085) * lineBreath);
+        const lineBreath = .72 + .28 * Math.sin(time * .00012 + cluster.phase * Math.PI * 2 + edgeIndex);
+        drawConnection(cluster, a, b, (.072 + cluster.strength * .07) * lineBreath);
 
         if (!reduceMotion && (edgeIndex + clusterIndex) % 2 === 0) {
-          const progress = (time * (.000055 + cluster.strength * .000014) + edgeIndex * .17 + cluster.phase) % 1;
+          const progress = (time * (.000018 + cluster.strength * .000004) + edgeIndex * .17 + cluster.phase) % 1;
           drawPulse(cluster, a, b, progress, clusterIndex * 20 + edgeIndex);
         }
       });
       cluster.points.forEach((point, pointIndex) => drawStar(point, cluster, time, pointIndex));
+      ctx.restore();
     });
 
     drawAmbient(time, band);
@@ -479,7 +606,7 @@
   function loop(time) {
     raf = null;
     if (!inView || document.hidden || mode !== 'dark' || reduceMotion) return;
-    if (time - lastFrame >= 34) {
+    if (time - lastFrame >= 42) {
       draw(time, false);
       lastFrame = time;
     }
