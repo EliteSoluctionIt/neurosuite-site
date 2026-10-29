@@ -73,13 +73,103 @@ const NeuroPlanetarium = (() => {
     Crux: 'Croce del Sud', Sagittarius: 'Sagittario'
   };
 
+  // Catalogue magnitudes and colour temperatures keep the brightest stars
+  // recognisable without turning the sky into uniformly white decoration.
   const brightStars = [
-    [101.29,-16.72,-1.46],[95.99,-52.7,-.74],[213.92,19.18,-.05],[279.23,38.78,.03],
-    [79.17,45.99,.08],[78.63,-8.2,.13],[114.83,5.23,.34],[24.43,-57.24,.46],
-    [88.79,7.41,.5],[297.7,8.87,.76],[186.65,-63.1,.77],[68.98,16.51,.86],
-    [247.35,-26.43,1.06],[201.3,-11.16,.98],[116.33,28.03,1.14],[310.36,45.28,1.25],
-    [152.09,11.97,1.35],[344.41,-29.62,1.16],[104.66,-28.97,1.5],[263.4,-37.1,1.62]
+    [101.29,-16.72,-1.46,9940,'Sirius'],[95.99,-52.7,-.74,7400,'Canopus'],
+    [213.92,19.18,-.05,4290,'Arcturus'],[279.23,38.78,.03,9600,'Vega'],
+    [79.17,45.99,.08,4970,'Capella'],[78.63,-8.2,.13,12100,'Rigel'],
+    [114.83,5.23,.34,6530,'Procyon'],[24.43,-57.24,.46,15000,'Achernar'],
+    [88.79,7.41,.5,3500,'Betelgeuse'],[297.7,8.87,.76,7550,'Altair'],
+    [186.65,-63.1,.77,28000,'Acrux'],[68.98,16.51,.86,3900,'Aldebaran'],
+    [247.35,-26.43,1.06,3660,'Antares'],[201.3,-11.16,.98,22400,'Spica'],
+    [116.33,28.03,1.14,4860,'Pollux'],[310.36,45.28,1.25,8500,'Deneb'],
+    [152.09,11.97,1.35,12400,'Regulus'],[344.41,-29.62,1.16,8590,'Fomalhaut'],
+    [104.66,-28.97,1.5,22800,'Adhara'],[263.4,-37.1,1.62,25000,'Shaula']
   ];
+  const brightStarKeys = new Set(brightStars.map(star => `${star[0].toFixed(2)}:${star[1].toFixed(2)}`));
+
+  const deepSkyObjects = [
+    { name: 'M31 · Andromeda', it: 'M31 · Andromeda', ra: 10.6847, dec: 41.269, size: [72,18], angle: -.34, intensity: .42, color: [176,198,255] },
+    { name: 'M33 · Triangulum', it: 'M33 · Triangolo', ra: 23.4621, dec: 30.66, size: [46,25], angle: .46, intensity: .19, color: [191,210,255] },
+    { name: 'Large Magellanic Cloud', it: 'Grande Nube di Magellano', ra: 80.8939, dec: -69.756, size: [82,39], angle: -.2, intensity: .28, color: [188,214,255] },
+    { name: 'Small Magellanic Cloud', it: 'Piccola Nube di Magellano', ra: 13.1867, dec: -72.829, size: [56,27], angle: .54, intensity: .23, color: [204,220,255] }
+  ];
+
+  // Low-precision orbital elements are sufficient for a visual planetarium:
+  // planets follow the correct part of the local sky and remain optically steady.
+  const planetElements = [
+    { name: 'Mercury', it: 'Mercurio', N:[48.3313,3.24587e-5], i:[7.0047,5e-8], w:[29.1241,1.01444e-5], a:[.387098,0], e:[.205635,5.59e-10], M:[168.6562,4.0923344368], magnitude:-.35, radius:1.25, color:[222,210,185] },
+    { name: 'Venus', it: 'Venere', N:[76.6799,2.4659e-5], i:[3.3946,2.75e-8], w:[54.891,1.38374e-5], a:[.72333,0], e:[.006773,-1.302e-9], M:[48.0052,1.6021302244], magnitude:-4.2, radius:2.5, color:[255,238,194] },
+    { name: 'Mars', it: 'Marte', N:[49.5574,2.11081e-5], i:[1.8497,-1.78e-8], w:[286.5016,2.92961e-5], a:[1.523688,0], e:[.093405,2.516e-9], M:[18.6021,.5240207766], magnitude:-1.1, radius:1.75, color:[255,157,119] },
+    { name: 'Jupiter', it: 'Giove', N:[100.4542,2.76854e-5], i:[1.303,-1.557e-7], w:[273.8777,1.64505e-5], a:[5.20256,0], e:[.048498,4.469e-9], M:[19.895, .0830853001], magnitude:-2.45, radius:2.45, color:[255,222,174] },
+    { name: 'Saturn', it: 'Saturno', N:[113.6634,2.3898e-5], i:[2.4886,-1.081e-7], w:[339.3939,2.97661e-5], a:[9.55475,0], e:[.055546,-9.499e-9], M:[316.967,.0334442282], magnitude:.45, radius:1.85, color:[244,215,151], rings:true }
+  ];
+
+  function seedHash(value) {
+    const x = Math.sin(value * 127.1 + 311.7) * 43758.5453123;
+    return x - Math.floor(x);
+  }
+
+  function stellarRgb(kelvin) {
+    const temperature = Math.max(10, Math.min(400, kelvin / 100));
+    let red;
+    let green;
+    let blue;
+    if (temperature <= 66) {
+      red = 255;
+      green = 99.4708025861 * Math.log(temperature) - 161.1195681661;
+      blue = temperature <= 19 ? 0 : 138.5177312231 * Math.log(temperature - 10) - 305.0447927307;
+    } else {
+      red = 329.698727446 * Math.pow(temperature - 60, -.1332047592);
+      green = 288.1221695283 * Math.pow(temperature - 60, -.0755148492);
+      blue = 255;
+    }
+    // Real stellar colour is subtle to the eye: mix the black-body colour with white.
+    return [red, green, blue].map(channel => Math.round(Math.max(0, Math.min(255, channel)) * .58 + 255 * .42));
+  }
+
+  const faintStars = Array.from({ length: 620 }, (_, index) => {
+    const latitudeSeed = seedHash(index + 17.41);
+    const temperatureSeed = seedHash(index + 61.73);
+    const temperature = 3300 + Math.pow(temperatureSeed, .72) * 11000;
+    return {
+      ra: seedHash(index + 1.13) * 360,
+      dec: Math.asin(latitudeSeed * 2 - 1) / rad,
+      magnitude: 2.7 + Math.pow(seedHash(index + 39.11), .34) * 3.7,
+      depth: .68 + seedHash(index + 177.17) * .32,
+      seed: seedHash(index + 199.37),
+      color: stellarRgb(temperature)
+    };
+  });
+
+  function galacticToEquatorial(longitude, latitude) {
+    const l = longitude * rad;
+    const b = latitude * rad;
+    const gx = Math.cos(b) * Math.cos(l);
+    const gy = Math.cos(b) * Math.sin(l);
+    const gz = Math.sin(b);
+    // Transpose of the IAU J2000 equatorial-to-galactic rotation matrix.
+    const x = -.0548755604 * gx + .4941094279 * gy - .867666149 * gz;
+    const y = -.8734370902 * gx - .44482963 * gy - .1980763734 * gz;
+    const z = -.4838350155 * gx + .7469822445 * gy + .4559837762 * gz;
+    return {
+      ra: ((Math.atan2(y, x) / rad) % 360 + 360) % 360,
+      dec: Math.asin(Math.max(-1, Math.min(1, z))) / rad
+    };
+  }
+
+  const milkyWayTrack = Array.from({ length: 97 }, (_, index) => galacticToEquatorial(index * 3.75, 0));
+  const milkyWayClouds = Array.from({ length: 150 }, (_, index) => {
+    const longitude = seedHash(index + 223.17) * 360;
+    const latitude = (seedHash(index + 247.39) - .5) * 17;
+    return {
+      ...galacticToEquatorial(longitude, latitude),
+      magnitude: 3.8 + seedHash(index + 271.61) * 2.4,
+      seed: seedHash(index + 293.83),
+      color: stellarRgb(4300 + seedHash(index + 311.07) * 7200)
+    };
+  });
 
   const normalise = value => ((value % 360) + 360) % 360;
   const julianDate = date => date.getTime() / dayMs + 2440587.5;
@@ -116,6 +206,71 @@ const NeuroPlanetarium = (() => {
     const cosAzimuth = (Math.sin(d) - Math.sin(altitude) * Math.sin(lat))
       / Math.max(.000001, cosAltitude * Math.cos(lat));
     return { altitude, azimuth: normalise(Math.atan2(sinAzimuth, cosAzimuth) / rad) * rad };
+  }
+
+  function solveKepler(meanAnomaly, eccentricity) {
+    const mean = normalise(meanAnomaly) * rad;
+    let eccentric = mean + eccentricity * Math.sin(mean) * (1 + eccentricity * Math.cos(mean));
+    for (let index = 0; index < 5; index++) {
+      eccentric -= (eccentric - eccentricity * Math.sin(eccentric) - mean)
+        / Math.max(.000001, 1 - eccentricity * Math.cos(eccentric));
+    }
+    return eccentric;
+  }
+
+  function orbitalValue(pair, days) {
+    return pair[0] + pair[1] * days;
+  }
+
+  function heliocentricPosition(body, days) {
+    const node = orbitalValue(body.N, days) * rad;
+    const inclination = orbitalValue(body.i, days) * rad;
+    const perihelion = orbitalValue(body.w, days) * rad;
+    const axis = orbitalValue(body.a, days);
+    const eccentricity = orbitalValue(body.e, days);
+    const anomaly = solveKepler(orbitalValue(body.M, days), eccentricity);
+    const xv = axis * (Math.cos(anomaly) - eccentricity);
+    const yv = axis * Math.sqrt(1 - eccentricity * eccentricity) * Math.sin(anomaly);
+    const trueAnomaly = Math.atan2(yv, xv);
+    const distance = Math.hypot(xv, yv);
+    const longitude = trueAnomaly + perihelion;
+    return {
+      x: distance * (Math.cos(node) * Math.cos(longitude) - Math.sin(node) * Math.sin(longitude) * Math.cos(inclination)),
+      y: distance * (Math.sin(node) * Math.cos(longitude) + Math.cos(node) * Math.sin(longitude) * Math.cos(inclination)),
+      z: distance * Math.sin(longitude) * Math.sin(inclination)
+    };
+  }
+
+  function sunGeocentricVector(days) {
+    const perihelion = (282.9404 + 4.70935e-5 * days) * rad;
+    const eccentricity = .016709 - 1.151e-9 * days;
+    const anomaly = solveKepler(356.047 + .9856002585 * days, eccentricity);
+    const xv = Math.cos(anomaly) - eccentricity;
+    const yv = Math.sqrt(1 - eccentricity * eccentricity) * Math.sin(anomaly);
+    const distance = Math.hypot(xv, yv);
+    const longitude = Math.atan2(yv, xv) + perihelion;
+    return { x: distance * Math.cos(longitude), y: distance * Math.sin(longitude), z: 0 };
+  }
+
+  function planetsAt(date) {
+    const days = julianDate(date) - 2451543.5;
+    const sun = sunGeocentricVector(days);
+    const obliquity = (23.4393 - 3.563e-7 * days) * rad;
+    return planetElements.map(body => {
+      const heliocentric = heliocentricPosition(body, days);
+      const x = heliocentric.x + sun.x;
+      const y = heliocentric.y + sun.y;
+      const z = heliocentric.z;
+      const equatorialX = x;
+      const equatorialY = y * Math.cos(obliquity) - z * Math.sin(obliquity);
+      const equatorialZ = y * Math.sin(obliquity) + z * Math.cos(obliquity);
+      return {
+        ...body,
+        ra: normalise(Math.atan2(equatorialY, equatorialX) / rad),
+        dec: Math.atan2(equatorialZ, Math.hypot(equatorialX, equatorialY)) / rad,
+        distance: Math.hypot(x, y, z)
+      };
+    });
   }
 
   function sunAltitudeAt(epoch, latitude = observer.latitude, longitude = observer.longitude) {
@@ -194,6 +349,7 @@ const NeuroPlanetarium = (() => {
     ).altitude;
     return {
       phase,
+      renderTime: clock,
       date,
       latitude: observer.latitude,
       longitude: observer.longitude,
@@ -657,7 +813,362 @@ const NeuroPlanetarium = (() => {
     ctx.restore();
   }
 
-  return { cycleMs, state, updateHud, drawGrid };
+  const reducedStarMotion = window.matchMedia('(prefers-reduced-motion: reduce)');
+
+  function colour(rgb, alpha) {
+    return `rgba(${rgb[0]},${rgb[1]},${rgb[2]},${Math.max(0, Math.min(1, alpha))})`;
+  }
+
+  function starEmergence(night, magnitude, seed) {
+    const relativeMagnitude = clamp((magnitude + 1.5) / 8, 0, 1);
+    const threshold = .09 + relativeMagnitude * .64 + seed * .055;
+    return smoothstep(threshold - .14, threshold + .13, night);
+  }
+
+  function starScintillation(current, altitude, seed, magnitude) {
+    if (reducedStarMotion.matches) return 1;
+    const horizon = 1 - smoothstep(7, 58, altitude);
+    const brightness = 1 - clamp((magnitude + 1.5) / 7.5, 0, 1);
+    const amplitude = .018 + horizon * .062 + brightness * .018;
+    const time = current.renderTime || 0;
+    const first = Math.sin(time * (.00031 + seed * .00039) + seed * 29.7);
+    const second = Math.sin(time * (.00083 + seed * .00071) + seed * 71.3);
+    const third = Math.sin(time * (.00017 + seed * .00013) + seed * 113.9);
+    return 1 + amplitude * (first * .55 + second * .3 + third * .15);
+  }
+
+  function drawStellarPoint(ctx, point, options) {
+    const {
+      rgb, radius, alpha, halo = false, core = true
+    } = options;
+    if (alpha <= .006 || radius <= 0) return;
+
+    if (halo) {
+      const haloRadius = radius * 4.6;
+      const glow = ctx.createRadialGradient(point.x, point.y, 0, point.x, point.y, haloRadius);
+      glow.addColorStop(0, colour(rgb, alpha * .34));
+      glow.addColorStop(.22, colour(rgb, alpha * .13));
+      glow.addColorStop(1, colour(rgb, 0));
+      ctx.fillStyle = glow;
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, haloRadius, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.fillStyle = colour(rgb, alpha);
+    ctx.beginPath();
+    ctx.arc(point.x, point.y, radius, 0, Math.PI * 2);
+    ctx.fill();
+
+    if (core && radius > .8) {
+      ctx.fillStyle = `rgba(255,255,255,${alpha * .7})`;
+      ctx.beginPath();
+      ctx.arc(point.x, point.y, Math.max(.22, radius * .28), 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function traceProjectedPath(ctx, projected, radiusX) {
+    ctx.beginPath();
+    let previous = null;
+    for (const point of projected) {
+      if (!point) {
+        previous = null;
+        continue;
+      }
+      const continuous = previous && Math.hypot(point.x - previous.x, point.y - previous.y) < radiusX * .34;
+      if (continuous) ctx.lineTo(point.x, point.y);
+      else ctx.moveTo(point.x, point.y);
+      previous = point;
+    }
+  }
+
+  function drawMilkyWay(ctx, current, centerX, centerY, radiusX, radiusY, night, width) {
+    const visibility = smoothstep(.4, .94, night);
+    if (visibility <= .002) return;
+    const projected = milkyWayTrack.map(point => project(
+      point.ra, point.dec, current, centerX, centerY, radiusX, radiusY
+    ));
+    const scale = width < 620 ? .74 : 1;
+
+    ctx.save();
+    ctx.lineCap = 'round';
+    ctx.lineJoin = 'round';
+    ctx.globalCompositeOperation = 'screen';
+    [
+      [68 * scale, [72,109,156], .022],
+      [38 * scale, [102,137,183], .034],
+      [17 * scale, [170,190,221], .044],
+      [5 * scale, [218,222,225], .032]
+    ].forEach(layer => {
+      traceProjectedPath(ctx, projected, radiusX);
+      ctx.lineWidth = layer[0];
+      ctx.strokeStyle = colour(layer[1], layer[2] * visibility);
+      ctx.stroke();
+    });
+
+    // A narrow dust lane gives the band volume instead of a flat luminous stripe.
+    ctx.globalCompositeOperation = 'source-over';
+    traceProjectedPath(ctx, projected, radiusX);
+    ctx.lineWidth = 7 * scale;
+    ctx.strokeStyle = `rgba(2,7,18,${.09 * visibility})`;
+    ctx.stroke();
+
+    ctx.globalCompositeOperation = 'screen';
+    const budget = width < 620 ? 82 : milkyWayClouds.length;
+    for (let index = 0; index < budget; index++) {
+      const star = milkyWayClouds[index];
+      const point = project(star.ra, star.dec, current, centerX, centerY, radiusX, radiusY);
+      if (!point) continue;
+      const emergence = starEmergence(night, star.magnitude, star.seed);
+      const shimmer = starScintillation(current, point.altitude, star.seed, star.magnitude);
+      const alpha = point.alpha * emergence * visibility * (.16 + star.seed * .28) * shimmer;
+      const radius = clamp(1.28 - star.magnitude * .13, .25, .7);
+      drawStellarPoint(ctx, point, { rgb: star.color, radius, alpha, core: false });
+    }
+    ctx.restore();
+  }
+
+  function drawGalaxy(ctx, object, point, night, width) {
+    const visibility = smoothstep(.48, .9, night) * point.alpha;
+    const alpha = visibility * object.intensity;
+    if (alpha < .008) return;
+    const responsiveScale = (width < 620 ? .72 : 1) * (.68 + point.alpha * .32);
+    const sizeX = object.size[0] * responsiveScale;
+    const sizeY = object.size[1] * responsiveScale;
+
+    ctx.save();
+    ctx.translate(point.x, point.y);
+    ctx.rotate(object.angle);
+    ctx.scale(sizeX, sizeY);
+    ctx.globalCompositeOperation = 'screen';
+    const glow = ctx.createRadialGradient(0, 0, .015, 0, 0, 1);
+    glow.addColorStop(0, colour([255,244,218], alpha * 1.15));
+    glow.addColorStop(.08, colour(object.color, alpha * .9));
+    glow.addColorStop(.35, colour(object.color, alpha * .31));
+    glow.addColorStop(.72, colour(object.color, alpha * .095));
+    glow.addColorStop(1, colour(object.color, 0));
+    ctx.fillStyle = glow;
+    ctx.beginPath();
+    ctx.arc(0, 0, 1, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.globalCompositeOperation = 'source-over';
+    ctx.strokeStyle = `rgba(3,9,22,${alpha * .24})`;
+    ctx.lineWidth = .045;
+    ctx.beginPath();
+    ctx.ellipse(0, .06, .72, .2, -.08, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+
+    if (visibility > .42) {
+      ctx.save();
+      ctx.font = `7px ${getComputedStyle(document.documentElement).getPropertyValue('--mono') || 'monospace'}`;
+      ctx.textAlign = 'center';
+      ctx.fillStyle = `rgba(183,205,230,${Math.min(.24, alpha * .62)})`;
+      const label = document.documentElement.lang?.toLowerCase().startsWith('it') ? object.it : object.name;
+      ctx.fillText(label.toUpperCase(), point.x, point.y + sizeY + 9);
+      ctx.restore();
+    }
+  }
+
+  function drawPlanets(ctx, current, centerX, centerY, radiusX, radiusY, night) {
+    const languageIsItalian = document.documentElement.lang?.toLowerCase().startsWith('it');
+    for (const planet of planetsAt(current.date)) {
+      const point = project(planet.ra, planet.dec, current, centerX, centerY, radiusX, radiusY);
+      if (!point) continue;
+      const seed = seedHash(planet.ra * .37 + planet.dec * .61);
+      const emergence = starEmergence(night, planet.magnitude, seed);
+      const atmospheric = .55 + smoothstep(0, 45, point.altitude) * .45;
+      const alpha = point.alpha * emergence * atmospheric;
+      if (alpha < .025) continue;
+      const radius = planet.radius * (.82 + clamp(1 / Math.max(.35, planet.distance), 0, 1) * .2);
+
+      // Planets do not scintillate: steady discs separate them from stars.
+      drawStellarPoint(ctx, point, {
+        rgb: planet.color,
+        radius,
+        alpha: alpha * .96,
+        halo: true
+      });
+
+      if (planet.rings) {
+        ctx.save();
+        ctx.translate(point.x, point.y);
+        ctx.rotate(-.24);
+        ctx.strokeStyle = colour(planet.color, alpha * .54);
+        ctx.lineWidth = .65;
+        ctx.beginPath();
+        ctx.ellipse(0, 0, radius * 1.9, radius * .58, 0, 0, Math.PI * 2);
+        ctx.stroke();
+        ctx.restore();
+      }
+
+      if (alpha > .34) {
+        ctx.font = `7px ${getComputedStyle(document.documentElement).getPropertyValue('--mono') || 'monospace'}`;
+        ctx.textAlign = 'center';
+        ctx.fillStyle = `rgba(226,216,187,${Math.min(.34, alpha * .36)})`;
+        ctx.fillText((languageIsItalian ? planet.it : planet.name).toUpperCase(), point.x, point.y + radius + 10);
+      }
+    }
+  }
+
+  function drawRealisticSky(ctx, width, top, stageHeight, current, isLight) {
+    if (!width || !stageHeight) return;
+    const centerX = width * .5;
+    const centerY = top + stageHeight * .56;
+    const radiusX = width * (width < 620 ? .61 : .52);
+    const radiusY = stageHeight * .43;
+    const night = drawAtmosphere(ctx, width, top, stageHeight, current, isLight);
+    const grid = isLight ? 'rgba(40,50,64,.08)' : `rgba(144,199,249,${.028 + night * .045})`;
+    const horizon = isLight ? 'rgba(130,92,42,.12)' : `rgba(231,193,113,${.065 + night * .07})`;
+
+    ctx.save();
+    ctx.lineWidth = .5;
+    ctx.setLineDash([3, 15]);
+    ctx.strokeStyle = grid;
+    [1, .72, .43].forEach(scale => {
+      ctx.beginPath();
+      ctx.ellipse(centerX, centerY, radiusX * scale, radiusY, 0, 0, Math.PI * 2);
+      ctx.stroke();
+    });
+    ctx.beginPath();
+    ctx.ellipse(centerX, centerY, radiusX, radiusY * .5, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.setLineDash([]);
+    ctx.strokeStyle = horizon;
+    ctx.lineWidth = .65;
+    ctx.beginPath();
+    ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.ellipse(centerX, centerY, radiusX, radiusY, 0, 0, Math.PI * 2);
+    ctx.clip();
+
+    drawMilkyWay(ctx, current, centerX, centerY, radiusX, radiusY, night, width);
+
+    ctx.save();
+    ctx.globalCompositeOperation = 'screen';
+    for (const object of deepSkyObjects) {
+      const point = project(object.ra, object.dec, current, centerX, centerY, radiusX, radiusY);
+      if (point) drawGalaxy(ctx, object, point, night, width);
+    }
+
+    const faintBudget = width < 620 ? 340 : faintStars.length;
+    for (let index = 0; index < faintBudget; index++) {
+      const star = faintStars[index];
+      const point = project(star.ra, star.dec, current, centerX, centerY, radiusX, radiusY);
+      if (!point) continue;
+      const emergence = starEmergence(night, star.magnitude, star.seed);
+      const shimmer = starScintillation(current, point.altitude, star.seed, star.magnitude);
+      const extinction = .52 + smoothstep(0, 50, point.altitude) * .48;
+      const alpha = point.alpha * emergence * extinction * (.31 + star.depth * .32) * shimmer;
+      const radius = clamp(1.55 - star.magnitude * .18, .22, .92) * star.depth;
+      drawStellarPoint(ctx, point, { rgb: star.color, radius, alpha, core: false });
+    }
+
+    const projectedConstellations = constellations.map(constellation => ({
+      ...constellation,
+      projected: constellation.stars.map(star => project(
+        star[0], star[1], current, centerX, centerY, radiusX, radiusY
+      ))
+    }));
+
+    for (const constellation of projectedConstellations) {
+      ctx.lineWidth = .56;
+      for (const edge of constellation.edges) {
+        const a = constellation.projected[edge[0]];
+        const b = constellation.projected[edge[1]];
+        if (!a || !b) continue;
+        const starA = constellation.stars[edge[0]];
+        const starB = constellation.stars[edge[1]];
+        const seedA = seedHash(starA[0] * .71 + starA[1] * .37);
+        const seedB = seedHash(starB[0] * .71 + starB[1] * .37);
+        const visibilityA = starEmergence(night, starA[2], seedA);
+        const visibilityB = starEmergence(night, starB[2], seedB);
+        const alpha = Math.min(a.alpha * visibilityA, b.alpha * visibilityB) * .24;
+        if (alpha < .01) continue;
+        const line = ctx.createLinearGradient(a.x, a.y, b.x, b.y);
+        line.addColorStop(0, `rgba(139,194,239,${alpha})`);
+        line.addColorStop(1, `rgba(223,194,135,${alpha * .82})`);
+        ctx.strokeStyle = line;
+        ctx.beginPath();
+        ctx.moveTo(a.x, a.y);
+        ctx.lineTo(b.x, b.y);
+        ctx.stroke();
+      }
+
+      let labelX = 0;
+      let labelY = 0;
+      let visiblePoints = 0;
+      let labelVisibility = 0;
+      constellation.projected.forEach((point, index) => {
+        if (!point) return;
+        const star = constellation.stars[index];
+        labelX += point.x;
+        labelY += point.y;
+        visiblePoints++;
+        const seed = seedHash(star[0] * .71 + star[1] * .37);
+        const emergence = starEmergence(night, star[2], seed);
+        labelVisibility += point.alpha * emergence;
+        const key = `${star[0].toFixed(2)}:${star[1].toFixed(2)}`;
+        if (brightStarKeys.has(key)) return;
+        const shimmer = starScintillation(current, point.altitude, seed, star[2]);
+        const temperature = 3600 + seedHash(star[0] + star[1] * 2.7) * 10500;
+        const rgb = stellarRgb(temperature);
+        const radius = clamp(2.15 - star[2] * .31, .48, 2.05);
+        const alpha = point.alpha * emergence * (.67 + seed * .25) * shimmer;
+        drawStellarPoint(ctx, point, { rgb, radius, alpha, halo: star[2] < 1.4 });
+      });
+
+      const averageVisibility = visiblePoints ? labelVisibility / visiblePoints : 0;
+      if (visiblePoints >= 3 && averageVisibility > .32) {
+        ctx.font = `8px ${getComputedStyle(document.documentElement).getPropertyValue('--mono') || 'monospace'}`;
+        ctx.textAlign = 'center';
+        ctx.fillStyle = `rgba(171,198,224,${Math.min(.23, averageVisibility * .24)})`;
+        const label = document.documentElement.lang?.toLowerCase().startsWith('it')
+          ? constellationNamesIt[constellation.name] || constellation.name
+          : constellation.name;
+        ctx.fillText(label.toUpperCase(), labelX / visiblePoints, labelY / visiblePoints + 14);
+      }
+    }
+
+    for (const star of brightStars) {
+      const point = project(star[0], star[1], current, centerX, centerY, radiusX, radiusY);
+      if (!point) continue;
+      const seed = seedHash(star[0] * .59 + star[1] * .43);
+      const emergence = starEmergence(night, star[2], seed);
+      const shimmer = starScintillation(current, point.altitude, seed, star[2]);
+      const extinction = .58 + smoothstep(0, 48, point.altitude) * .42;
+      const alpha = point.alpha * emergence * extinction * shimmer;
+      const radius = clamp(2.55 - star[2] * .42, .78, 3.35);
+      drawStellarPoint(ctx, point, {
+        rgb: stellarRgb(star[3]),
+        radius,
+        alpha,
+        halo: true
+      });
+    }
+
+    drawPlanets(ctx, current, centerX, centerY, radiusX, radiusY, night);
+    ctx.restore();
+    ctx.restore();
+
+    ctx.save();
+    ctx.font = `9px ${getComputedStyle(document.documentElement).getPropertyValue('--mono') || 'monospace'}`;
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.fillStyle = horizon;
+    ctx.fillText('N', centerX, centerY - radiusY * .96);
+    ctx.fillText('E', centerX + radiusX * .94, centerY);
+    ctx.fillText('S', centerX, centerY + radiusY * .96);
+    ctx.fillText('W', centerX - radiusX * .94, centerY);
+    ctx.restore();
+  }
+
+  return { cycleMs, state, updateHud, drawGrid: drawRealisticSky };
 })();
 
 // Stable single-viewport sky: one canvas, one clock, no scroll-driven rebuilds.
@@ -711,28 +1222,9 @@ const NeuroPlanetarium = (() => {
   let width = 0;
   let height = 0;
   let dpr = 1;
-  let stars = [];
   let raf = null;
   let lastFrame = -Infinity;
   let resizeTimer = null;
-
-  function hash(value) {
-    const x = Math.sin(value * 127.1 + 311.7) * 43758.5453123;
-    return x - Math.floor(x);
-  }
-
-  function buildScene() {
-    const count = width < 620 ? 128 : Math.min(230, Math.round(width * height / 7600));
-    stars = Array.from({ length: count }, (_, index) => ({
-      x: hash(index + 1.17) * width,
-      y: hash(index + 19.83) * height,
-      radius: .3 + hash(index + 37.41) * 1.15,
-      alpha: .15 + hash(index + 53.09) * .48,
-      phase: hash(index + 71.77) * Math.PI * 2,
-      speed: .00008 + hash(index + 89.31) * .00018,
-      gold: hash(index + 113.49) > .8
-    }));
-  }
 
   function resize(force = false) {
     const rect = canvas.getBoundingClientRect();
@@ -753,62 +1245,17 @@ const NeuroPlanetarium = (() => {
     canvas.width = Math.max(1, Math.round(width * dpr));
     canvas.height = Math.max(1, Math.round(height * dpr));
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    buildScene();
     draw(performance.now());
-  }
-
-  function drawAmbient(time, visibility) {
-    ctx.save();
-    ctx.globalCompositeOperation = 'screen';
-
-    for (const star of stars) {
-      const shimmer = reduceMotion ? .78 : .68 + .32 * Math.sin(time * star.speed + star.phase);
-      const alpha = star.alpha * shimmer * visibility;
-      ctx.fillStyle = star.gold
-        ? `rgba(248,214,139,${alpha})`
-        : `rgba(177,218,255,${alpha})`;
-      ctx.beginPath();
-      ctx.arc(star.x, star.y, star.radius * (.82 + shimmer * .24), 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    ctx.lineWidth = .55;
-    for (let index = 0; index + 7 < stars.length; index += 19) {
-      const a = stars[index];
-      const b = stars[index + 7];
-      const alpha = Math.min(a.alpha, b.alpha) * .16 * visibility;
-      ctx.strokeStyle = `rgba(160,207,245,${alpha})`;
-      ctx.beginPath();
-      ctx.moveTo(a.x, a.y);
-      ctx.lineTo(b.x, b.y);
-      ctx.stroke();
-    }
-    ctx.restore();
   }
 
   function draw(time) {
     if (!width || !height || mode !== 'dark') return;
     const sky = NeuroPlanetarium.state(time);
-    const visibility = Math.max(.04, Math.min(1, (-sky.sunAltitude + 6) / 18));
-    const seamAmount = Math.max(0, Math.min(1, (sky.phase - .95) / .05));
-    const seamBlend = seamAmount * seamAmount * (3 - 2 * seamAmount);
 
     ctx.clearRect(0, 0, width, height);
-    if (seamBlend > 0) {
-      ctx.save();
-      ctx.globalAlpha = 1 - seamBlend;
-      NeuroPlanetarium.drawGrid(ctx, width, 0, height, sky, false);
-      ctx.restore();
-
-      const nextSky = NeuroPlanetarium.state(time + (1 - sky.phase) * NeuroPlanetarium.cycleMs);
-      ctx.save();
-      ctx.globalAlpha = seamBlend;
-      NeuroPlanetarium.drawGrid(ctx, width, 0, height, nextSky, false);
-      ctx.restore();
-    } else {
-      NeuroPlanetarium.drawGrid(ctx, width, 0, height, sky, false);
-    }
-    drawAmbient(time, visibility);
+    // One physically coherent sky only: no fixed decorative star layer and no
+    // whole-canvas crossfade that could make every constellation pulse together.
+    NeuroPlanetarium.drawGrid(ctx, width, 0, height, sky, false);
 
     const vignette = ctx.createRadialGradient(
       width * .52, height * .46, Math.min(width, height) * .18,
