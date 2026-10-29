@@ -603,8 +603,8 @@ const NeuroPlanetarium = (() => {
     const start = formatNightTime(current.nightStart);
     const end = formatNightTime(current.nightEnd);
     const speed = Math.max(1, Math.round(current.nightDuration / cycleMs));
-    hudNow.textContent = `${language === 'it' ? 'Ultima notte' : 'Last night'} · ${start}—${end}`;
-    hudTime.textContent = `Replay · ${skyMoment(current, language)} · ${clock} · ×${speed}`;
+    hudNow.textContent = `${language === 'it' ? 'Notte' : 'Night'} · ${start}—${end} · ${Math.round(current.phase * 100)}%`;
+    hudTime.textContent = `${language === 'it' ? 'Ora simulata' : 'Simulated time'} · ${skyMoment(current, language)} · ${clock} · ×${speed}`;
     hudSource.textContent = current.precise
       ? (language === 'it' ? 'Posizione precisa · solo su questo dispositivo' : 'Precise location · this device only')
       : (language === 'it' ? `Stima automatica · ${current.timeZone}` : `Automatic estimate · ${current.timeZone}`);
@@ -1911,4 +1911,77 @@ const NeuroPlanetarium = (() => {
 
   document.body.append(audio, button);
   setState('paused');
+})();
+
+/* Neurosuite-Italiy: secret planetarium UI. Sky renderer and astronomical clock untouched. */
+(function () {
+  if (!document.getElementById('hero-canvas')) return;
+  const style = document.createElement('style');
+  style.id = 'ns-secret-planetarium-style';
+  style.textContent = `
+    .planetarium-hud { display: none !important; }
+    .ns-secret-planetarium-toggle {
+      position: fixed; right: 12px; bottom: 12px; z-index: 2147483000;
+      width: 32px; height: 32px; padding: 0; border: 0;
+      background: transparent; color: rgba(216,227,247,.22);
+      font-size: 14px; line-height: 32px; text-align: center;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+      touch-action: manipulation;
+    }
+    .ns-secret-planetarium-toggle:focus-visible {
+      outline: 1px solid rgba(216,227,247,.7); border-radius: 50%;
+    }
+    html.ns-secret-planetarium body > :not(.sky-stage):not(.planetarium-hud):not(.ns-secret-planetarium-toggle) {
+      visibility: hidden !important;
+      pointer-events: none !important;
+    }
+    html.ns-secret-planetarium body > .sky-stage {
+      opacity: 1 !important; mix-blend-mode: screen;
+    }
+    html.ns-secret-planetarium .planetarium-hud {
+      display: grid !important; position: fixed; z-index: 2147482999;
+      left: 50%; bottom: 46px; transform: translateX(-50%);
+      width: min(90vw,760px); max-height: 32vh; overflow: auto;
+      padding: 12px 16px; box-sizing: border-box;
+      background: rgba(4,14,30,.48); border: 1px solid rgba(190,210,240,.14);
+      border-radius: 8px; backdrop-filter: blur(6px);
+    }
+    html.ns-secret-planetarium .planetarium-hud__source { display: block !important; font-size: 9px; }
+    html.ns-secret-planetarium .ns-secret-planetarium-toggle { color: rgba(216,227,247,.6); }
+    @media(max-width:620px) {
+      html.ns-secret-planetarium .planetarium-hud { bottom: 46px; max-height: 38vh; }
+    }
+  `;
+  document.head.appendChild(style);
+  const toggle = document.createElement('button');
+  toggle.type = 'button';
+  toggle.id = 'ns-secret-planetarium-toggle';
+  toggle.className = 'ns-secret-planetarium-toggle';
+  toggle.textContent = '✦';
+  toggle.setAttribute('aria-label', 'Stella');
+  toggle.title = '';
+  document.body.appendChild(toggle);
+  let taps = 0, lastTap = 0, restoreParent = null, restoreNext = null;
+  toggle.addEventListener('click', () => {
+    const now = performance.now();
+    taps = now - lastTap < 850 ? taps + 1 : 1;
+    lastTap = now;
+    if (taps < 3) return;
+    taps = 0;
+    const entering = !document.documentElement.classList.contains('ns-secret-planetarium');
+    const hud = document.querySelector('.planetarium-hud');
+    if (entering) {
+      if (hud) {
+        restoreParent = hud.parentNode;
+        restoreNext = hud.nextSibling;
+        document.body.appendChild(hud);
+      }
+      document.documentElement.classList.add('ns-secret-planetarium');
+      toggle.setAttribute('aria-label', 'Chiudi planetario');
+    } else {
+      document.documentElement.classList.remove('ns-secret-planetarium');
+      if (hud && restoreParent) restoreParent.insertBefore(hud, restoreNext && restoreNext.parentNode === restoreParent ? restoreNext : null);
+      toggle.setAttribute('aria-label', 'Stella');
+    }
+  });
 })();
