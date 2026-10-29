@@ -5,7 +5,7 @@ body{background:radial-gradient(ellipse 70vw 65vw at 82% 10%,rgba(21,67,112,.45)
 .nav{background:rgba(4,15,35,.85);border-bottom:1px solid rgba(230,192,113,.13)}
 .nav__brand{font-size:clamp(21px,2vw,29px)}.nav__brand .mark{color:var(--accent);filter:drop-shadow(0 0 10px rgba(234,196,112,.55))}
 .hero{isolation:isolate;background:radial-gradient(ellipse 55% 60% at 72% 45%,rgba(21,74,119,.36),transparent 85%)}
-.hero:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.48;background-image:radial-gradient(circle,rgba(243,215,148,.75) .75px,transparent 1.5px),radial-gradient(circle,rgba(183,213,244,.55) .6px,transparent 1.5px);background-size:113px 107px,167px 149px;background-position:18px 27px,76px 53px;mask-image:linear-gradient(to bottom,black 5%,transparent 100%)}
+.hero:before{content:"";position:absolute;inset:0;pointer-events:none;opacity:.14;background-image:radial-gradient(circle,rgba(243,215,148,.75) .75px,transparent 1.5px),radial-gradient(circle,rgba(183,213,244,.55) .6px,transparent 1.5px);background-size:113px 107px,167px 149px;background-position:18px 27px,76px 53px;mask-image:linear-gradient(to bottom,black 5%,transparent 100%)}
 .hero__canvas{opacity:.96;mix-blend-mode:screen}
 .hero__title{font-size:clamp(48px,7.2vw,108px);letter-spacing:-.045em;line-height:1.04;max-width:17ch;text-shadow:0 12px 60px rgba(0,0,0,.3)}
 .hero__title em{background:linear-gradient(115deg,#f7e3ad,#c99b4c 60%,#fff2cb);background-clip:text;-webkit-background-clip:text;color:transparent}
@@ -75,15 +75,15 @@ html[data-mode="light"] .s-head__title em,html[data-mode="light"] .vision__quote
 
 /* Continuous blue-black depth below the hero; cards keep their own surfaces. */
 html[data-mode="dark"] main{
- background-color:#030816;
+ background-color:rgba(3,8,22,.58);
  background-image:
-  radial-gradient(circle,rgba(244,215,151,.38) 0 .7px,transparent 1.35px),
-  radial-gradient(circle,rgba(171,207,241,.28) 0 .6px,transparent 1.25px),
-  radial-gradient(ellipse 82vw 58rem at 94% 7%,rgba(20,70,121,.46),transparent 72%),
-  radial-gradient(ellipse 86vw 64rem at 2% 34%,rgba(8,45,93,.42),transparent 74%),
-  radial-gradient(ellipse 78vw 60rem at 96% 62%,rgba(16,59,108,.38),transparent 74%),
-  radial-gradient(ellipse 90vw 64rem at 4% 89%,rgba(9,42,86,.36),transparent 73%),
-  linear-gradient(180deg,#06152b 0%,#020713 22%,#071a35 44%,#020611 67%,#081a35 86%,#020611 100%);
+  radial-gradient(circle,rgba(244,215,151,.12) 0 .7px,transparent 1.35px),
+  radial-gradient(circle,rgba(171,207,241,.09) 0 .6px,transparent 1.25px),
+  radial-gradient(ellipse 82vw 58rem at 94% 7%,rgba(20,70,121,.24),transparent 72%),
+  radial-gradient(ellipse 86vw 64rem at 2% 34%,rgba(8,45,93,.22),transparent 74%),
+  radial-gradient(ellipse 78vw 60rem at 96% 62%,rgba(16,59,108,.2),transparent 74%),
+  radial-gradient(ellipse 90vw 64rem at 4% 89%,rgba(9,42,86,.18),transparent 73%),
+  linear-gradient(180deg,rgba(6,21,43,.66) 0%,rgba(2,7,19,.7) 22%,rgba(7,26,53,.64) 44%,rgba(2,6,17,.7) 67%,rgba(8,26,53,.62) 86%,rgba(2,6,17,.72) 100%);
  background-size:137px 131px,211px 197px,auto,auto,auto,auto,auto;
  background-position:11px 23px,83px 61px,0 0,0 0,0 0,0 0,0 0;
 }
@@ -94,12 +94,12 @@ html[data-mode="dark"] .access{
 @media(max-width:620px){
  html[data-mode="dark"] main{
   background-image:
-   radial-gradient(circle,rgba(244,215,151,.32) 0 .65px,transparent 1.25px),
-   radial-gradient(circle,rgba(171,207,241,.24) 0 .55px,transparent 1.15px),
-   radial-gradient(ellipse 120vw 42rem at 96% 8%,rgba(20,70,121,.42),transparent 74%),
-   radial-gradient(ellipse 130vw 48rem at 0% 39%,rgba(8,45,93,.38),transparent 76%),
-   radial-gradient(ellipse 120vw 46rem at 100% 72%,rgba(16,59,108,.34),transparent 76%),
-   linear-gradient(180deg,#06152b 0%,#020713 27%,#071a35 53%,#020611 76%,#07172f 100%);
+   radial-gradient(circle,rgba(244,215,151,.1) 0 .65px,transparent 1.25px),
+   radial-gradient(circle,rgba(171,207,241,.08) 0 .55px,transparent 1.15px),
+   radial-gradient(ellipse 120vw 42rem at 96% 8%,rgba(20,70,121,.21),transparent 74%),
+   radial-gradient(ellipse 130vw 48rem at 0% 39%,rgba(8,45,93,.2),transparent 76%),
+   radial-gradient(ellipse 120vw 46rem at 100% 72%,rgba(16,59,108,.18),transparent 76%),
+   linear-gradient(180deg,rgba(6,21,43,.68) 0%,rgba(2,7,19,.72) 27%,rgba(7,26,53,.66) 53%,rgba(2,6,17,.72) 76%,rgba(7,23,47,.68) 100%);
   background-size:149px 143px,229px 211px,auto,auto,auto,auto;
   background-position:9px 17px,71px 53px,0 0,0 0,0 0,0 0;
  }

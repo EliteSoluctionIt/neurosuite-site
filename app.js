@@ -1,4 +1,4 @@
-// NeuroSuite Ã¢â‚¬â€ accelerated local-sky planetarium.
+// NeuroSuite — accelerated local-sky planetarium.
 // The viewer stays at their own latitude and longitude while 24 hours of sun,
 // twilight, stars and constellations unfold in a three-minute cycle.
 
@@ -7,6 +7,7 @@ const NeuroPlanetarium = (() => {
   const dayMs = 86400000;
   const rad = Math.PI / 180;
   const startEpoch = Date.now();
+  const startPerformance = performance.now();
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
   const zoneLocations = {
     'Europe/Rome': ['Milano', 45.4642, 9.19],
@@ -116,8 +117,10 @@ const NeuroPlanetarium = (() => {
   }
 
   function state(time) {
-    const phase = ((((time || 0) % cycleMs) + cycleMs) % cycleMs) / cycleMs;
-    const date = new Date(startEpoch + phase * dayMs);
+    const clock = Number.isFinite(time) ? time : performance.now();
+    const elapsed = Math.max(0, clock - startPerformance);
+    const phase = (elapsed % cycleMs) / cycleMs;
+    const date = new Date(startEpoch + elapsed * (dayMs / cycleMs));
     const lst = siderealTime(date, observer.longitude);
     const sun = sunEquatorial(date);
     const sunHorizontal = horizontal(sun.ra, sun.dec, observer.latitude, lst);
@@ -150,6 +153,7 @@ const NeuroPlanetarium = (() => {
   let hud = null;
   let hudName = null;
   let hudCoords = null;
+  let hudNow = null;
   let hudTime = null;
   let hudSource = null;
   let hudProgress = null;
@@ -163,20 +167,23 @@ const NeuroPlanetarium = (() => {
     style.id = 'ns-planetarium-hud-style';
     style.textContent = `
       .planetarium-hud {
-        position: fixed;
-        top: 88px;
-        right: var(--gutter, 24px);
-        z-index: 4;
-        width: min(256px, calc(100vw - 32px));
-        padding: 11px 13px 12px;
-        border-left: 1px solid var(--accent-line);
+        position: relative;
+        z-index: 3;
+        display: grid;
+        grid-template-columns: minmax(150px,.72fr) minmax(260px,1.28fr) auto;
+        align-items: center;
+        gap: 7px 20px;
+        width: min(100%, 760px);
+        padding: 11px 0 10px;
+        border-top: 1px solid rgba(231,191,111,.23);
+        border-bottom: 1px solid rgba(145,196,241,.12);
         color: var(--fg-3);
-        background: linear-gradient(90deg, rgba(4,15,35,.58), rgba(4,15,35,.1));
-        backdrop-filter: blur(10px);
-        -webkit-backdrop-filter: blur(10px);
-        pointer-events: none;
+        background: linear-gradient(90deg, rgba(8,28,57,.28), rgba(8,28,57,.08) 58%, transparent);
+        pointer-events: auto;
         transition: opacity .4s ease, visibility .4s ease;
       }
+      .planetarium-hud__identity,
+      .planetarium-hud__reading { min-width: 0; }
       .planetarium-hud__eyebrow,
       .planetarium-hud__coords,
       .planetarium-hud__time,
@@ -188,17 +195,28 @@ const NeuroPlanetarium = (() => {
       }
       .planetarium-hud__eyebrow { font-size: 9px; color: var(--accent); }
       .planetarium-hud__name {
-        margin-top: 5px;
+        margin-top: 3px;
         font-family: var(--serif);
-        font-size: 18px;
+        font-size: 17px;
         line-height: 1.1;
         color: var(--fg);
       }
-      .planetarium-hud__coords { margin-top: 5px; font-size: 9px; line-height: 1.45; }
-      .planetarium-hud__time { margin-top: 3px; font-size: 8px; opacity: .82; }
+      .planetarium-hud__coords { margin-top: 3px; font-size: 8px; line-height: 1.35; opacity: .72; }
+      .planetarium-hud__now,
+      .planetarium-hud__time {
+        font-family: var(--mono);
+        font-size: 9px;
+        line-height: 1.45;
+        letter-spacing: .09em;
+        text-transform: uppercase;
+        white-space: nowrap;
+      }
+      .planetarium-hud__now { color: var(--fg-2); }
+      .planetarium-hud__time { margin-top: 2px; opacity: .82; }
       .planetarium-hud__track {
+        grid-column: 1 / -1;
         height: 1px;
-        margin-top: 9px;
+        margin-top: 2px;
         background: rgba(215,188,128,.18);
         overflow: hidden;
       }
@@ -210,17 +228,16 @@ const NeuroPlanetarium = (() => {
         transform-origin: left center;
         background: linear-gradient(90deg, #9acbfa, var(--accent));
       }
-      .planetarium-hud__source { margin-top: 7px; font-size: 8px; opacity: .62; }
+      .planetarium-hud__source { display: none; }
       .planetarium-hud__locate {
-        margin-top: 8px;
-        padding: 5px 8px;
+        justify-self: end;
+        padding: 7px 10px;
         border: 1px solid rgba(231,191,111,.28);
         border-radius: 999px;
         color: var(--fg-2);
-        background: rgba(5,18,40,.34);
+        background: rgba(5,18,40,.18);
         font-size: 8px;
         line-height: 1.2;
-        pointer-events: auto;
         cursor: pointer;
       }
       .planetarium-hud__locate:hover,
@@ -228,15 +245,26 @@ const NeuroPlanetarium = (() => {
       html[data-mode="light"] .planetarium-hud { opacity: 0; visibility: hidden; }
       @media (max-width: 620px) {
         .planetarium-hud {
-          top: 70px;
-          right: 12px;
-          width: 174px;
-          padding: 8px 10px 9px;
-          background: linear-gradient(90deg, rgba(4,15,35,.48), rgba(4,15,35,.08));
+          grid-template-columns: minmax(0,1fr) auto;
+          gap: 5px 10px;
+          width: 100%;
+          padding: 10px 0 9px;
+          background: linear-gradient(90deg, rgba(8,28,57,.2), transparent);
         }
-        .planetarium-hud__name { font-size: 14px; }
-        .planetarium-hud__source { display: none; }
-        .planetarium-hud__locate { margin-top: 6px; padding: 4px 7px; }
+        .planetarium-hud__identity { grid-column: 1; grid-row: 1; }
+        .planetarium-hud__reading { grid-column: 1; grid-row: 2; }
+        .planetarium-hud__name { font-size: 15px; }
+        .planetarium-hud__coords { display: none; }
+        .planetarium-hud__locate {
+          grid-column: 2;
+          grid-row: 1 / span 2;
+          max-width: 108px;
+          padding: 7px 9px;
+          white-space: normal;
+        }
+        .planetarium-hud__track { grid-row: 3; }
+        .planetarium-hud__now,
+        .planetarium-hud__time { font-size: 8px; white-space: normal; }
       }
       @media (prefers-reduced-motion: reduce) {
         .planetarium-hud__progress { transform: scaleX(0) !important; }
@@ -246,18 +274,29 @@ const NeuroPlanetarium = (() => {
 
     hud = document.createElement('aside');
     hud.className = 'planetarium-hud';
+    hud.setAttribute('aria-label', 'Local sky status');
     hud.innerHTML = `
-      <div class="planetarium-hud__eyebrow">Cielo locale · 24h/03:00</div>
-      <div class="planetarium-hud__name"></div>
-      <div class="planetarium-hud__coords"></div>
-      <div class="planetarium-hud__time"></div>
-      <div class="planetarium-hud__track"><span class="planetarium-hud__progress"></span></div>
+      <div class="planetarium-hud__identity">
+        <div class="planetarium-hud__eyebrow">Cielo locale · ciclo 03:00</div>
+        <div class="planetarium-hud__name"></div>
+        <div class="planetarium-hud__coords"></div>
+      </div>
+      <div class="planetarium-hud__reading">
+        <div class="planetarium-hud__now"></div>
+        <div class="planetarium-hud__time" aria-live="polite"></div>
+      </div>
       <div class="planetarium-hud__source"></div>
       <button class="planetarium-hud__locate" type="button">Usa posizione precisa</button>
+      <div class="planetarium-hud__track"><span class="planetarium-hud__progress"></span></div>
     `;
-    document.body.appendChild(hud);
+    const heroContent = document.querySelector('.hero__content');
+    const heroButtons = heroContent?.querySelector('.hero__buttons');
+    if (heroContent && heroButtons) heroContent.insertBefore(hud, heroButtons);
+    else if (heroContent) heroContent.appendChild(hud);
+    else document.body.appendChild(hud);
     hudName = hud.querySelector('.planetarium-hud__name');
     hudCoords = hud.querySelector('.planetarium-hud__coords');
+    hudNow = hud.querySelector('.planetarium-hud__now');
     hudTime = hud.querySelector('.planetarium-hud__time');
     hudSource = hud.querySelector('.planetarium-hud__source');
     hudProgress = hud.querySelector('.planetarium-hud__progress');
@@ -281,6 +320,7 @@ const NeuroPlanetarium = (() => {
         ...observer,
         latitude: position.coords.latitude,
         longitude: position.coords.longitude,
+        label: '',
         precise: true
       };
       locating = false;
@@ -306,13 +346,15 @@ const NeuroPlanetarium = (() => {
   function updateHud(time, current) {
     mountHud();
     if (!hud) return;
-    const tick = Math.floor((time || 0) / 180);
+    const tick = Math.floor(Date.now() / 250);
     if (tick === lastHudTick) return;
     lastHudTick = tick;
     const language = document.documentElement.lang?.toLowerCase().startsWith('it') ? 'it' : 'en';
     const eyebrow = hud.querySelector('.planetarium-hud__eyebrow');
-    if (eyebrow) eyebrow.textContent = language === 'it' ? 'Cielo locale · 24h/03:00' : 'Local sky · 24h/03:00';
-    hudName.textContent = current.label;
+    if (eyebrow) eyebrow.textContent = language === 'it' ? 'Cielo locale · ciclo 03:00' : 'Local sky · 03:00 cycle';
+    hudName.textContent = current.precise
+      ? (language === 'it' ? 'La tua posizione' : 'Your location')
+      : `${current.label} · ${language === 'it' ? 'stima' : 'estimate'}`;
     hudCoords.textContent = `${coordinate(current.latitude, 'N', 'S')} · ${coordinate(current.longitude, 'E', 'W')}`;
     let clock = '';
     try {
@@ -322,7 +364,17 @@ const NeuroPlanetarium = (() => {
     } catch {
       clock = current.date.toISOString().slice(11, 16);
     }
-    hudTime.textContent = `${skyMoment(current, language)} · ${clock} · ×480`;
+    let realClock = '';
+    try {
+      realClock = new Intl.DateTimeFormat(language === 'it' ? 'it-IT' : 'en-GB', {
+        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
+        timeZone: current.timeZone
+      }).format(new Date());
+    } catch {
+      realClock = new Date().toTimeString().slice(0, 8);
+    }
+    hudNow.textContent = `${language === 'it' ? 'Ora locale' : 'Local time'} · ${realClock}`;
+    hudTime.textContent = `${language === 'it' ? 'Ciclo' : 'Cycle'} · ${skyMoment(current, language)} · ${clock} · ×480`;
     hudSource.textContent = current.precise
       ? (language === 'it' ? 'Posizione precisa · solo su questo dispositivo' : 'Precise location · this device only')
       : (language === 'it' ? `Stima automatica · ${current.timeZone}` : `Automatic estimate · ${current.timeZone}`);
@@ -534,201 +586,50 @@ const NeuroPlanetarium = (() => {
   return { cycleMs, state, updateHud, drawGrid };
 })();
 
-// Quiet, premium nodes-and-edges field
-
+// Stable single-viewport sky: one canvas, one clock, no scroll-driven rebuilds.
 (function () {
   const canvas = document.getElementById('hero-canvas');
   if (!canvas) return;
-  canvas.style.width = '100%';
-  canvas.style.height = '100%';
-  canvas.style.maxWidth = 'none';
-  const ctx = canvas.getContext('2d');
 
-  let W = 0, H = 0, DPR = Math.min(window.devicePixelRatio || 1, 2);
-  let nodes = [];
-  let mouse = { x: -9999, y: -9999 };
-  let raf = null;
-  let mode = document.documentElement.getAttribute('data-mode') || 'dark';
-  let variant = document.documentElement.getAttribute('data-hero') || 'constellation';
-
-  function getAccent() {
-    const s = getComputedStyle(document.documentElement).getPropertyValue('--accent').trim();
-    return s || '#e8c8a0';
-  }
-
-  function resize() {
-    const rect = canvas.getBoundingClientRect();
-    W = rect.width; H = rect.height;
-    canvas.width = W * DPR; canvas.height = H * DPR;
-    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
-    seed();
-  }
-
-  function seed() {
-    nodes = [];
-    const density = variant === 'flow' ? 0.000075 : 0.000082;
-    const count = Math.max(36, Math.min(110, Math.floor(W * H * density)));
-    for (let i = 0; i < count; i++) {
-      nodes.push({
-        x: Math.random() * W,
-        y: Math.random() * H,
-        vx: (Math.random() - 0.5) * 0.045,
-        vy: (Math.random() - 0.5) * 0.045,
-        r: Math.random() * 1.2 + 0.4,
-        phase: Math.random() * Math.PI * 2,
-      });
-    }
-
-  }
-
-  function draw(t) {
-    ctx.clearRect(0, 0, W, H);
-    const accent = getAccent();
-    const isLight = mode === 'light';
-    const sky = NeuroPlanetarium.state(t);
-    const ambientVisibility = Math.max(.045, Math.min(1, (-sky.sunAltitude + 5) / 18));
-    const baseColor = isLight ? 'rgba(20,18,12,' : 'rgba(244,243,238,';
-    const lineMax = variant === 'flow' ? 160 : 130;
-
-    NeuroPlanetarium.updateHud(t, sky);
-    NeuroPlanetarium.drawGrid(ctx, W, 0, H, sky, isLight);
-
-    // edges
-    for (let i = 0; i < nodes.length; i++) {
-      const a = nodes[i];
-      for (let j = i + 1; j < nodes.length; j++) {
-        const b = nodes[j];
-        const dx = a.x - b.x, dy = a.y - b.y;
-        const d2 = dx*dx + dy*dy;
-        if (d2 < lineMax*lineMax) {
-          const d = Math.sqrt(d2);
-          const alpha = (1 - d / lineMax) * (isLight ? 0.18 : 0.14) * ambientVisibility;
-          ctx.strokeStyle = baseColor + alpha + ')';
-          ctx.lineWidth = 0.6;
-          ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(b.x, b.y); ctx.stroke();
-        }
-      }
-      // edge to mouse
-      const mdx = a.x - mouse.x, mdy = a.y - mouse.y;
-      const md2 = mdx*mdx + mdy*mdy;
-      if (md2 < 200*200) {
-        const d = Math.sqrt(md2);
-        const alpha = (1 - d / 200) * 0.55;
-        ctx.strokeStyle = `oklch(0.82 0.08 75 / ${alpha})`;
-        ctx.lineWidth = 0.7;
-        ctx.beginPath(); ctx.moveTo(a.x, a.y); ctx.lineTo(mouse.x, mouse.y); ctx.stroke();
-      }
-    }
-
-    // nodes
-    for (const n of nodes) {
-      const breathe = 0.6 + 0.4 * Math.sin(t * 0.00028 + n.phase);
-      ctx.fillStyle = baseColor + ((isLight ? 0.55 : 0.7) * ambientVisibility) + ')';
-      ctx.beginPath();
-      ctx.arc(n.x, n.y, n.r * breathe, 0, Math.PI * 2);
-      ctx.fill();
-
-      // occasional accent node
-      if ((n.phase * 31 | 0) % 11 === 0) {
-        ctx.fillStyle = accent;
-        ctx.globalAlpha = 0.35 * breathe * ambientVisibility;
-        ctx.beginPath();
-        ctx.arc(n.x, n.y, n.r * 1.6 * breathe, 0, Math.PI * 2);
-        ctx.fill();
-        ctx.globalAlpha = 1;
-      }
-
-      n.x += n.vx; n.y += n.vy;
-      if (n.x < 0 || n.x > W) n.vx *= -1;
-      if (n.y < 0 || n.y > H) n.vy *= -1;
-    }
-  }
-
-  function loop(t) {
-    draw(t || 0);
-    raf = requestAnimationFrame(loop);
-  }
-
-  function onMove(e) {
-    const r = canvas.getBoundingClientRect();
-    mouse.x = e.clientX - r.left;
-    mouse.y = e.clientY - r.top;
-  }
-  function onLeave() { mouse.x = -9999; mouse.y = -9999; }
-
-  window.addEventListener('resize', resize, { passive: true });
-  window.addEventListener('mousemove', onMove, { passive: true });
-  window.addEventListener('mouseleave', onLeave);
-
-  // observe attribute changes on root
-  const obs = new MutationObserver(() => {
-    mode = document.documentElement.getAttribute('data-mode') || 'dark';
-    variant = document.documentElement.getAttribute('data-hero') || 'constellation';
-    seed();
-  });
-  obs.observe(document.documentElement, { attributes: true, attributeFilter: ['data-mode', 'data-hero', 'data-accent'] });
-
-  resize();
-  loop();
-})();
-
-// NeuroSuite — the same local planetarium continues below the hero.
-// The CSS blue-black sky remains underneath as a permanent fallback.
-(function () {
-  const main = document.querySelector('main');
-  const hasBlueGoldTheme = document.querySelector('link[href*="blue-gold.css"]');
-  if (!main || !hasBlueGoldTheme) return;
+  const ctx = canvas.getContext('2d', { alpha: true, desynchronized: true })
+    || canvas.getContext('2d');
+  if (!ctx) return;
 
   const style = document.createElement('style');
-  style.id = 'ns-cosmic-background-style';
+  style.id = 'ns-stable-sky-style';
   style.textContent = `
-    html[data-mode="dark"] main.cosmic-enhanced {
-      position: relative;
-      isolation: isolate;
-    }
-    html[data-mode="dark"] main.cosmic-enhanced > .cosmic-background {
-      position: absolute;
+    .sky-stage {
+      position: fixed;
       inset: 0;
       z-index: 0;
-      width: 100%;
-      height: 100%;
+      width: 100vw;
+      height: 100vh;
+      height: 100lvh;
+      max-width: none;
       pointer-events: none;
-      opacity: .96;
+      opacity: .94;
       mix-blend-mode: screen;
+      transition: opacity .45s ease;
     }
-    html[data-mode="dark"] main.cosmic-enhanced > :not(.cosmic-background) {
+    body > .hero,
+    body > main,
+    body > footer {
       position: relative;
       z-index: 1;
     }
-    html[data-mode="light"] .cosmic-background {
-      display: none;
-    }
+    html[data-mode="light"] .sky-stage { opacity: 0; }
     @media (max-width: 620px) {
-      html[data-mode="dark"] main.cosmic-enhanced > .cosmic-background {
-        opacity: .9;
-      }
+      .sky-stage { opacity: .88; }
     }
     @media (prefers-reduced-motion: reduce) {
-      html[data-mode="dark"] main.cosmic-enhanced > .cosmic-background {
-        opacity: .78;
-      }
+      .sky-stage { opacity: .78; }
     }
   `;
   document.head.appendChild(style);
 
-  const canvas = document.createElement('canvas');
-  canvas.className = 'cosmic-background';
+  canvas.className = 'sky-stage';
   canvas.setAttribute('aria-hidden', 'true');
-  main.prepend(canvas);
-
-  const ctx = canvas.getContext('2d', { alpha: true });
-  if (!ctx) {
-    canvas.remove();
-    style.remove();
-    return;
-  }
-
-  main.classList.add('cosmic-enhanced');
+  document.body.prepend(canvas);
 
   const motionQuery = window.matchMedia('(prefers-reduced-motion: reduce)');
   let reduceMotion = motionQuery.matches;
@@ -736,12 +637,9 @@ const NeuroPlanetarium = (() => {
   let width = 0;
   let height = 0;
   let dpr = 1;
-  let mainTop = 0;
-  let ambientStars = [];
-  let dust = [];
+  let stars = [];
   let raf = null;
-  let lastFrame = 0;
-  let inView = false;
+  let lastFrame = -Infinity;
   let resizeTimer = null;
 
   function hash(value) {
@@ -749,115 +647,105 @@ const NeuroPlanetarium = (() => {
     return x - Math.floor(x);
   }
 
-  function rgba(r, g, b, alpha) {
-    return `rgba(${r},${g},${b},${Math.max(0, Math.min(1, alpha))})`;
-  }
-
   function buildScene() {
-    const area = width * height;
-    const starCount = Math.max(180, Math.min(640, Math.round(area / 18000)));
-    ambientStars = Array.from({ length: starCount }, (_, index) => ({
-      x: hash(index + 1.13) * width,
-      y: hash(index + 17.81) * height,
-      radius: .28 + hash(index + 31.47) * 1.15,
-      alpha: .2 + hash(index + 49.03) * .55,
-      phase: hash(index + 71.17) * Math.PI * 2,
-      speed: .00008 + hash(index + 91.53) * .00024,
-      gold: hash(index + 111.91) > .76
-    }));
-
-    const dustCount = Math.max(120, Math.min(520, Math.round(area / 24000)));
-    dust = Array.from({ length: dustCount }, (_, index) => ({
-      x: hash(index * 19.7 + 4.2) * width,
-      y: hash(index * 31.4 + 8.6) * height,
-      radius: .25 + hash(index * 47.3 + 3.1) * 1.05,
-      alpha: .07 + hash(index * 67.1 + 9.7) * .24,
-      phase: hash(index * 83.9 + 2.4) * Math.PI * 2
+    const count = width < 620 ? 128 : Math.min(230, Math.round(width * height / 7600));
+    stars = Array.from({ length: count }, (_, index) => ({
+      x: hash(index + 1.17) * width,
+      y: hash(index + 19.83) * height,
+      radius: .3 + hash(index + 37.41) * 1.15,
+      alpha: .15 + hash(index + 53.09) * .48,
+      phase: hash(index + 71.77) * Math.PI * 2,
+      speed: .00008 + hash(index + 89.31) * .00018,
+      gold: hash(index + 113.49) > .8
     }));
   }
 
-  function resize() {
-    const rect = main.getBoundingClientRect();
-    width = Math.max(1, Math.round(rect.width));
-    height = Math.max(1, Math.round(main.scrollHeight));
-    mainTop = rect.top + window.scrollY;
+  function resize(force = false) {
+    const rect = canvas.getBoundingClientRect();
+    const nextWidth = Math.max(1, Math.round(rect.width || window.innerWidth));
+    const nextHeight = Math.max(1, Math.round(rect.height || window.innerHeight));
+    const widthChanged = Math.abs(nextWidth - width) > 2;
+    const heightChanged = Math.abs(nextHeight - height) > 2;
 
-    const preferred = Math.min(window.devicePixelRatio || 1, width < 620 ? 1.15 : 1.35);
-    const maxPixels = width < 620 ? 5200000 : 10500000;
-    dpr = Math.max(.72, Math.min(preferred, Math.sqrt(maxPixels / (width * height))));
+    // Mobile browser chrome changes viewport height during scroll. The large-viewport
+    // canvas already covers that movement, so a height-only micro-resize is ignored.
+    if (!force && !widthChanged && (!heightChanged || Math.abs(nextHeight - height) < 160)) return;
 
+    width = nextWidth;
+    height = nextHeight;
+    const preferred = Math.min(window.devicePixelRatio || 1, width < 620 ? 1.2 : 1.55);
+    const maxPixels = width < 620 ? 2300000 : 4200000;
+    dpr = Math.max(.8, Math.min(preferred, Math.sqrt(maxPixels / (width * height))));
     canvas.width = Math.max(1, Math.round(width * dpr));
     canvas.height = Math.max(1, Math.round(height * dpr));
-    canvas.style.width = `${width}px`;
-    canvas.style.height = `${height}px`;
     ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
     buildScene();
-    if (inView) draw(reduceMotion ? 0 : performance.now(), true);
+    draw(performance.now());
   }
 
-  function visibleBand() {
-    const viewTop = Math.max(0, window.scrollY - mainTop);
-    const viewportHeight = Math.min(window.innerHeight, Math.max(0, height - viewTop));
-    const top = Math.max(0, viewTop - 180);
-    const bottom = Math.min(height, viewTop + viewportHeight + 180);
-    return { top, bottom, bandHeight: Math.max(0, bottom - top), viewTop, viewportHeight };
-  }
-
-  function drawAmbient(time, band, visibility) {
-    for (const star of ambientStars) {
-      if (star.y < band.top || star.y > band.bottom) continue;
-      const twinkle = .62 + .38 * Math.sin(time * star.speed + star.phase);
-      ctx.fillStyle = star.gold
-        ? rgba(248, 214, 139, star.alpha * twinkle * visibility)
-        : rgba(177, 218, 255, star.alpha * twinkle * visibility);
-      ctx.beginPath();
-      ctx.arc(star.x, star.y, star.radius * (.72 + twinkle * .35), 0, Math.PI * 2);
-      ctx.fill();
-    }
-
-    for (const mote of dust) {
-      if (mote.y < band.top || mote.y > band.bottom) continue;
-      const shimmer = .58 + .42 * Math.sin(time * .00018 + mote.phase);
-      ctx.fillStyle = rgba(237, 193, 105, mote.alpha * shimmer * visibility);
-      ctx.beginPath();
-      ctx.arc(mote.x, mote.y, mote.radius * (.75 + shimmer * .4), 0, Math.PI * 2);
-      ctx.fill();
-    }
-  }
-
-  function draw(time, force) {
-    if (!width || !height || mode !== 'dark') return;
-    const band = visibleBand();
-    if (!band.bandHeight) return;
-    const sky = NeuroPlanetarium.state(time);
-    const ambientVisibility = Math.max(.035, Math.min(1, (-sky.sunAltitude + 5) / 18));
-
-    ctx.clearRect(0, band.top, width, band.bandHeight);
+  function drawAmbient(time, visibility) {
     ctx.save();
-    ctx.beginPath();
-    ctx.rect(0, band.top, width, band.bandHeight);
-    ctx.clip();
-    NeuroPlanetarium.updateHud(time, sky);
-    NeuroPlanetarium.drawGrid(ctx, width, band.viewTop, band.viewportHeight, sky, false);
     ctx.globalCompositeOperation = 'screen';
-    drawAmbient(time, band, ambientVisibility);
-    ctx.restore();
 
-    if (force && reduceMotion) canvas.dataset.static = 'true';
+    for (const star of stars) {
+      const shimmer = reduceMotion ? .78 : .68 + .32 * Math.sin(time * star.speed + star.phase);
+      const alpha = star.alpha * shimmer * visibility;
+      ctx.fillStyle = star.gold
+        ? `rgba(248,214,139,${alpha})`
+        : `rgba(177,218,255,${alpha})`;
+      ctx.beginPath();
+      ctx.arc(star.x, star.y, star.radius * (.82 + shimmer * .24), 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    ctx.lineWidth = .55;
+    for (let index = 0; index + 7 < stars.length; index += 19) {
+      const a = stars[index];
+      const b = stars[index + 7];
+      const alpha = Math.min(a.alpha, b.alpha) * .16 * visibility;
+      ctx.strokeStyle = `rgba(160,207,245,${alpha})`;
+      ctx.beginPath();
+      ctx.moveTo(a.x, a.y);
+      ctx.lineTo(b.x, b.y);
+      ctx.stroke();
+    }
+    ctx.restore();
+  }
+
+  function draw(time) {
+    if (!width || !height || mode !== 'dark') return;
+    const sky = NeuroPlanetarium.state(time);
+    const visibility = Math.max(.04, Math.min(1, (-sky.sunAltitude + 6) / 18));
+
+    ctx.clearRect(0, 0, width, height);
+    NeuroPlanetarium.drawGrid(ctx, width, 0, height, sky, false);
+    drawAmbient(time, visibility);
+
+    const vignette = ctx.createRadialGradient(
+      width * .52, height * .46, Math.min(width, height) * .18,
+      width * .52, height * .46, Math.max(width, height) * .78
+    );
+    vignette.addColorStop(0, 'rgba(2,7,18,0)');
+    vignette.addColorStop(1, 'rgba(2,7,18,.28)');
+    ctx.fillStyle = vignette;
+    ctx.fillRect(0, 0, width, height);
+
+    NeuroPlanetarium.updateHud(time, sky);
   }
 
   function loop(time) {
     raf = null;
-    if (!inView || document.hidden || mode !== 'dark' || reduceMotion) return;
-    if (time - lastFrame >= 42) {
-      draw(time, false);
+    if (document.hidden || mode !== 'dark') return;
+    const frameInterval = width < 620 ? 48 : 34;
+    if (time - lastFrame >= frameInterval) {
+      draw(time);
       lastFrame = time;
     }
-    raf = requestAnimationFrame(loop);
+    if (!reduceMotion) raf = requestAnimationFrame(loop);
   }
 
   function start() {
-    if (raf || !inView || document.hidden || mode !== 'dark' || reduceMotion) return;
+    if (raf || document.hidden || mode !== 'dark' || reduceMotion) return;
     raf = requestAnimationFrame(loop);
   }
 
@@ -867,66 +755,46 @@ const NeuroPlanetarium = (() => {
     raf = null;
   }
 
-  function refreshMotion() {
-    reduceMotion = motionQuery.matches;
-    if (reduceMotion) {
-      stop();
-      draw(0, true);
-    } else {
-      canvas.removeAttribute('data-static');
-      start();
-    }
+  function requestResize(force = false) {
+    window.clearTimeout(resizeTimer);
+    resizeTimer = window.setTimeout(() => resize(force), 160);
   }
-
-  const visibilityObserver = new IntersectionObserver((entries) => {
-    inView = entries.some(entry => entry.isIntersecting);
-    if (inView) {
-      draw(reduceMotion ? 0 : performance.now(), true);
-      start();
-    } else {
-      stop();
-    }
-  }, { rootMargin: '0px 0px -35% 0px' });
-  visibilityObserver.observe(main);
 
   const themeObserver = new MutationObserver(() => {
     mode = document.documentElement.getAttribute('data-mode') || 'dark';
     if (mode === 'dark') {
-      draw(reduceMotion ? 0 : performance.now(), true);
+      draw(performance.now());
       start();
     } else {
       stop();
+      ctx.clearRect(0, 0, width, height);
     }
   });
   themeObserver.observe(document.documentElement, { attributes: true, attributeFilter: ['data-mode'] });
 
-  const requestResize = () => {
-    window.clearTimeout(resizeTimer);
-    resizeTimer = window.setTimeout(resize, 140);
-  };
-
-  window.addEventListener('resize', requestResize, { passive: true });
-  window.addEventListener('scroll', () => {
-    if (reduceMotion && mode === 'dark') draw(0, true);
-  }, { passive: true });
+  window.addEventListener('resize', () => requestResize(false), { passive: true });
+  window.addEventListener('orientationchange', () => requestResize(true), { passive: true });
   document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stop(); else start();
+    if (document.hidden) stop();
+    else {
+      draw(performance.now());
+      start();
+    }
   });
-  if (motionQuery.addEventListener) motionQuery.addEventListener('change', refreshMotion);
-
-  if ('ResizeObserver' in window) {
-    const sizeObserver = new ResizeObserver(entries => {
-      const nextHeight = Math.round(entries[0].contentRect.height);
-      const nextWidth = Math.round(entries[0].contentRect.width);
-      if (Math.abs(nextHeight - height) > 2 || Math.abs(nextWidth - width) > 2) requestResize();
+  if (motionQuery.addEventListener) {
+    motionQuery.addEventListener('change', event => {
+      reduceMotion = event.matches;
+      stop();
+      draw(performance.now());
+      start();
     });
-    sizeObserver.observe(main);
   }
 
-  resize();
-  refreshMotion();
+  requestAnimationFrame(() => {
+    resize(true);
+    start();
+  });
 })();
-
 // Reveal on scroll
 (function(){
   const els = document.querySelectorAll('.reveal');
