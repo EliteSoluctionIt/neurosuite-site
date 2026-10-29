@@ -1,12 +1,13 @@
-// NeuroSuite — accelerated local-sky planetarium.
-// The viewer stays at their own latitude and longitude while 24 hours of sun,
-// twilight, stars and constellations unfold in a three-minute cycle.
+// NeuroSuite — last-night local-sky replay.
+// The viewer stays at their own latitude and longitude while the most recent
+// completed night, from evening civil twilight to dawn, unfolds in three minutes.
 
 const NeuroPlanetarium = (() => {
   const cycleMs = 180000;
   const dayMs = 86400000;
+  const minuteMs = 60000;
+  const civilTwilight = -6;
   const rad = Math.PI / 180;
-  const startEpoch = Date.now();
   const startPerformance = performance.now();
   const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || 'UTC';
   const zoneLocations = {
@@ -53,6 +54,7 @@ const NeuroPlanetarium = (() => {
     label: estimated[0], latitude: estimated[1], longitude: estimated[2],
     precise: false, timeZone
   };
+  let nightCache = null;
 
   const constellations = [
     { name: 'Ursa Major', stars: [[165.93,61.75,1.8],[165.46,56.38,2.4],[178.46,53.69,2.4],[183.86,57.03,3.3],[193.51,55.96,1.8],[200.98,54.93,2.2],[206.89,49.31,1.9]], edges: [[0,1],[1,2],[2,3],[3,0],[3,4],[4,5],[5,6]] },
@@ -116,15 +118,75 @@ const NeuroPlanetarium = (() => {
     return { altitude, azimuth: normalise(Math.atan2(sinAzimuth, cosAzimuth) / rad) * rad };
   }
 
+  function sunAltitudeAt(epoch, latitude = observer.latitude, longitude = observer.longitude) {
+    const date = new Date(epoch);
+    const sun = sunEquatorial(date);
+    return horizontal(sun.ra, sun.dec, latitude, siderealTime(date, longitude)).altitude / rad;
+  }
+
+  function refineCrossing(earlier, later) {
+    let low = earlier;
+    let high = later;
+    const lowIsAbove = sunAltitudeAt(low) >= civilTwilight;
+    for (let index = 0; index < 18; index++) {
+      const middle = (low + high) / 2;
+      if ((sunAltitudeAt(middle) >= civilTwilight) === lowIsAbove) low = middle;
+      else high = middle;
+    }
+    return (low + high) / 2;
+  }
+
+  function findPreviousCrossing(before, direction) {
+    const step = 30 * minuteMs;
+    const limit = before - 370 * dayMs;
+    let later = before;
+    let laterAltitude = sunAltitudeAt(later);
+
+    for (let earlier = later - step; earlier >= limit; earlier -= step) {
+      const earlierAltitude = sunAltitudeAt(earlier);
+      const rising = earlierAltitude < civilTwilight && laterAltitude >= civilTwilight;
+      const falling = earlierAltitude >= civilTwilight && laterAltitude < civilTwilight;
+      if ((direction === 'rising' && rising) || (direction === 'falling' && falling)) {
+        return refineCrossing(earlier, later);
+      }
+      later = earlier;
+      laterAltitude = earlierAltitude;
+    }
+    return null;
+  }
+
+  function lastCompletedNight(now) {
+    const key = `${observer.latitude.toFixed(4)}:${observer.longitude.toFixed(4)}`;
+    // Keep one immutable night window for the page session. This prevents a
+    // long-open page from changing sky in the middle of a replay.
+    if (nightCache && nightCache.key === key) return nightCache;
+
+    const dawn = findPreviousCrossing(now, 'rising');
+    const dusk = dawn === null ? null : findPreviousCrossing(dawn - minuteMs, 'falling');
+    const valid = dusk !== null && dawn !== null && dawn > dusk + 30 * minuteMs;
+    const start = valid ? dusk : now - 18 * 60 * minuteMs;
+    const end = valid ? dawn : now - 6 * 60 * minuteMs;
+
+    nightCache = {
+      key,
+      start,
+      end,
+      duration: end - start,
+      fallback: !valid
+    };
+    return nightCache;
+  }
+
   function state(time) {
     const clock = Number.isFinite(time) ? time : performance.now();
     const elapsed = Math.max(0, clock - startPerformance);
     const phase = (elapsed % cycleMs) / cycleMs;
-    const date = new Date(startEpoch + elapsed * (dayMs / cycleMs));
+    const night = lastCompletedNight(Date.now());
+    const date = new Date(night.start + night.duration * phase);
     const lst = siderealTime(date, observer.longitude);
     const sun = sunEquatorial(date);
     const sunHorizontal = horizontal(sun.ra, sun.dec, observer.latitude, lst);
-    const future = new Date(date.getTime() + 10 * 60000);
+    const future = new Date(date.getTime() + 10 * minuteMs);
     const futureSun = sunEquatorial(future);
     const futureAltitude = horizontal(
       futureSun.ra, futureSun.dec, observer.latitude,
@@ -141,8 +203,14 @@ const NeuroPlanetarium = (() => {
       hemisphere: observer.latitude < 0 ? -1 : 1,
       lst,
       sun: sunHorizontal,
-      sunAltitude: sunHorizontal.altitude / rad,
-      sunRising: futureAltitude > sunHorizontal.altitude
+      sunAltitude: night.fallback
+        ? Math.min(civilTwilight, sunHorizontal.altitude / rad)
+        : sunHorizontal.altitude / rad,
+      sunRising: futureAltitude > sunHorizontal.altitude,
+      nightStart: new Date(night.start),
+      nightEnd: new Date(night.end),
+      nightDuration: night.duration,
+      nightFallback: night.fallback
     };
   }
 
@@ -277,7 +345,7 @@ const NeuroPlanetarium = (() => {
     hud.setAttribute('aria-label', 'Local sky status');
     hud.innerHTML = `
       <div class="planetarium-hud__identity">
-        <div class="planetarium-hud__eyebrow">Cielo locale · ciclo 03:00</div>
+        <div class="planetarium-hud__eyebrow">Ultima notte locale · 03:00</div>
         <div class="planetarium-hud__name"></div>
         <div class="planetarium-hud__coords"></div>
       </div>
@@ -323,6 +391,7 @@ const NeuroPlanetarium = (() => {
         label: '',
         precise: true
       };
+      nightCache = null;
       locating = false;
       lastHudTick = -1;
       if (hudLocate) hudLocate.textContent = language === 'it' ? 'Posizione precisa attiva' : 'Precise location active';
@@ -334,10 +403,9 @@ const NeuroPlanetarium = (() => {
 
   function skyMoment(current, language) {
     const altitude = current.sunAltitude;
-    if (altitude > 5) return language === 'it' ? 'GIORNO' : 'DAY';
     if (altitude > -8) {
       if (current.sunRising) return language === 'it' ? 'ALBA' : 'DAWN';
-      return language === 'it' ? 'TRAMONTO' : 'SUNSET';
+      return language === 'it' ? 'CREPUSCOLO' : 'TWILIGHT';
     }
     if (altitude > -18) return language === 'it' ? 'ORA BLU' : 'BLUE HOUR';
     return language === 'it' ? 'NOTTE' : 'NIGHT';
@@ -351,7 +419,10 @@ const NeuroPlanetarium = (() => {
     lastHudTick = tick;
     const language = document.documentElement.lang?.toLowerCase().startsWith('it') ? 'it' : 'en';
     const eyebrow = hud.querySelector('.planetarium-hud__eyebrow');
-    if (eyebrow) eyebrow.textContent = language === 'it' ? 'Cielo locale · ciclo 03:00' : 'Local sky · 03:00 cycle';
+    if (eyebrow) eyebrow.textContent = language === 'it'
+      ? 'Ultima notte locale · 03:00'
+      : 'Last local night · 03:00';
+    hud.setAttribute('aria-label', language === 'it' ? 'Replay dell’ultima notte locale' : 'Last local night replay');
     hudName.textContent = current.precise
       ? (language === 'it' ? 'La tua posizione' : 'Your location')
       : `${current.label} · ${language === 'it' ? 'stima' : 'estimate'}`;
@@ -364,17 +435,20 @@ const NeuroPlanetarium = (() => {
     } catch {
       clock = current.date.toISOString().slice(11, 16);
     }
-    let realClock = '';
-    try {
-      realClock = new Intl.DateTimeFormat(language === 'it' ? 'it-IT' : 'en-GB', {
-        hour: '2-digit', minute: '2-digit', second: '2-digit', hour12: false,
-        timeZone: current.timeZone
-      }).format(new Date());
-    } catch {
-      realClock = new Date().toTimeString().slice(0, 8);
-    }
-    hudNow.textContent = `${language === 'it' ? 'Ora locale' : 'Local time'} · ${realClock}`;
-    hudTime.textContent = `${language === 'it' ? 'Ciclo' : 'Cycle'} · ${skyMoment(current, language)} · ${clock} · ×480`;
+    const formatNightTime = date => {
+      try {
+        return new Intl.DateTimeFormat(language === 'it' ? 'it-IT' : 'en-GB', {
+          hour: '2-digit', minute: '2-digit', hour12: false, timeZone: current.timeZone
+        }).format(date);
+      } catch {
+        return date.toISOString().slice(11, 16);
+      }
+    };
+    const start = formatNightTime(current.nightStart);
+    const end = formatNightTime(current.nightEnd);
+    const speed = Math.max(1, Math.round(current.nightDuration / cycleMs));
+    hudNow.textContent = `${language === 'it' ? 'Ultima notte' : 'Last night'} · ${start}—${end}`;
+    hudTime.textContent = `Replay · ${skyMoment(current, language)} · ${clock} · ×${speed}`;
     hudSource.textContent = current.precise
       ? (language === 'it' ? 'Posizione precisa · solo su questo dispositivo' : 'Precise location · this device only')
       : (language === 'it' ? `Stima automatica · ${current.timeZone}` : `Automatic estimate · ${current.timeZone}`);
@@ -560,8 +634,8 @@ const NeuroPlanetarium = (() => {
     }
 
     const sunPoint = projectHorizontal(current.sun, centerX, centerY, radiusX, radiusY);
-    if (sunPoint && current.sunAltitude > -8) {
-      const sunVisibility = smoothstep(-8, 1, current.sunAltitude);
+    if (sunPoint && current.sunAltitude > -.83) {
+      const sunVisibility = smoothstep(-.83, 1, current.sunAltitude);
       ctx.shadowColor = 'rgba(255,199,102,.9)';
       ctx.shadowBlur = 24;
       ctx.fillStyle = `rgba(255,218,145,${.38 + sunVisibility * .5})`;
@@ -716,9 +790,24 @@ const NeuroPlanetarium = (() => {
     if (!width || !height || mode !== 'dark') return;
     const sky = NeuroPlanetarium.state(time);
     const visibility = Math.max(.04, Math.min(1, (-sky.sunAltitude + 6) / 18));
+    const seamAmount = Math.max(0, Math.min(1, (sky.phase - .95) / .05));
+    const seamBlend = seamAmount * seamAmount * (3 - 2 * seamAmount);
 
     ctx.clearRect(0, 0, width, height);
-    NeuroPlanetarium.drawGrid(ctx, width, 0, height, sky, false);
+    if (seamBlend > 0) {
+      ctx.save();
+      ctx.globalAlpha = 1 - seamBlend;
+      NeuroPlanetarium.drawGrid(ctx, width, 0, height, sky, false);
+      ctx.restore();
+
+      const nextSky = NeuroPlanetarium.state(time + (1 - sky.phase) * NeuroPlanetarium.cycleMs);
+      ctx.save();
+      ctx.globalAlpha = seamBlend;
+      NeuroPlanetarium.drawGrid(ctx, width, 0, height, nextSky, false);
+      ctx.restore();
+    } else {
+      NeuroPlanetarium.drawGrid(ctx, width, 0, height, sky, false);
+    }
     drawAmbient(time, visibility);
 
     const vignette = ctx.createRadialGradient(
