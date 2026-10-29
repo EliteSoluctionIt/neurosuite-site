@@ -242,7 +242,7 @@ const NeuroPlanetarium = (() => {
       }
       .planetarium-hud__locate:hover,
       .planetarium-hud__locate:focus-visible { color: var(--fg); border-color: var(--accent-line); }
-      html[data-mode="light"] .planetarium-hud { opacity: 0; visibility: hidden; }
+      html[data-mode="light"] .planetarium-hud { display: none; }
       @media (max-width: 620px) {
         .planetarium-hud {
           grid-template-columns: minmax(0,1fr) auto;
