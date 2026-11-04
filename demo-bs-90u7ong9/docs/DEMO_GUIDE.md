@@ -5,7 +5,7 @@ Per chi presenta la demo a medici, infermieri e ricercatori (es. Fondazione Bres
 ## Cosa dire subito
 - **I pazienti mostrati sono simulati.** L'etichetta rossa "DATI SIMULATI — NON CLINICI" è sempre visibile. I valori di partenza vengono da registrazioni reali e pubbliche (PhysioNet Fantasia, Non-EEG, Sleep-EDF, UCI), ma le serie di 90 giorni sono generate al computer.
 - Orion **non fa diagnosi**: segnala quando una persona si discosta dal *proprio* abituale e chiede a un professionista di guardare.
-- È una **verifica tecnica**, non una validazione clinica (vedi `docs/VALIDATION_PROTOCOL_PRELIMINARY.md`).
+- È una **verifica tecnica**, non una validazione clinica (vedi `docs/VALIDATION_PROTOCOL.md (protocollo ufficiale, PR #9)`).
 
 ## Come aprirla
 Scaricare l'artefatto `clinical-demo` dall'esecuzione CI (GitHub Actions, workflow `demo`), estrarre lo zip e aprire `index.html` con un browser. Funziona offline, senza tracciamenti. `rapporto_clinico.pdf` è il rapporto già esportato; `report.html` si può stampare in PDF.
