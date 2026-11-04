@@ -16,3 +16,4 @@ small{color:#555}a{color:#1f4e79}
 .lead{font-size:1.05em}.sum td{font-size:1em;padding:8px}.big{font-size:1.15em}.grid2{display:grid;grid-template-columns:repeat(auto-fill,minmax(480px,1fr));gap:14px}
 .final{font-size:1.2em;padding:10px;border-radius:8px;background:#fff4e6;margin:8px 0}.appx{background:#f1f3f5}.appx h2{font-size:1.1em}
 @media print{#summary{break-after:page}}
+.langsw{float:right}.langsw button{border:1px solid #9ab;background:#fff;padding:5px 10px;border-radius:6px;cursor:pointer}.langsw button.on{background:#1f4e79;color:#fff}
