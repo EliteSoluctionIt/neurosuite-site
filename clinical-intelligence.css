@@ -1,0 +1,74 @@
+/* NeuroSuite | Clinical Intelligence — design overhaul 2026-11-10
+   Designed around multimodal signals, longitudinal trajectories and human review.
+   No simulated readings are presented as actual patient data. */
+@import url('https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@400;500;600;700;800&display=swap');
+:root,[data-mode="dark"]{
+ --serif:'Manrope',sans-serif;--sans:'DM Sans',sans-serif;--mono:'DM Sans',sans-serif;
+ --bg:#06121e;--bg-2:#091d2c;--bg-3:#102a39;--surface:#0d2635;--surface-2:#153545;
+ --fg:#f2f9fa;--fg-2:#c4d7dc;--fg-3:#8eacb8;--fg-4:#6e8a96;
+ --line:rgba(135,213,223,.13);--line-2:rgba(135,213,223,.24);
+ --accent:#70e0d6;--accent-2:#49b8c6;--accent-glow:rgba(112,224,214,.13);--accent-line:rgba(112,224,214,.45);
+ --maxw:1380px;--section-y:clamp(82px,10vw,145px);
+}
+html{scroll-behavior:smooth}
+html,body{background:#06121e}
+body{background:radial-gradient(ellipse 65vw 50vw at 95% 0%,rgba(25,93,115,.22),transparent 75%),linear-gradient(180deg,#06121e,#081b29 55%,#06121e);letter-spacing:-.005em}
+h1,h2,h3,.hero__title,.s-head__title,.eco-card__name,.vision__quote,.access h2{font-family:'Manrope',sans-serif;letter-spacing:-.055em;font-weight:700}
+.nav{background:rgba(5,20,31,.91)!important;border-bottom:1px solid rgba(124,221,225,.13)!important;box-shadow:0 10px 40px rgba(0,0,0,.1)}
+.nav__brand{font-family:'Manrope',sans-serif;font-weight:800;letter-spacing:-.055em}
+.nav__brand .mark{color:#70e0d6;filter:drop-shadow(0 0 10px rgba(112,224,214,.4))}
+.nav__links a,.nav__cta{font-family:'DM Sans',sans-serif;font-weight:600}
+.nav__cta{background:rgba(112,224,214,.08);border:1px solid rgba(112,224,214,.3);border-radius:999px}
+.eyebrow,.s-head__index,.eco-card__index,.hero__meta-col span{font-family:'DM Sans',sans-serif;font-weight:700;letter-spacing:.15em;color:#7fced1}
+.eyebrow:before{background:#70e0d6}
+.hero{min-height:min(900px,100svh);background:radial-gradient(ellipse 65% 60% at 70% 42%,rgba(20,88,108,.24),transparent 75%)!important;isolation:isolate}
+.hero:before{background-image:linear-gradient(rgba(112,224,214,.055) 1px,transparent 1px),linear-gradient(90deg,rgba(112,224,214,.055) 1px,transparent 1px)!important;background-size:72px 72px!important;opacity:.5!important;mask-image:linear-gradient(90deg,transparent,black 55%,transparent)!important}
+.hero__canvas{opacity:.22!important}
+.hero__content{position:relative;z-index:2;max-width:1380px;padding-top:clamp(115px,14vw,190px);padding-bottom:85px}
+.hero__title{max-width:14ch!important;font-size:clamp(48px,6.5vw,104px)!important;line-height:1.04!important;text-shadow:none!important}
+.hero__title em,.s-head__title em,.vision__quote em,.access h2 em{font-style:normal;color:#7ce7dd!important;background:none!important;-webkit-text-fill-color:currentColor}
+.hero__sub{max-width:60ch!important;font-size:clamp(16px,1.35vw,19px)!important;line-height:1.8;color:#c4d7dc!important}
+.btn--primary{background:#82e5dc!important;color:#07202a!important;border-color:#82e5dc!important;box-shadow:0 10px 35px rgba(112,224,214,.12);font-weight:700}
+.btn:not(.btn--primary){border-color:rgba(112,224,214,.26)}
+.hero__meta{border-top:1px solid rgba(112,224,214,.2)}
+.hero__meta-col strong{font-family:'DM Sans',sans-serif;font-weight:600}
+.ns-visual{position:absolute;right:max(4vw,calc((100vw - 1380px)/2));top:clamp(175px,18vw,245px);width:min(38vw,520px);height:450px;z-index:1;pointer-events:none}
+.ns-visual__ring{position:absolute;inset:40px 35px;border:1px solid rgba(111,226,215,.24);border-radius:50%;box-shadow:0 0 0 32px rgba(111,226,215,.025),0 0 0 72px rgba(111,226,215,.025)}
+.ns-visual__ring:before,.ns-visual__ring:after{content:"";position:absolute;border-radius:50%;border:1px dashed rgba(111,226,215,.16);inset:46px}
+.ns-visual__ring:after{inset:100px;border-style:solid;background:radial-gradient(circle,rgba(112,224,214,.12),rgba(112,224,214,.025) 70%)}
+.ns-visual__core{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);width:175px;height:175px;border-radius:50%;display:grid;place-content:center;text-align:center;border:1px solid rgba(112,224,214,.45);background:rgba(5,27,40,.88);box-shadow:0 0 90px rgba(84,210,203,.15);font-family:'Manrope',sans-serif}
+.ns-visual__core b{font-size:33px;letter-spacing:-.07em}.ns-visual__core small{font-size:10px;color:#91d9d6;letter-spacing:.13em}
+.ns-visual__node{position:absolute;border:1px solid rgba(112,224,214,.28);background:rgba(7,32,46,.94);padding:11px 14px;border-radius:12px;box-shadow:0 18px 35px rgba(0,0,0,.18);color:#d5edf0;font-size:11px;font-weight:700;letter-spacing:.07em}
+.ns-visual__node:before{content:"";display:inline-block;width:6px;height:6px;margin-right:8px;border-radius:50%;background:#79e3d9;box-shadow:0 0 12px #79e3d9}
+.ns-visual__node:nth-of-type(3){top:8%;left:3%}.ns-visual__node:nth-of-type(4){top:16%;right:-3%}.ns-visual__node:nth-of-type(5){bottom:18%;left:-4%}.ns-visual__node:nth-of-type(6){bottom:9%;right:1%}
+.ns-visual__caption{position:absolute;bottom:-10px;left:15%;font-size:10px;letter-spacing:.19em;color:#8db5bf}
+.s-head__title{font-size:clamp(34px,4.7vw,66px);line-height:1.12}
+.s-head__index{color:#7bd8d5}
+.gradient-line{background:linear-gradient(90deg,transparent,#2a7e8d,#8ee8df,#2a7e8d,transparent)}
+.eco{gap:clamp(14px,2vw,24px)}
+.eco-card,.status-card,.flow__step{border:1px solid rgba(127,215,221,.17)!important;background:linear-gradient(145deg,rgba(17,55,70,.86),rgba(8,29,44,.9))!important;box-shadow:none!important;border-radius:22px!important}
+.eco-card{padding:clamp(25px,3vw,42px)!important;min-height:260px}
+.eco-card:hover,.status-card:hover{border-color:rgba(112,224,214,.6)!important;transform:translateY(-4px)}
+.eco-card__name{font-size:clamp(23px,2.2vw,32px);line-height:1.17}
+.eco-card__manifesto{line-height:1.7;color:#bbd2d8}
+.eco-card__dot{background:#76e0d6!important}
+.flow,.access{background:linear-gradient(120deg,#092433,#061722)!important;border-block:1px solid rgba(112,224,214,.1)}
+.ns-essential{padding-block:clamp(90px,10vw,155px);position:relative}
+.ns-essential:before{content:"";position:absolute;inset:0 0 auto;height:1px;background:linear-gradient(90deg,transparent,rgba(112,224,214,.32),transparent)}
+.ns-essential-grid{margin-top:38px;display:grid;grid-template-columns:repeat(2,minmax(0,1fr))}
+.ns-essential-grid .eco-card{min-height:235px}
+.ns-essential-note{margin-top:28px;max-width:85ch;padding-left:20px;border-left:2px solid #70e0d6;color:#9fbfc8;font-size:14px;line-height:1.75}
+.ns-visual, .ns-visual *{box-sizing:border-box}
+html[data-mode="light"]{--bg:#f1f7f8;--bg-2:#e5f0f2;--surface:#fff;--fg:#102934;--fg-2:#375561;--fg-3:#547781;--accent:#087d83;--accent-line:rgba(8,125,131,.45)}
+html[data-mode="light"] body{background:linear-gradient(180deg,#f3f9fa,#e8f2f4)}
+html[data-mode="light"] .nav{background:rgba(243,249,250,.95)!important}
+html[data-mode="light"] .hero{background:radial-gradient(circle at 70% 30%,rgba(91,192,196,.12),transparent 60%)!important}
+html[data-mode="light"] .hero__title em,html[data-mode="light"] .s-head__title em{color:#087d83!important}
+html[data-mode="light"] .hero__sub{color:#375561!important}
+html[data-mode="light"] .eco-card,html[data-mode="light"] .status-card,html[data-mode="light"] .flow__step{background:#fff!important;border-color:rgba(11,104,119,.16)!important}
+html[data-mode="light"] .eco-card__manifesto{color:#476571}
+html[data-mode="light"] .ns-visual__core,html[data-mode="light"] .ns-visual__node{background:#e7f5f5;color:#153d48}
+html[data-mode="light"] .flow,html[data-mode="light"] .access{background:#e5f0f2!important}
+@media(max-width:1050px){.ns-visual{opacity:.36;right:-90px;width:440px;top:200px}.hero__content{position:relative;z-index:3}.hero__sub{max-width:52ch!important}}
+@media(max-width:760px){.hero{min-height:0}.hero__content{padding-top:130px;padding-bottom:55px}.hero__title{font-size:clamp(42px,10.4vw,68px)!important;max-width:100%!important}.ns-visual{position:relative;top:auto;right:auto;margin:-10px auto 15px;width:min(90vw,420px);height:330px;opacity:1}.ns-visual__ring{inset:26px 48px}.ns-visual__core{width:140px;height:140px}.ns-visual__core b{font-size:28px}.ns-visual__node{font-size:9px;padding:8px}.ns-visual__node:nth-of-type(3){left:0}.ns-visual__node:nth-of-type(4){right:0}.ns-visual__node:nth-of-type(5){left:0}.ns-visual__node:nth-of-type(6){right:0}.ns-visual__caption{bottom:0}.ns-essential-grid{grid-template-columns:1fr}.ns-essential-grid .eco-card{min-height:0}.s-head__title{font-size:clamp(31px,8vw,50px)}}
+@media(prefers-reduced-motion:reduce){.eco-card:hover{transform:none}}
