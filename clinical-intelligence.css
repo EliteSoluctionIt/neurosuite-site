@@ -72,3 +72,44 @@ html[data-mode="light"] .flow,html[data-mode="light"] .access{background:#e5f0f2
 @media(max-width:1050px){.ns-visual{opacity:.36;right:-90px;width:440px;top:200px}.hero__content{position:relative;z-index:3}.hero__sub{max-width:52ch!important}}
 @media(max-width:760px){.hero{min-height:0}.hero__content{padding-top:130px;padding-bottom:55px}.hero__title{font-size:clamp(42px,10.4vw,68px)!important;max-width:100%!important}.ns-visual{position:relative;top:auto;right:auto;margin:-10px auto 15px;width:min(90vw,420px);height:330px;opacity:1}.ns-visual__ring{inset:26px 48px}.ns-visual__core{width:140px;height:140px}.ns-visual__core b{font-size:28px}.ns-visual__node{font-size:9px;padding:8px}.ns-visual__node:nth-of-type(3){left:0}.ns-visual__node:nth-of-type(4){right:0}.ns-visual__node:nth-of-type(5){left:0}.ns-visual__node:nth-of-type(6){right:0}.ns-visual__caption{bottom:0}.ns-essential-grid{grid-template-columns:1fr}.ns-essential-grid .eco-card{min-height:0}.s-head__title{font-size:clamp(31px,8vw,50px)}}
 @media(prefers-reduced-motion:reduce){.eco-card:hover{transform:none}}
+
+/* NeuroSuite cognition-led visual system — vivid clinical spectrum */
+:root,[data-mode="dark"],html[data-mode="light"]{
+--bg:#071328;--bg-2:#0c2140;--bg-3:#122b4c;--surface:#112544;--surface-2:#173456;
+--fg:#f8fbff;--fg-2:#d9e7f6;--fg-3:#a9bfd7;--fg-4:#849cb9;
+--accent:#62e5dd;--accent-2:#66b8ff;--accent-line:rgba(98,229,221,.45);
+--line:rgba(172,206,250,.15);--line-2:rgba(172,206,250,.26)
+}
+html[data-mode="light"] body,html[data-mode="dark"] body,body{
+background:radial-gradient(ellipse 80vw 50vw at 95% 0%,rgba(70,78,185,.3),transparent 75%),linear-gradient(160deg,#071328 0%,#0b2042 55%,#09142c 100%)!important;color:#f8fbff!important}
+html[data-mode="light"] .nav,html[data-mode="dark"] .nav{background:rgba(7,19,40,.92)!important}
+html[data-mode="light"] .hero,html[data-mode="dark"] .hero,.hero{
+background:radial-gradient(ellipse 46% 70% at 80% 42%,rgba(92,91,222,.25),transparent 75%),radial-gradient(ellipse 55% 50% at 60% 60%,rgba(21,168,183,.16),transparent 80%)!important}
+html[data-mode="light"] .hero__sub,html[data-mode="dark"] .hero__sub{color:#d9e7f6!important}
+html[data-mode="light"] .hero__title em,html[data-mode="light"] .s-head__title em,html[data-mode="dark"] .hero__title em{color:#70e9df!important}
+html[data-mode="light"] .eco-card,html[data-mode="light"] .status-card,html[data-mode="light"] .flow__step,html[data-mode="dark"] .eco-card{
+background:linear-gradient(145deg,rgba(27,52,91,.94),rgba(14,33,62,.94))!important;color:#f8fbff!important;border-color:rgba(137,177,255,.22)!important}
+html[data-mode="light"] .eco-card__manifesto{color:#d3e2f2!important}
+html[data-mode="light"] .flow,html[data-mode="light"] .access{background:#102646!important}
+html[data-mode="light"] .ns-visual__core,html[data-mode="light"] .ns-visual__node{background:#0d2441!important;color:#f8fbff!important}
+.ns-visual__ring{border-color:rgba(105,233,224,.38);box-shadow:0 0 0 32px rgba(94,151,250,.045),0 0 0 72px rgba(189,97,255,.045)}
+.ns-visual__core{background:linear-gradient(145deg,#163b66,#121b43)!important;border-color:#7cece5;box-shadow:0 0 65px rgba(79,190,243,.3),inset 0 0 40px rgba(101,103,255,.16)}
+.ns-visual__node:nth-of-type(3){border-color:#6ae6dd}.ns-visual__node:nth-of-type(4){border-color:#ad8aff}.ns-visual__node:nth-of-type(5){border-color:#ffbb7b}.ns-visual__node:nth-of-type(6){border-color:#74b8ff}
+.hero__title em{background:linear-gradient(100deg,#77efe1,#83b9ff 60%,#d3a2ff)!important;background-clip:text!important;-webkit-background-clip:text!important;-webkit-text-fill-color:transparent!important}
+.ns-cognition{padding-block:clamp(90px,10vw,150px);overflow:hidden}
+.ns-cognition .s-head__title{max-width:22ch}
+.ns-cognition__lede{max-width:72ch;color:#c6d9ec;font-size:clamp(16px,1.4vw,21px);line-height:1.75;margin:25px 0 40px}
+.ns-cognition__flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:10px}
+.ns-cognition__step{position:relative;min-height:210px;padding:25px 20px 22px;border:1px solid rgba(141,190,255,.2);border-radius:22px;background:linear-gradient(155deg,rgba(24,49,88,.98),rgba(11,30,57,.98));overflow:hidden}
+.ns-cognition__step:before{content:"";position:absolute;top:0;left:0;right:0;height:4px;background:var(--step-color)}
+.ns-cognition__step:after{content:"";position:absolute;width:130px;height:130px;right:-65px;top:-65px;border-radius:50%;background:var(--step-color);opacity:.12;filter:blur(10px)}
+.ns-cognition__step small{display:block;font-size:11px;font-weight:800;letter-spacing:.14em;color:var(--step-color);margin-bottom:35px}
+.ns-cognition__step h3{font-family:'Manrope',sans-serif;font-size:clamp(18px,1.5vw,24px);letter-spacing:-.04em;line-height:1.2;margin-bottom:12px}
+.ns-cognition__step p{font-size:13px;line-height:1.65;color:#b9cee2}
+.ns-cognition__bottom{display:flex;align-items:center;gap:18px;margin-top:28px;padding:22px 25px;border-radius:16px;background:linear-gradient(95deg,rgba(75,217,205,.12),rgba(126,123,255,.13));border:1px solid rgba(113,218,227,.24)}
+.ns-cognition__bottom b{color:#82f1e3;white-space:nowrap;font-size:12px;letter-spacing:.1em}
+.ns-cognition__bottom span{font-size:14px;line-height:1.6;color:#d5e4f5}
+.ns-essential-grid .eco-card:nth-child(1){border-top:4px solid #69e6d8!important}.ns-essential-grid .eco-card:nth-child(2){border-top:4px solid #a38cff!important}.ns-essential-grid .eco-card:nth-child(3){border-top:4px solid #ffbc80!important}.ns-essential-grid .eco-card:nth-child(4){border-top:4px solid #72b8ff!important}
+@media(max-width:1100px){.ns-cognition__flow{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:720px){.ns-cognition__flow{grid-template-columns:1fr 1fr}.ns-cognition__step{min-height:185px}.ns-cognition__bottom{display:block}.ns-cognition__bottom b{display:block;margin-bottom:10px}}
+@media(max-width:470px){.ns-cognition__flow{grid-template-columns:1fr}.ns-cognition__step{min-height:0;padding:20px}.ns-cognition__step small{margin-bottom:12px}}
