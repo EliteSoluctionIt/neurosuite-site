@@ -506,3 +506,11 @@ body{
  .footer__inner{grid-template-columns:1fr}
  .footer__inner>div:first-child{grid-column:auto}
 }
+
+/* Clinical visual refresh */
+html[data-mode='light']{--accent:#087e9e;--bg:#f4f9fc;--fg:#102e46;--surface:#fff}
+html[data-mode='light'] body{background:#f4f9fc}
+html[data-mode='light'] .hero{background:linear-gradient(120deg,#f8fcff,#e7f3f9)}
+html[data-mode='light'] .hero__title em{background:linear-gradient(120deg,#006e91,#009ba8);background-clip:text;-webkit-background-clip:text;color:transparent}
+html[data-mode='light'] .btn--primary{background:#087e9e;color:white;border-color:#087e9e}
+html[data-mode='light'] .eco-card,html[data-mode='light'] .status-card{background:white;border-color:#d7e7f0}
